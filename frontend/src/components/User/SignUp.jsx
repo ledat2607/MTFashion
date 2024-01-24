@@ -47,7 +47,7 @@ const SignUp = () => {
             </div>
           </div>
           <div className="flex w-full justify-between">
-            <div className="flex flex-col mt-8 w-[45%] text-black py-2">
+            <div className="flex flex-col w-[45%] text-black py-2">
               <label>Email</label>
               <input
                 type="email"
@@ -55,14 +55,14 @@ const SignUp = () => {
               />
             </div>
             <div className="w-[45%] flex">
-              <div className="flex flex-col w-[60%] mt-8 text-black py-2">
+              <div className="flex flex-col w-[60%] text-black py-2">
                 <label>Số điện thoại</label>
                 <input
                   type="number"
                   className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
                 />
               </div>
-              <div className="flex flex-col w-[37%] ml-2 mt-8 text-black py-2">
+              <div className="flex flex-col w-[37%] ml-2 text-black py-2">
                 <label>Giới tính</label>
                 <select
                   className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
