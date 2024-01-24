@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 import ImgLogin from "../../assets/sign-in.jpg";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
+import { toast } from "react-toastify";
 const Login = () => {
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const showPassword = () => {
     setVisible(!visible);
+  };
+  const handleSubmit = () => {
+    if (password === "" || userName === "") {
+      toast.error("Vui lòng nhập đầy đủ thông tin");
+    } else {
+      toast.success("Đăng nhập thành công!");
+      navigate("/");
+    }
   };
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
@@ -29,15 +41,21 @@ const Login = () => {
           <div className="flex flex-col mt-8 text-black py-2">
             <label>Tên đăng nhập</label>
             <input
+              required
               type="text"
               className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
           <div className="flex flex-col text-black py-2 relative">
             <label>Mật khẩu</label>
             <input
+              required
               type={visible ? "text" : "password"}
               className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             {visible ? (
               <IoEyeSharp
@@ -65,7 +83,10 @@ const Login = () => {
             </i>
           </div>
 
-          <button className="w-[85%] hover:scale-[1.1] transition-transform duration-150 text-white font-bold text-[20px] uppercase bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/80 py-2 rounded-lg mt-8 ml-8">
+          <button
+            onClick={handleSubmit}
+            className="w-[85%] hover:scale-[1.1] transition-transform duration-150 text-white font-bold text-[20px] uppercase bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/80 py-2 rounded-lg mt-8 ml-8"
+          >
             Đăng nhập
           </button>
           <div className="mt-8 pb-2">
