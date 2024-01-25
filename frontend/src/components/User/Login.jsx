@@ -18,9 +18,10 @@ const Login = () => {
       toast.error("Vui lòng nhập đầy đủ thông tin");
     } else {
       toast.success("Đăng nhập thành công!");
-      navigate("/");
     }
+    navigate("/");
   };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block">
