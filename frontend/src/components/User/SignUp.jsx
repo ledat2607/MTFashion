@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import ImgLogin from "../../assets/sign-up.jpg";
 import logo from "../../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 const SignUp = () => {
-  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [useName, setUserName] = useState("");
+  const [sex, setSex] = useState("");
   const [visible, setVisible] = useState(false);
   const handleSubmit = () => {
-    navigate("/sign-in");
+    //navigate("/sign-in");
+    console.log(sex);
   };
   const showPassword = () => {
     setVisible(!visible);
   };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block">
@@ -36,6 +44,8 @@ const SignUp = () => {
               <input
                 type="text"
                 className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
+                value={surName}
+                onChange={(e) => setSurName(e.target.value)}
               />
             </div>
             <div className="flex flex-col w-[45%] mt-8 text-black py-2">
@@ -43,6 +53,8 @@ const SignUp = () => {
               <input
                 type="text"
                 className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           </div>
@@ -52,12 +64,16 @@ const SignUp = () => {
               <input
                 type="email"
                 className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="w-[45%] flex">
               <div className="flex flex-col w-[60%] text-black py-2">
                 <label>Số điện thoại</label>
                 <input
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   type="number"
                   className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
                 />
@@ -65,6 +81,8 @@ const SignUp = () => {
               <div className="flex flex-col w-[37%] ml-2 text-black py-2">
                 <label>Giới tính</label>
                 <select
+                  value={sex}
+                  onChange={(e) => setSex(e.target.value)}
                   className="bg-gray-200 mt-2 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
                   id="gender"
                   name="gender"
@@ -81,6 +99,8 @@ const SignUp = () => {
             <div className="flex flex-col w-[45%] text-black py-2">
               <label>Tên đăng nhập</label>
               <input
+                value={useName}
+                onChange={(e) => setUserName(e.target.value)}
                 type="text"
                 className="bg-gray-200 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
               />
@@ -88,6 +108,8 @@ const SignUp = () => {
             <div className="flex flex-col w-[45%] text-black py-2 relative">
               <label>Mật khẩu</label>
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type={visible ? "text" : "password"}
                 className="bg-gray-200 p-2 focus:border-blue-500 rounded-lg focus:bg-gray-300 focus:outline-none"
               />
@@ -107,12 +129,7 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            className="w-[85%] hover:scale-[1.1] transition-transform duration-150 text-white font-bold text-[20px] uppercase bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/80 py-2 rounded-lg mt-4 ml-8"
-          >
-            Đăng ký
-          </button>
+          <div onClick={handleSubmit} className="h-[40px] font-bold text-2xl cursor-pointer bg-teal-400 shadow-lg hover:scale-[1.1] hover:shadow-teal-500/40 shadow-teal-500/50 w-[85%] flex justify-center items-center mx-auto rounded-lg">Đăng ký</div>
           <div className="mt-8 pb-2">
             <p>
               Bạn đã có tài khoản?
