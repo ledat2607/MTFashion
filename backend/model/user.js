@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "Vui lòng điền Họ!"],
   },
   name: { type: String, required: [true, "Vui lòng điền tên của bạn!"] },
+  userName: {
+    type: String,
+    required: [true, "Vui lòng điền tên đăng nhập của bạn!"],
+  },
   email: {
     type: String,
     required: [true, "Vui lòng điền email của bạn !"],
@@ -49,16 +53,14 @@ const userSchema = new mongoose.Schema({
   avatar: {
     public_id: {
       type: String,
-      required: true,
     },
     url: {
       type: String,
-      required: true,
     },
   },
   birthDay: {
     type: Date,
-    default: Date.now(),
+    default: "",
   },
   createdAt: {
     type: Date,
