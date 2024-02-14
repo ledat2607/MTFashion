@@ -3,8 +3,10 @@ import React, { useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmailPage = () => {
+  const navigate = useNavigate();
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([
     React.createRef(),
@@ -15,7 +17,6 @@ const VerifyEmailPage = () => {
     React.createRef(),
   ]);
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const verificationCode = JSON.parse(localStorage.getItem("code"));
   const handleReSend = () => {
     const config = { headers: { "Content-Type": "multipath/form-data" } };
     const newForm = new FormData();
@@ -38,14 +39,28 @@ const VerifyEmailPage = () => {
   };
   //create new user
   const handleCreate = async () => {
-    await axios
-      .post(`${server}/user/create-new-user`, code, userData, verificationCode)
-      .then((res) => {
-        toast.success(res.data.message);
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    const verificationCode = JSON.parse(localStorage.getItem("code"));
+    if (userData && verificationCode) {
+      const requestData = {
+        code,
+        userData: userData,
+        verificationCode: verificationCode,
+      };
+      await axios
+        .post(`${server}/user/create-new-user`, requestData)
+        .then((res) => {
+          toast.success(res.data.message);
+          localStorage.removeItem("userData");
+          localStorage.removeItem("verificationCode");
+          setTimeout(() => {
+            navigate("/sign-in");
+          }, 1500);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    }
   };
 
   const handleChange = (index, value) => {

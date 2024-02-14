@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { server } from "../../server";
 const Login = () => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
@@ -13,22 +15,34 @@ const Login = () => {
   const showPassword = () => {
     setVisible(!visible);
   };
-  const handleSubmit = () => {
-    if (password === "" || userName === "") {
-      toast.error("Vui lòng nhập đầy đủ thông tin");
-    } else {
-      toast.success("Đăng nhập thành công!");
-    }
-    navigate("/");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await axios
+      .post(
+        `${server}/user/login-user`,
+        { userName, password },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(`Đăng nhập thành công`);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block">
         <img src={ImgLogin} alt="" className="w-full h-full object-cover" />
       </div>
       <div className="bg-gray-700 flex flex-col justify-center">
-        <form className="max-w-[65%] w-full mx-auto bg-gray-100 px-8 rounded-lg border-2">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-[65%] w-full mx-auto bg-gray-100 px-8 rounded-lg border-2"
+        >
           <div className="h-[25vh]">
             <img
               src={logo}
@@ -84,12 +98,9 @@ const Login = () => {
             </i>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            className="w-[85%] hover:scale-[1.1] transition-transform duration-150 text-white font-bold text-[20px] uppercase bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/80 py-2 rounded-lg mt-8 ml-8"
-          >
-            Đăng nhập
-          </button>
+          <div className="mx-auto w-[85%] hover:scale-[1.1] transition-transform duration-150 text-white font-bold text-[20px] uppercase bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/80 py-2 rounded-lg mt-8 flex justify-center">
+            <button type="submit">Đăng nhập</button>
+          </div>
           <div className="mt-8 pb-2">
             <p>
               Bạn chưa có tài khoản?
