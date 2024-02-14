@@ -28,11 +28,33 @@ const SignUp = () => {
     newForm.append("phoneNumber", phoneNumber);
     newForm.append("password", password);
     newForm.append("userName", userName);
-
+    const userData = {
+      avatar,
+      surName,
+      name,
+      email,
+      phoneNumber,
+      password,
+      userName,
+    };
     axios
-      .post(`${server}/user/create-user`, newForm, config)
+      .post(`${server}/user/verify-user-email`, newForm, config)
       .then((res) => {
         toast.success(res.data.message);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        localStorage.setItem("code", JSON.stringify(res.data.verificationCode));
+        // // Include user data in the request to create-new-user
+        // axios
+        //   .post(`${server}/user/create-new-user`, {
+        //     verificationCode: res.data.verificationCode,
+        //     userData,
+        //   })
+        //   .then((response) => {
+        //     console.log(response.data);
+        //   })
+        //   .catch((error) => {
+        //     console.error(error);
+        //   });
         setTimeout(() => {
           navigate("/verify-email");
         }, 1000);
