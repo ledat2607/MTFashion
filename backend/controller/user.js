@@ -7,6 +7,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const jwt = require("jsonwebtoken");
 const sendCode = require("../utils/sendCode");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const sendToken = require("../utils/jwtToken");
 //Create user
 router.post(
   "/verify-user-email",
@@ -88,16 +89,41 @@ router.post(
 router.post(
   "/create-new-user",
   catchAsyncErrors(async (req, res, next) => {
-    const verificationCode = req.body;
-    const userData = req.body;
-    // if (verificationCode === userData.verificationCode) {
-    //   User.create(userData);
-    // }
-    console.log(userData);
-    // res.status(200).json({
-    //   success: true,
-    //   message: "Đăng ký thành công !",
-    // });
+    const data = req.body;
+    const verificationCodeAsString = data?.verificationCode
+      .toString()
+      .replace(/,/g, "");
+    const verificationCodeAsNumber = parseInt(verificationCodeAsString, 10);
+    if (verificationCodeAsNumber === data.verificationCode) {
+      await User.create(data.userData);
+      res.status(200).json({
+        success: true,
+        message: "Đăng ký thành công !",
+      });
+    }
+  })
+);
+//Login user
+router.post(
+  "/login-user",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { userName, password } = req.body;
+      if (!userName || !password.trim()) {
+        return next(new ErrorHandler("Vui lòng nhập đầy đủ thông tin!", 400));
+      }
+      const user = await User.findOne({ userName }).select("+password");
+      if (!user) {
+        return next(new ErrorHandler("Người dùng không tồn tại", 400));
+      }
+      const isPasswordValid = await user.comparePassword(password);
+      if (!isPasswordValid) {
+        return next(new ErrorHandler("Mật khẩu không chính xác", 400));
+      }
+      sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
   })
 );
 module.exports = router;
