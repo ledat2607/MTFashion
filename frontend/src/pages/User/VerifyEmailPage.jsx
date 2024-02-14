@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
+import { server } from "../../server";
+import { toast } from "react-toastify";
 
 const VerifyEmailPage = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -11,11 +14,45 @@ const VerifyEmailPage = () => {
     React.createRef(),
     React.createRef(),
   ]);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const verificationCode = JSON.parse(localStorage.getItem("code"));
+  const handleReSend = () => {
+    const config = { headers: { "Content-Type": "multipath/form-data" } };
+    const newForm = new FormData();
+    newForm.append("file", userData.avatar);
+    newForm.append("surName", userData.surName);
+    newForm.append("name", userData.name);
+    newForm.append("email", userData.email);
+    newForm.append("phoneNumber", userData.phoneNumber);
+    newForm.append("password", userData.password);
+    newForm.append("userName", userData.userName);
+    axios
+      .post(`${server}/user/verify-user-email`, newForm, config)
+      .then((res) => {
+        localStorage.setItem("code", JSON.stringify(res.data.verificationCode));
+        toast.success("Đã gửi lại mã");
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+  //create new user
+  const handleCreate = async () => {
+    await axios
+      .post(`${server}/user/create-new-user`, code, userData, verificationCode)
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
   const handleChange = (index, value) => {
     const filteredValue = value.replace(/\D/g, "");
     setCode((prevCode) => {
       const newCode = [...prevCode];
-      newCode[index] = filteredValue.slice(0, 1); // Only keep the first character
+      newCode[index] = filteredValue.slice(0, 1);
       return newCode;
     });
 
@@ -31,7 +68,7 @@ const VerifyEmailPage = () => {
   };
   return (
     <div className="bg-[#47947c] w-full h-screen flex justify-center items-center">
-      <div className="sm:max-w-[55%] bg-white sm:h-[45vh] h-[60vh] w-[85%] rounded-lg shadow-lg shadow-teal-500/30 p-2 grid justify-center items-center flex-col">
+      <div className="sm:max-w-[55%] bg-white w-[85%] rounded-lg shadow-lg shadow-teal-500/30 p-2 grid justify-center items-center flex-col">
         <h1 className="text-center text-4xl uppercase font-[700]">
           Xác nhận email
         </h1>
@@ -61,11 +98,19 @@ const VerifyEmailPage = () => {
           ))}
         </div>
 
-        <div className="mt-8 opacity-45 hover:opacity-100 h-[40px] w-[150px] text-xl font-[600] hover:bg-[#368565] hover:text-[#ffffff] hover:border-[#ffffff] rounded-lg bg-white border-2 border-[#4dcb9b] mx-auto flex items-center justify-center cursor-pointer">
+        <div
+          onClick={handleReSend}
+          className="mt-8 opacity-45 hover:opacity-100 h-[40px] w-[150px] text-xl font-[600] hover:bg-[#368565] hover:text-[#ffffff] hover:border-[#ffffff] rounded-lg bg-white border-2 border-[#4dcb9b] mx-auto flex items-center justify-center cursor-pointer"
+        >
           <AiOutlineReload />
           <p className="ml-4 ">Gửi lại mã</p>
         </div>
-        <div className="w-[150px] text-xl hover:bg-slate-800 hover:text-[#ffffff] font-[600] h-[40px] mx-auto mt-2 flex justify-center items-center bg-slate-200 rounded-lg cursor-pointer">Xác nhận</div>
+        <div
+          onClick={handleCreate}
+          className="w-[150px] text-xl hover:bg-slate-800 hover:text-[#ffffff] font-[600] h-[40px] mx-auto mt-4 flex justify-center items-center bg-slate-200 rounded-lg cursor-pointer"
+        >
+          Xác nhận
+        </div>
       </div>
     </div>
   );
