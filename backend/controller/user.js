@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const sendCode = require("../utils/sendCode");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
+const { isAuthenticated } = require("../middleware/auth");
 //Create user
 router.post(
   "/verify-user-email",
@@ -121,6 +122,25 @@ router.post(
         return next(new ErrorHandler("Mật khẩu không chính xác", 400));
       }
       sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//Load user information
+router.get(
+  "/get-user",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return next(new ErrorHandler("Người dùng không tồn tại", 400));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
     }
