@@ -5,10 +5,10 @@ const Hero = () => {
     <div className="relative w-full h-[80vh] bg-teal-300/40 overflow-hidden">
       <div className="flex justify-between">
         <div className="w-[45%] my-auto flex flex-col justify-between items-center">
-          <div className="font-Roboto sm:text-xl text-[12px] font-[600]">
+          <div className="font-DM sm:text-xl text-[12px] font-[600]">
             Giảm giá lên đến 70%
           </div>
-          <div className="font-DancingScript sm:text-2xl font-[800] uppercase mt-4 text-gray-800">
+          <div className="font-DM sm:text-2xl font-[700] uppercase mt-4 text-gray-800">
             Các sản phẩm cùng bộ sưu tập
           </div>
           <div className="relative w-[20%] mt-8 cursor-pointer hover:scale-[1.1] transition-transform duration-100">
@@ -33,7 +33,7 @@ const Hero = () => {
           />
         </div>
       </div>
-      <div className="before:absolute before:left-0 before:bottom-0 before:w-1/4 before:h-3/6 before:bg-gradient-to-bl before:from-transparent before:to-gray-500 before:rounded-tr-full"></div>
+      <div className="before:absolute before:left-0 before:bottom-0 before:w-1/4 before:h-3/6 before:bg-gradient-to-bl before:from-transparent before:to-teal-500/60 before:rounded-tr-full"></div>
     </div>
   );
 };

@@ -6,6 +6,8 @@ module.exports = {
       Roboto: ["Roboto", "sans-serif"],
       Poppins: ["Poppins", "sans-serif"],
       DancingScript: ["Dancing Script", "cursive"],
+      Protest: ["Protest Riot", "sans-serif"],
+      DM: ["DM Sans", "sans-serif"],
     },
     extend: {},
   },
