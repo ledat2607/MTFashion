@@ -33,7 +33,7 @@ const Hero = () => {
           />
         </div>
       </div>
-      <div className="before:absolute before:left-0 before:bottom-0 before:w-1/4 before:h-3/6 before:bg-gradient-to-bl before:from-transparent before:to-teal-500/60 before:rounded-tr-full"></div>
+      <div className="before:absolute before:left-0 before:bottom-0 before:w-1/4 before:h-3/6 before:bg-gradient-to-bl before:from-[#bfffc7] before:to-[#11a5a7] before:rounded-tr-full"></div>
     </div>
   );
 };

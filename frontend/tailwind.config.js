@@ -8,6 +8,7 @@ module.exports = {
       DancingScript: ["Dancing Script", "cursive"],
       Protest: ["Protest Riot", "sans-serif"],
       DM: ["DM Sans", "sans-serif"],
+      Paci: ["Pacifico", "cursive"],
     },
     extend: {},
   },

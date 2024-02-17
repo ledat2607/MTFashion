@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../../assets/MT.png";
-import { CiShop } from "react-icons/ci";
+import { CiShop, CiHeart } from "react-icons/ci";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
 import Account from "../Account";
@@ -18,8 +18,8 @@ const Header = ({ activeHeading }) => {
             className="sm:w-[200px] sm:h-[11vh] object-contain sm:ml-4 cursor-pointer"
           />
         </div>
-        <div className="w-[60%] flex justify-center items-center">
-          <Navbar activeHeading={1} />
+        <div className="w-[60%] flex justify-center items-center ">
+          <Navbar activeHeading={activeHeading} size={85} />
         </div>
         <div className="md:w-[40%] lg:w-[30%] pr-2 flex justify-end items-center">
           <SearchInformation />
@@ -30,6 +30,11 @@ const Header = ({ activeHeading }) => {
             onClick={(e) => setOpenCart(!openCart)}
           />
           <IoIosNotificationsOutline
+            className="ml-5 cursor-pointer hover:scale-[1.1]"
+            color="#ffffff"
+            size={30}
+          />
+          <CiHeart
             className="ml-5 cursor-pointer hover:scale-[1.1]"
             color="#ffffff"
             size={30}
