@@ -10,9 +10,11 @@ import {
   VerifyEmailPage,
   ShopManPage,
   ShopWomanPage,
+  ProfilePage,
 } from "./Routes.js";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/action/userAction.js";
+import ProtectedRoute from "./protectedRoutes/userProtected.js";
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
@@ -27,6 +29,14 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/man" element={<ShopManPage />} />
         <Route path="/woman" element={<ShopWomanPage />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <ToastContainer
         position="bottom-center"
