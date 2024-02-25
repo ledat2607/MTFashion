@@ -32,8 +32,10 @@ const BlogCard = () => {
               className="w-[50%] h-full hover:scale-[1.1] rounded-tl-3xl cursor-pointer transition-transform duration-300 object-cover"
             />
             <div>
-              <h1 className="w-full pl-6 bg-teal-500">{secondItem.name}</h1>
-              <div className="ml-6">
+              <h1 className="w-full pl-6 bg-teal-500 text-white sm:text-xl font-DM text-center">
+                {secondItem.name}
+              </h1>
+              <div className="ml-6 font-DM">
                 {truncateText(secondItem.description, 150)}
               </div>
             </div>
@@ -45,8 +47,10 @@ const BlogCard = () => {
               className="w-[50%] h-full hover:scale-[1.1] rounded-tl-3xl cursor-pointer transition-transform duration-300 object-cover"
             />
             <div>
-              <h1 className="w-full pl-6 bg-teal-500">{thirdItem.name}</h1>
-              <div className="ml-6">
+              <h1 className="w-full pl-6 bg-teal-500 text-white sm:text-xl font-DM text-center">
+                {thirdItem.name}
+              </h1>
+              <div className="ml-6 font-DM">
                 {truncateText(thirdItem.description, 150)}
               </div>
             </div>

@@ -9,7 +9,7 @@ const DiscountEventCard = () => {
       return itemEndDate - currentDate >= 0 * 60 * 60 * 1000;
     })
     .sort((a, b) => {
-      return new Date(a.start_date) - new Date(b.start_date);
+      return new Date(b.end_date) - new Date(a.end_date);
     });
 
   return (
@@ -60,9 +60,15 @@ const DiscountEventCard = () => {
               />
             </div>
             <div className="w-full flex justify-between items-center">
-              <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
-                {i.name}
-              </h1>
+              <div>
+                <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
+                  {i.name}
+                </h1>{" "}
+                <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
+                  {i.end_date}
+                </h1>
+              </div>
+
               <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
                 -{i.discount_rate}%
               </h1>
