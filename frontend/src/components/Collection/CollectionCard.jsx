@@ -27,7 +27,7 @@ const CollectionCard = () => {
             className="border border-teal-500 shadow-lg shadow-teal-800/60 rounded-xl p-3 hover:shadow-lg transition-all duration-300 cursor-pointer relative"
           >
             {isNew && (
-              <span className="absolute top-0 z-[800] left-0 bg-green-500 text-white py-1 px-2 rounded-tl-md rounded-br-md">
+              <span className="absolute top-0 z-4 left-0 bg-green-500 text-white py-1 px-2 rounded-tl-md rounded-br-md">
                 Mới
               </span>
             )}

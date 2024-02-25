@@ -29,7 +29,7 @@ const Header = ({ activeHeading }) => {
         <div className="w-[60%] flex justify-center items-center ">
           <Navbar activeHeading={activeHeading} size={85} />
         </div>
-        <div className="md:w-[40%] lg:w-[30%] pr-2  justify-end items-center sm:block hidden">
+        <div className="md:w-[40%] lg:w-[30%] pr-2 justify-end items-center sm:flex hidden">
           <SearchInformation />
           {isAuthenticated ? (
             <Account />

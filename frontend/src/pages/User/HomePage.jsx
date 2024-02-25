@@ -5,6 +5,7 @@ import Collection from "../../components/Collection/Collection";
 import Product from "../../components/Product/Product";
 import DiscountEvent from "../../components/Event/DiscountEvent";
 import Blog from "../../components/Blog/Blog";
+import Branding from "../../components/Layout/Branding"
 const HomePage = () => {
   return (
     <div className="max-w-[1900px] mx-auto">
@@ -12,6 +13,7 @@ const HomePage = () => {
       <Hero />
       <Collection />
       <Product />
+      <Branding/>
       <DiscountEvent />
       <Blog />
     </div>
