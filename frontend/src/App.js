@@ -11,6 +11,7 @@ import {
   ShopManPage,
   ShopWomanPage,
   ProfilePage,
+  ProductPage,
 } from "./Routes.js";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/action/userAction.js";
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/man" element={<ShopManPage />} />
         <Route path="/woman" element={<ShopWomanPage />} />
+        <Route path="/product/:name" element={<ProductPage />} />
         <Route
           path="/profile"
           element={

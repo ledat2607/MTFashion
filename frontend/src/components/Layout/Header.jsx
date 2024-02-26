@@ -7,7 +7,7 @@ import Account from "../Account";
 import Navbar from "../Layout/Navbar";
 import SearchInformation from "../function/SearchInformation";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Header = ({ activeHeading }) => {
   const [openCart, setOpenCart] = useState(false);
   const navigate = useNavigate();
@@ -20,11 +20,13 @@ const Header = ({ activeHeading }) => {
     <div className="relative">
       <div className="w-full p-2 sm:h-[12vh] md:h-[12vh] lg:h-[10vh] bg-teal-800/90 mx-auto flex relative">
         <div className="w-[10%]">
-          <img
-            src={Logo}
-            alt=""
-            className="sm:w-[200px] sm:h-[11vh] object-contain sm:ml-4 cursor-pointer"
-          />
+          <Link to="/">
+            <img
+              src={Logo}
+              alt=""
+              className="sm:w-[200px] sm:h-[11vh] object-contain sm:ml-4 cursor-pointer"
+            />
+          </Link>
         </div>
         <div className="w-[60%] flex justify-center items-center ">
           <Navbar activeHeading={activeHeading} size={85} />

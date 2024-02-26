@@ -5,7 +5,9 @@ import SignUpPage from "../src/pages/User/SignUpPage";
 import ShopManPage from "../src/pages/User/ShopManPage";
 import ShopWomanPage from "../src/pages/User/ShopWomanPage";
 import ProfilePage from "../src/pages/User/ProfilePage";
+import ProductPage from "../src/pages/User/ProductPage";
 export {
+  ProductPage,
   LoginPage,
   SignUpPage,
   HomePage,
