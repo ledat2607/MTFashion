@@ -123,7 +123,7 @@ export const productData = [
     total_sell: 9,
     stock: 10,
     date: "2024-02-01",
-    material: "Vải",
+    material: [{ name: "Vải" }, { name: "Coton" }],
   },
   {
     id: 4,
