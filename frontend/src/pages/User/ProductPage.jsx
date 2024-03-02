@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Layout/Header";
+import Footer from "../../components/Layout/Footer.jsx";
 import { productData } from "../../static/data";
 import { useParams } from "react-router-dom";
-import ProductDetails from "../../components/Product/ProductDetails.jsx";
+import ProductDetails from "../../components/Product/ProductDetails";
+import SuggessProduct from "../../components/Product/SuggessProduct";
 const ProductPage = () => {
   const [data, setData] = useState(null);
   const { name } = useParams();
@@ -15,6 +17,8 @@ const ProductPage = () => {
     <div className="max-w-[1900px] mx-auto">
       <Header />
       <ProductDetails data={data} />
+      {data && <SuggessProduct data={data} />}
+      <Footer />
     </div>
   );
 };

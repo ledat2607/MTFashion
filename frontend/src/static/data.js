@@ -78,7 +78,7 @@ export const productData = [
     rating: 4.6,
     total_sell: 35,
     stock: 10,
-    date: "2024-02-5",
+    date: "2024-02-20",
   },
   {
     id: 2,
@@ -86,11 +86,11 @@ export const productData = [
     name: "Đầm dạ hội",
     image_Url: [
       {
-        public_id: "test",
+        code: "MK159",
         url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
       },
       {
-        public_id: "test",
+        code: "MK19",
         url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
       },
     ],
@@ -99,7 +99,7 @@ export const productData = [
     rating: 4.9,
     total_sell: 35,
     stock: 10,
-    date: "2024-02-07",
+    date: "2024-02-19",
   },
   {
     id: 3,
@@ -107,14 +107,16 @@ export const productData = [
     name: "Váy công chúa",
     image_Url: [
       {
-        public_id: "test",
+        code: "MK159",
+
         url: "https://cf.shopee.vn/file/a3daa9ef267a4f09d7488561031d0c6f",
       },
       {
-        public_id: "test",
+        code: "MK19",
         url: "https://thieuhoa.com.vn/wp-content/uploads/2023/02/0sRuNot9KIZSezje3UfGV0S6tP7Fgl8JKQHrevoE.webp",
       },
     ],
+    size: [{ name: "S" }, { name: "Xl" }],
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     price: 839000,
@@ -122,7 +124,7 @@ export const productData = [
     rating: 5,
     total_sell: 9,
     stock: 10,
-    date: "2024-02-01",
+    date: "2024-02-22",
     material: [{ name: "Vải" }, { name: "Coton" }],
   },
   {
@@ -144,181 +146,7 @@ export const productData = [
     rating: 5,
     total_sell: 35,
     stock: 10,
-    date: "2024-02-16",
-  },
-  {
-    id: 5,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.8,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-02-16",
-  },
-  {
-    id: 6,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
-  },
-  {
-    id: 7,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-  },
-  {
-    id: 8,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
-  },
-  {
-    id: 9,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
-  },
-  {
-    id: 10,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
-  },
-  {
-    id: 11,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
-  },
-  {
-    id: 12,
-    category: "man",
-    name: "Áo thun nam Polo",
-    image_Url: [
-      {
-        public_id: "test",
-        url: "https://pos.nvncdn.com/3d26e0-79464/ps/20230427_ervam4ZmeM.jpeg",
-      },
-      {
-        public_id: "test",
-        url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
-      },
-    ],
-    price: 439000,
-    discount_price: 399000,
-    rating: 4.6,
-    total_sell: 35,
-    stock: 10,
-    date: "2024-01-16",
-    collection: "spring",
+    date: "2024-02-02",
   },
 ];
 
