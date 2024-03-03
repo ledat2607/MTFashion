@@ -36,7 +36,7 @@ const Footer = () => {
   };
   const inputWidth = isFocused ? "100%" : "50%";
   return (
-    <div className="w-full pb-4 sm:h-[30vh] h-full flex flex-col sm:flex-row justify-center items-center border sm:rounded-tl-full bg-teal-300 rounded-t-2xl">
+    <div className="w-full pb-4 sm:h-[30vh] h-full flex flex-col sm:flex-row justify-center items-center border sm:rounded-tl-full bg-gradient-to-r from-teal-500 via-purple-200 to-blue-500  rounded-t-2xl">
       <div className="sm:w-[20%] p-2 sm:p-0 w-full flex sm:flex-col items-center sm:relative">
         <div className="w-[100%] ">
           <img
@@ -66,7 +66,10 @@ const Footer = () => {
             Truy cập nhanh
           </span>
           {navItems?.map((i, index) => (
-            <span className="hover:translate-x-3 hover:text-white hover:scale-105 transition-transform duration-200 pb-2 cursor-pointer">
+            <span
+              key={index}
+              className="hover:translate-x-3 hover:text-white hover:scale-105 transition-transform duration-200 pb-2 cursor-pointer"
+            >
               {i.title}
             </span>
           ))}
@@ -76,14 +79,20 @@ const Footer = () => {
             Hỗ trợ
           </span>
           {footerSupportLinks?.map((i, index) => (
-            <span className="hover:translate-x-3 hover:text-white hover:scale-105 transition-transform duration-200 cursor-pointer pb-2">
+            <span
+              key={index}
+              className="hover:translate-x-3 hover:text-white hover:scale-105 transition-transform duration-200 cursor-pointer pb-2"
+            >
               {i.name}
             </span>
           ))}
         </div>
         <div className="sm:w-[38%] w-full flex flex-col justify-center items-center">
           <span className="text-lg font-[600] text-gray-900 font-DM">
-            Điền email của bạn để nhận những ưu đãi bất ngờ
+            <span className="text-xl uppercase text-blue-500 font-Poppins">
+              Đăng ký
+            </span>{" "}
+            để nhận những ưu đãi bất ngờ
           </span>
           <div
             style={{ width: inputWidth }}
