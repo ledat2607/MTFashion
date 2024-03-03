@@ -16,7 +16,7 @@ const SuggessProduct = ({ data }) => {
           <h2 className="text-[25px] font-[500] border-b mb-5">
             Các sản phẩm liên quan
           </h2>
-          <div className="w-full">
+          <div className="w-full pb-8">
             {sugData && <ProductCard products={sugData} />}
           </div>
         </div>

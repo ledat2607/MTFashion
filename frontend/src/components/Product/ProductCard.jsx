@@ -6,14 +6,13 @@ import { FaRegEye } from "react-icons/fa";
 import ControlledAccordions from "../Layout/Accordation";
 const ProductCard = ({ products }) => {
   const [wishlist, setWishlist] = useState({});
-
   const [selectedProductIndex, setSelectedProductIndex] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const handleEyeClick = (index) => {
     setSelectedProductIndex(index);
     setSelectedImage(0);
+    console.log(selectedProductIndex);
   };
-  console.log(products);
   const handleWishlist = (productId) => {
     setWishlist((prevWishlist) => {
       return { ...prevWishlist, [productId]: !prevWishlist[productId] };
@@ -145,7 +144,7 @@ const ProductCard = ({ products }) => {
                     <div
                       className={`rounded-lg absolute top-[-10] ${
                         isLeftProduct ? "left-full ml-6" : "right-full mr-6"
-                      } w-[35vw] h-[80vh] bg-gray-200 z-10`}
+                      } w-[40vw] h-[80vh] bg-gray-200 z-10`}
                     >
                       <div className="w-full h-full flex flex-col items-center justify-between">
                         <div className="w-full h-[8%] rounded-t-lg bg-teal-500 flex justify-center items-center">
@@ -159,7 +158,7 @@ const ProductCard = ({ products }) => {
                               src={
                                 products[selectedProductIndex]?.image_Url[
                                   selectedImage
-                                ].url
+                                ]?.url
                               }
                               alt=""
                               className="w-[1000%] h-[55%] ml-2 object-contain"
@@ -185,18 +184,21 @@ const ProductCard = ({ products }) => {
                           <div className="w-[48%] mt-4 p-4 rounded-lg relative">
                             <ControlledAccordions
                               des={products[selectedProductIndex]?.description}
-                              material={
-                                products[selectedProductIndex]?.material
-                              }
+                              mat={[products[selectedProductIndex]?.material]}
+                              size={[products[selectedProductIndex]?.size]}
                             />
-                            <div>
-                              <span>Mua</span>
-                            </div>
                           </div>
                         </div>
-                        <div className="pb-4 w-full h-[10%] flex justify-center items-center relative">
+                        <div className="pb-4 w-full h-[10%] flex p-2 items-center relative">
                           <button
-                            className="text-[18px] hover:text-white transition-transform duration-300 bg-teal-500 rounded-xl hover:w-[90%] w-[150px] h-[40px] "
+                            className="text-[18px] hover:translate-x-2 hover:text-white bg-gradient-to-r from-teal-400 to-teal-500 hover:from-pink-500 hover:to-blue-500 shadow shadow-indigo-400 transition-transform duration-500  rounded-xl w-[200px] h-[40px] "
+                            onClick={() => setSelectedProductIndex(null)}
+                          >
+                            Thêm vào giỏ hàng
+                          </button>
+
+                          <button
+                            className="ml-4 hover:translate-x-3 bg-gradient-to-r from-red-300 to-red-500/20 hover:from-pink-500 hover:to-yellow-500 text-[18px] opacity-85 hover:text-white transition-transform duration-300 rounded-xl w-[150px] h-[40px] "
                             onClick={() => setSelectedProductIndex(null)}
                           >
                             Đóng

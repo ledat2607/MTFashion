@@ -63,6 +63,7 @@ export const productData = [
     id: 1,
     category: "man",
     name: "Áo thun nam Polo",
+    size: [{ itemSize: "S" }, { itemSize: "Xl" }],
     image_Url: [
       {
         public_id: "test",
@@ -79,6 +80,52 @@ export const productData = [
     total_sell: 35,
     stock: 10,
     date: "2024-02-20",
+    material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
+    comment: [
+      {
+        userName: "Lê Đạt",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 5,
+        content: "Sản phẩm thật tuyệt vời",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+        ],
+      },
+      {
+        userName: "Lê Lưu Quốc Đạt",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 4,
+        content:
+          "Sản phẩm xứng đáng với số tiền bỏ ra, tuy nhiên gói quà chưa được tốt",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+        ],
+      },
+      {
+        userName: "Phú Thành",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 2,
+        content: "Sản phẩm làm tôi quá thất vọng",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+          {
+            url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
+          },
+        ],
+      },
+    ],
   },
   {
     id: 2,
@@ -100,6 +147,8 @@ export const productData = [
     total_sell: 35,
     stock: 10,
     date: "2024-02-19",
+    material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
+    size: [{ itemSize: "S" }, { itemSize: "Xl" }],
   },
   {
     id: 3,
@@ -116,21 +165,73 @@ export const productData = [
         url: "https://thieuhoa.com.vn/wp-content/uploads/2023/02/0sRuNot9KIZSezje3UfGV0S6tP7Fgl8JKQHrevoE.webp",
       },
     ],
-    size: [{ name: "S" }, { name: "Xl" }],
+    size: [{ itemSize: "S" }, { itemSize: "Xl" }],
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     price: 839000,
     discount_price: 809000,
     rating: 5,
     total_sell: 9,
     stock: 10,
     date: "2024-02-22",
-    material: [{ name: "Vải" }, { name: "Coton" }],
+    material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
+    comment: [
+      {
+        userName: "Lê Đạt",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 5,
+        content: "Sản phẩm thật tuyệt vời",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+        ],
+      },
+      {
+        userName: "Lê Lưu Quốc Đạt",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 4,
+        content:
+          "Sản phẩm xứng đáng với số tiền bỏ ra, tuy nhiên gói quà chưa được tốt",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+        ],
+      },
+      {
+        userName: "Phú Thành",
+        avatar:
+          "https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/402620919_358162883406972_8835788119796631121_n.jpg?stp=cp6_dst-jpg&_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeGrlQPVBV6AsMju-wTS_wO_zXnRQJfcj3_NedFAl9yPfxqTfszm37HSg55WsAgi_z2UTQPQgnAqnh42SdfGGnc4&_nc_ohc=haowL0MqsKoAX_ZKFTM&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDubYTudIHbqr4WJGjR0BLNRbImdHSmrCVmg1kdmiBNxw&oe=65E9826C",
+        date: "2023-03-03 18:30:29",
+        star: 2,
+        content: "Sản phẩm làm tôi quá thất vọng",
+        imgCmt: [
+          {
+            url: "https://otherstyle.vn/wp-content/uploads/2021/11/ao-polo-nam-trang-co-phoi-soc-02.jpg",
+          },
+          {
+            url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
+          },
+          {
+            url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
+          },
+          {
+            url: "https://maxi.vn/wp-content/uploads/2022/05/z3436386353722_a0969a6f6e0014ef86a410949b746542-650x845.jpg",
+          },
+        ],
+      },
+    ],
   },
   {
     id: 4,
     category: "man",
     name: "Áo thun nam Polo",
+    size: [{ itemSize: "S" }, { itemSize: "Xl" }],
     image_Url: [
       {
         public_id: "test",
@@ -147,6 +248,7 @@ export const productData = [
     total_sell: 35,
     stock: 10,
     date: "2024-02-02",
+    material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
   },
 ];
 

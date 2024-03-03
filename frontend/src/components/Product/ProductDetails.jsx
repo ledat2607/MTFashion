@@ -3,6 +3,9 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import size from "../../assets/theo kg.jpg";
 import size_man from "../../assets/size-nam.png";
 import { toast } from "react-toastify";
+import { IoIosStar } from "react-icons/io";
+import { FaStar } from "react-icons/fa";
+
 const ProductDetails = ({ data }) => {
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -10,6 +13,13 @@ const ProductDetails = ({ data }) => {
   const [openViewSite, setOpenViewSite] = useState(false);
   const [addToCart, setAddToCart] = useState(false);
   const [selected_image_addToCart, setSelectedImageAddToCart] = useState(0);
+  //expand description
+  const [expandedDescription, setExpandedDescription] = useState(false);
+
+  const toggleDescriptionExpansion = () => {
+    setExpandedDescription(!expandedDescription);
+  };
+
   const handleStyleSelection = (index) => {
     setSelectedStyle(data.image_Url[index]);
   };
@@ -33,6 +43,9 @@ const ProductDetails = ({ data }) => {
   const [selected_image, setSelectedImage] = useState(0);
   const close = () => {
     setAddToCart(!addToCart);
+    setSelectedSize(null);
+    setSelectedStyle(null);
+    setCount(1);
   };
   const handAddToCart = () => {
     if (selectedSize === null) {
@@ -48,17 +61,25 @@ const ProductDetails = ({ data }) => {
       setCount(1);
     }, 1000);
   };
+  function formatVietnameseCurrency(number) {
+    const roundedNumber = Math.round(number / 1000) * 1000;
+    const formattedNumber = roundedNumber.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
 
+    return formattedNumber;
+  }
   return (
     <div className="h-full w-full mx-auto pb-8">
-      <div className="bg-gradient-to-r from-gray-200 via-teal-200 to-gray-300/20 rounded-3xl w-[95%] sm:h-[88vh] h-full mx-auto mt-4">
+      <div className="bg-gradient-to-r from-gray-200 via-teal-200 to-gray-300/20 rounded-3xl w-[95%] sm:h-[100vh] h-full mx-auto mt-4">
         {data ? (
-          <div className="w-full sm:h-[60vh] h-[150vh] sm:flex justify-between">
+          <div className="w-full sm:h-[60vh] h-fit sm:flex justify-between">
             <div className="sm:w-[45%] w-[80%] mx-auto sm:mt-6 p-2 sm:h-full flex items-center flex-col">
               <img
                 src={data.image_Url[selected_image].url}
                 alt=""
-                className="rounded-2xl sm:h-[60vh] object-contain"
+                className="rounded-2xl sm:h-[60vh] h-[50vh] object-contain"
               />
               <div className="sm:mt-4 flex justify-center items-center  w-full h-[20vh]">
                 {data.image_Url?.map((i, index) => (
@@ -78,18 +99,56 @@ const ProductDetails = ({ data }) => {
               <span className="sm:text-2xl uppercase font-[600] font-Poppins">
                 {data.name}
               </span>
-              <div className="sm:mt-6 mt-2 w-full sm:text-xl font-Roboto">
-                <p>{data.description}</p>
+              <div
+                className={`sm:mt-6 mt-2 w-full sm:text-xl font-Roboto ${
+                  expandedDescription ? "h-[85%]" : "h-[20vh]"
+                }`}
+              >
+                <span className="text-xl font-[600] font-Poppins uppercase">
+                  Mô tả sản phẩm
+                </span>
+                <p
+                  className={`mt-4 ${
+                    expandedDescription ? "h-[90%]" : "overflow-hidden h-[80%]"
+                  }`}
+                >
+                  {data.description}
+                </p>
+                {!expandedDescription ? (
+                  <span
+                    className="text-teal-500 text-md cursor-pointer mt-2"
+                    onClick={toggleDescriptionExpansion}
+                  >
+                    Xem thêm
+                  </span>
+                ) : (
+                  <span
+                    className="text-red-500 text-md cursor-pointer mt-2"
+                    onClick={toggleDescriptionExpansion}
+                  >
+                    Đóng
+                  </span>
+                )}
               </div>
-              <div className="flex items-center mt-2">
-                <div className="w-[45%]  h-1 bg-gray-300 rounded-md overflow-hidden">
-                  <div
-                    className="h-full bg-green-500"
-                    style={{ width: `${(data.rating / 5) * 100}%` }}
-                  ></div>
+              <div className="w-full flex flex-col mt-[8%]">
+                <span className="text-xl font-[600] font-Poppins uppercase">
+                  Đánh giá <i>(123)</i>
+                </span>
+                <div className="sm:w-[80%] w-full flex justify-center items-center">
+                  <div className="w-[70%]  h-1 bg-gray-300 rounded-md overflow-hidden">
+                    <div
+                      className="h-full bg-green-500"
+                      style={{ width: `${(data.rating / 5) * 100}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex w-[30%]">
+                    <span className="ml-2">({data.rating}/5)</span>
+                    <span className="sm:ml-8">Đã bán: {data.total_sell}</span>
+                  </div>
                 </div>
-                <span className="ml-2">({data.rating}/5)</span>
-                <span className="sm:ml-8">Đã bán: {data.total_sell}</span>
+              </div>
+              <div className="mt-4 text-xl font-Poppins uppercase font-[600]">
+                Chất liệu
               </div>
               <div className="w-full flex">
                 {data?.material?.map((item, ind) => (
@@ -97,11 +156,11 @@ const ProductDetails = ({ data }) => {
                     key={ind}
                     className="w-[100px] sm:mt-6 cursor-pointer hover:translate-y-3 hover:bg-white hover:text-black hover:scale-[1.2] transition-transform duration-300 text-center rounded-lg sm:ml-2 h-[30px] border-2 border-red-500"
                   >
-                    <span>{item.name}</span>
+                    <span>{item.itemMat}</span>
                   </div>
                 ))}
               </div>
-              <div className="sm:mt-2 mt-8 justify-between pr-3">
+              <div className="sm:mt-2 mt-8 justify-between pr-3 sm:pb-0 pb-4">
                 <div>
                   <div
                     onClick={openAddToCart}
@@ -111,13 +170,13 @@ const ProductDetails = ({ data }) => {
                   </div>
                   {addToCart ? (
                     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
-                      <div className="bg-white rounded-md sm:h-[70vh] h-[70vh] sm:w-[45%] w-[90%]">
+                      <div className="bg-white rounded-md sm:h-[70vh] h-fit sm:w-[45%] w-[90%]">
                         <div className="sm:h-[90%] h-[88%] sm:flex sm:justify-center sm:items-center">
                           <div className="w-full sm:w-[50%] flex flex-col justify-center items-center">
                             <img
                               src={data.image_Url[selected_image_addToCart].url}
                               alt=""
-                              className="rounded-2xl mt-4 sm:h-[40vh] object-cover"
+                              className="rounded-2xl mt-4 sm:h-[40vh] w-[90%] object-cover"
                             />
                             <div className="flex justify-center items-center w-[30%] mt-4">
                               {data.image_Url?.map((i, index) => (
@@ -137,7 +196,7 @@ const ProductDetails = ({ data }) => {
                               ))}
                             </div>
                           </div>
-                          <div className="w-[45%] border-2 rounded-xl border-black p-3 h-[90%]">
+                          <div className="sm:w-[45%] mt-2 sm:mt-0 w-[90%] mx-auto border-2 rounded-xl border-black p-3 h-[80%]">
                             <span>Lựa chọn màu sắc - kiểu dáng</span>
                             <div className="w-full flex justify-center items-center">
                               {data.image_Url?.map((i, index) => (
@@ -171,7 +230,7 @@ const ProductDetails = ({ data }) => {
                                       : ""
                                   }`}
                                 >
-                                  {i?.name}
+                                  {i?.itemSize}
                                 </div>
                               ))}
                             </div>
@@ -233,9 +292,13 @@ const ProductDetails = ({ data }) => {
                                 <i>Số lượng kho: {data.stock}</i>
                               </span>
                             </div>
+                            <div className="mt-4">Giá</div>
+                            <p className="texl-[15px] font-Roboto text-green-500">
+                              {formatVietnameseCurrency(data?.discount_price)}
+                            </p>
                           </div>
                         </div>
-                        <div className="w-full sm:h-[10%] h-[12%] bg-gradient-to-br bg-teal-300">
+                        <div className="w-full mt-4 sm:mt-0 p-2 sm:p-0 sm:h-[10%] h-[12%] bg-gradient-to-br bg-teal-300">
                           <div className="sm:w-[60%] flex w-full justify-center items-center h-full">
                             <button
                               className={`w-[100px] bg-gray-400 sm:mr-3 text-white hover:border-none hover:translate-y-[-7px] hover:shadow-teal-800/80 hover:text-white rounded-md hover:bg-teal-500  hover:shadow-md h-[40px] text-[15px]`}
@@ -265,6 +328,97 @@ const ProductDetails = ({ data }) => {
             </div>
           </div>
         ) : null}
+      </div>
+      <div className="w-[90%] mx-auto mt-4">
+        <span className="text-2xl font-[500] font-Roboto">Bình luận (123)</span>
+        <div className="sm:w-[45%] w-full flex">
+          <div className="w-[10%] border-r-4 border rounded-md flex justify-end pr-2 items-center border-r-black">
+            <p className="text-3xl font-[800] text-center">{data?.rating}/5</p>
+          </div>
+          <div className="w-[65%] ml-4">
+            <span className="w-full flex">
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              100
+            </span>
+            <span className="w-full flex">
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="white" size={20} />
+              10
+            </span>
+            <span className="w-full flex">
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />
+              10
+            </span>
+            <span className="w-full flex">
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />2
+            </span>
+            <span className="w-full flex">
+              <IoIosStar fill="yellow" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />
+              <IoIosStar fill="white" size={20} />1
+            </span>
+          </div>
+        </div>
+        <div className="w-[90%] mx-auto mt-4">
+          {data?.comment?.map((i, index) => (
+            <div
+              className="w-full sm:h-[20vh] h-fit flex border-2 mt-2 sm:flex-row flex-col"
+              key={index}
+            >
+              <div className="sm:w-[15%] border-r-4 w-full bg-gradient-to-r from-indigo-500 flex sm:p-3 border-blue-500 sm:flex-col flex-row items-start justify-start">
+                <img
+                  src={i?.avatar}
+                  alt=""
+                  className="sm:h-[45%] sm:w-[35%] w-[20%] h-[5%] rounded-full"
+                />
+                <div className="w-full pl-2">
+                  <p>{i?.userName}</p>
+                  <div className="flex">
+                    {Array.from({ length: i?.star }, (_, index) => (
+                      <FaStar key={index} color="gold" size={20} />
+                    ))}
+                  </div>
+                  <p>{i?.date}</p>
+                </div>
+              </div>
+              <div className="sm:w-[55%] border-r-4 border-blue-500 pl-2 flex flex-col justify-center pb-2 sm:pb-0">
+                <p>{i.content}</p>
+              </div>
+              <div className="sm:w-[30%]">
+                <p className="text-[15px] sm:h-[40px] text-center sm:pl-3 font-[500] font-DM bg-gradient-to-l from-indigo-500">
+                  Hình ảnh từ khách hàng
+                </p>
+                <div className="sm:mt-3 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                  {i?.imgCmt?.map((item, ind) => (
+                    <img
+                      src={item?.url}
+                      className="sm:w-[100%] w-[100%] pl-2"
+                      alt=""
+                      key={ind}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
