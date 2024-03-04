@@ -332,7 +332,7 @@ const ProductDetails = ({ data }) => {
       <div className="w-[90%] mx-auto mt-4">
         <span className="text-2xl font-[500] font-Roboto">Bình luận (123)</span>
         <div className="sm:w-[45%] w-full flex">
-          <div className="w-[10%] border-r-4 border rounded-md flex justify-end pr-2 items-center border-r-black">
+          <div className="w-[15%] border-r-4 border rounded-md flex justify-end pr-2 items-center border-r-black">
             <p className="text-3xl font-[800] text-center">{data?.rating}/5</p>
           </div>
           <div className="w-[65%] ml-4">
