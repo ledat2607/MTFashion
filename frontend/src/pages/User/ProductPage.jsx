@@ -14,7 +14,7 @@ const ProductPage = () => {
     setData(data);
   }, [productName]);
   return (
-    <div className="max-w-[1900px] mx-auto">
+    <div className="max-w-[1900px] mx-auto overflow-x-scroll">
       <Header />
       <ProductDetails data={data} />
       {data && <SuggessProduct data={data} />}

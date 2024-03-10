@@ -10,7 +10,6 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { backend_url } from "../server";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -27,6 +26,7 @@ const Account = () => {
   const logoutHandled = () => {
     console.log(`logout`);
   };
+  console.log(user);
   return (
     <React.Fragment>
       <Box
@@ -48,9 +48,9 @@ const Account = () => {
             <Avatar sx={{ width: 35, height: 35 }}>
               {user?.avatar ? (
                 <img
-                  src={`${backend_url}${user.avatar}`}
+                  src={`data:image/jpeg;base64,${user?.avatar}`}
                   alt="useavt"
-                  className="w-[45px] h-[45px] rounded-full"
+                  className="w-[55px] h-[55px] rounded-full object-contain"
                 />
               ) : (
                 // Hiển thị chữ cái đầu tiên của user.name
@@ -100,9 +100,9 @@ const Account = () => {
             <Avatar sx={{ width: 35, height: 35 }}>
               {user?.avatar ? (
                 <img
-                  src={`${backend_url}${user.avatar}`}
+                  src={`data:image/jpeg;base64,${user?.avatar}`}
                   alt="useavt"
-                  className="w-[45px] h-[45px] rounded-full"
+                  className="w-[45px] h-[45px] rounded-full object-contain"
                 />
               ) : (
                 user?.name?.charAt(0).toUpperCase()

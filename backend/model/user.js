@@ -51,12 +51,7 @@ const userSchema = new mongoose.Schema({
     default: "user",
   },
   avatar: {
-    public_id: {
-      type: String,
-    },
-    url: {
-      type: String,
-    },
+    type: String,
   },
   birthDay: {
     type: Date,
@@ -72,12 +67,20 @@ const userSchema = new mongoose.Schema({
   },
   customerType: {
     type: String,
-    default: "Đồng",
+    default: "Bronze",
   },
   cart: [
     {
       productId: { type: String },
       product: { type: Object },
+      date: { type: Date, default: Date.now() },
+    },
+  ],
+  wishlist: [
+    {
+      productId: { type: String },
+      product: { type: Object },
+      date: { type: Date, default: Date.now() },
     },
   ],
   discountCode: [
