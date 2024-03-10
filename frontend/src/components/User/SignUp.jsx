@@ -28,8 +28,9 @@ const SignUp = () => {
     newForm.append("phoneNumber", phoneNumber);
     newForm.append("password", password);
     newForm.append("userName", userName);
+
     const userData = {
-      avatar,
+      avatar: avatar,
       surName,
       name,
       email,
@@ -43,18 +44,6 @@ const SignUp = () => {
         toast.success(res.data.message);
         localStorage.setItem("userData", JSON.stringify(userData));
         localStorage.setItem("code", JSON.stringify(res.data.verificationCode));
-        // // Include user data in the request to create-new-user
-        // axios
-        //   .post(`${server}/user/create-new-user`, {
-        //     verificationCode: res.data.verificationCode,
-        //     userData,
-        //   })
-        //   .then((response) => {
-        //     console.log(response.data);
-        //   })
-        //   .catch((error) => {
-        //     console.error(error);
-        //   });
         setTimeout(() => {
           navigate("/verify-email");
         }, 1000);
@@ -66,16 +55,21 @@ const SignUp = () => {
   const showPassword = () => {
     setVisible(!visible);
   };
-  //change image
   const handleChangeImageInput = (e) => {
-    const fileInput = e.target;
+    const file = e.target.files[0];
 
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      setAvatar(file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64Data = reader.result.split(",")[1];
+        setAvatar(base64Data);
+      };
+
+      reader.readAsDataURL(file);
     }
   };
-
+  console.log(avatar);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block">
@@ -109,7 +103,7 @@ const SignUp = () => {
               <div className="flex overflow-hidden  justify-center mt-4 sm:h-[8vh] h-[10vh] sm:w-full rounded-full">
                 {avatar ? (
                   <img
-                    src={URL.createObjectURL(avatar)}
+                    src={`data:image/jpeg;base64,${avatar}`}
                     className="h-full sm:w-[4vw] w-[22vw] object-cover rounded-full"
                     alt="img-avatar"
                   />

@@ -9,6 +9,7 @@ const sendCode = require("../utils/sendCode");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated } = require("../middleware/auth");
+const cloudinary = require("../config/cloudinaryConfig");
 //Create user
 router.post(
   "/verify-user-email",
@@ -44,40 +45,15 @@ router.post(
           new ErrorHandler("Mật khẩu phải có độ dài từ 8 ký tự", 400)
         );
       }
-      let avatar = {};
-      if (req.file) {
-        const filename = req.file.filename;
-        const fileUrl = path.join(filename);
-        avatar = {
-          public_id: fileUrl,
-          url: fileUrl,
-        };
-      } else {
-        avatar = {
-          public_id: "",
-          url: "",
-        };
-      }
-
-      const user = {
-        surName: surName,
-        name: name,
-        email: email,
-        phoneNumber: phoneNumber,
-        password: password,
-        userName: userName,
-        avatar: avatar,
-      };
 
       const verificationCode = await sendCode({
-        email: user.email,
+        email: email,
         subject: "Mã xác thực",
         message: "Mã xác thực xác minh tài khoản",
       });
 
       res.status(200).json({
         success: true,
-        user,
         verificationCode,
       });
     } catch (error) {
@@ -94,9 +70,19 @@ router.post(
     const verificationCodeAsString = data?.verificationCode
       .toString()
       .replace(/,/g, "");
+    console.log(data);
     const verificationCodeAsNumber = parseInt(verificationCodeAsString, 10);
     if (verificationCodeAsNumber === data.verificationCode) {
-      await User.create(data.userData);
+      const user = {
+        name: data?.userData?.name,
+        email: data?.userData?.email,
+        password: data?.userData?.password,
+        avatar: data?.userData?.avatar,
+        phoneNumber: data?.userData?.phoneNumber,
+        surName: data?.userData?.surName,
+        userName: data?.userData?.userName,
+      };
+      await User.create(user);
       res.status(200).json({
         success: true,
         message: "Đăng ký thành công !",

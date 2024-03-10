@@ -11,9 +11,13 @@ import {
 import { FaArrowRight, FaArrowDown, FaIdCard } from "react-icons/fa";
 import Loader from "../Layout/Loader";
 
-const ProfileSideBar = ({ active, setActive }) => {
+const ProfileSideBar = ({
+  active,
+  setActive,
+  setActiveMenuProps,
+  activeMenu,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(1);
   const handleToggleDropdown = () => {
     if (active === 4) {
       setShowDropdown(!showDropdown);
@@ -22,11 +26,13 @@ const ProfileSideBar = ({ active, setActive }) => {
       setShowDropdown(true);
     }
   };
+
   const handleSetActive = (menuId) => {
+    setActiveMenuProps(0);
     setActive(menuId);
 
     if (menuId !== 4) {
-      setActiveMenu(null);
+      setActiveMenuProps(0); // Use setActiveMenuProps here
       setShowDropdown(false);
     }
   };
@@ -104,7 +110,7 @@ const ProfileSideBar = ({ active, setActive }) => {
         {showDropdown && (
           <div className=" mt-2 bg-transparent border rounded shadow-lg">
             <div
-              onClick={() => setActiveMenu(1)}
+              onClick={() => setActiveMenuProps(1)}
               className={`${
                 activeMenu === 1 ? "text-red-500" : ""
               } p-2 cursor-pointer hover:bg-gray-200`}
@@ -112,7 +118,7 @@ const ProfileSideBar = ({ active, setActive }) => {
               Đơn hàng
             </div>
             <div
-              onClick={() => setActiveMenu(2)}
+              onClick={() => setActiveMenuProps(2)}
               className={`${
                 activeMenu === 2 ? "text-red-500" : ""
               } p-2 cursor-pointer hover:bg-gray-200`}
@@ -120,7 +126,7 @@ const ProfileSideBar = ({ active, setActive }) => {
               Hoàn trả
             </div>
             <div
-              onClick={() => setActiveMenu(3)}
+              onClick={() => setActiveMenuProps(3)}
               className={`${
                 activeMenu === 3 ? "text-red-500" : ""
               } p-2 cursor-pointer hover:bg-gray-200`}
@@ -130,6 +136,7 @@ const ProfileSideBar = ({ active, setActive }) => {
           </div>
         )}
       </div>
+
       <div
         onClick={() => handleSetActive(5)}
         className="hover:translate-y-2 transition-transform duration-300 p-3 hover:shadow-2xl flex items-center pl-4 cursor-pointer w-full mb-2"
