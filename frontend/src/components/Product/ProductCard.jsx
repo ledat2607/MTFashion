@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { discountEventData } from "../../static/data";
 import { FaRegEye } from "react-icons/fa";
 import ControlledAccordions from "../Layout/Accordation";
 const ProductCard = ({ products }) => {
@@ -11,7 +10,6 @@ const ProductCard = ({ products }) => {
   const handleEyeClick = (index) => {
     setSelectedProductIndex(index);
     setSelectedImage(0);
-    console.log(selectedProductIndex);
   };
   const handleWishlist = (productId) => {
     setWishlist((prevWishlist) => {
@@ -19,24 +17,6 @@ const ProductCard = ({ products }) => {
     });
   };
 
-  const currentDate = new Date();
-  //Lấy thông tin khuyến mãi
-  const discountInfo = discountEventData?.reduce((acc, event) => {
-    acc[event.collection] = event.discount_rate;
-    return acc;
-  }, {});
-
-  //Cập nhật giá cho sản phẩm
-  const updatedProducts = products?.map((product) => {
-    const discountRate = discountInfo[product?.collection] || 0;
-    const discountedPrice =
-      product?.discount_price - (product?.discount_price * discountRate) / 100;
-
-    return {
-      ...product,
-      discountedPrice,
-    };
-  });
   //format định dạng tiền tệ
   function formatVietnameseCurrency(number) {
     const roundedNumber = Math.round(number / 1000) * 1000;
@@ -47,13 +27,13 @@ const ProductCard = ({ products }) => {
 
     return formattedNumber;
   }
-
+  const currentDate = new Date();
   const handleImageClick = (index) => {
     setSelectedImage(index);
   };
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-      {updatedProducts?.map((i, index) => {
+      {products?.map((i, index) => {
         const itemDate = new Date(i.date);
         const daysDiff = Math.floor(
           (currentDate - itemDate) / (1000 * 60 * 60 * 24)
@@ -70,7 +50,6 @@ const ProductCard = ({ products }) => {
                   : ""
               }`}
             >
-              {" "}
               {isNew && (
                 <span className="absolute top-0 z-4 left-0 bg-green-500 text-white py-1 px-2 rounded-tl-md rounded-br-md">
                   Mới
@@ -111,18 +90,21 @@ const ProductCard = ({ products }) => {
               </div>
               <div className="w-full flex items-center justify-between h-[30px] ">
                 <div className="relative flex justify-center items-center">
-                  <span className="text-green-500  text-[10px] sm:text-sm lg:text-lg md:text-md">
-                    {formatVietnameseCurrency(i?.discountedPrice)}
+                  <span className="text-green-500 text-[10px] sm:text-sm lg:text-lg md:text-md">
+                    {i?.isOnSales?.status === true ? (
+                      <div className="flex justify-center items-center">
+                        {formatVietnameseCurrency(i.isOnSales?.price_sale)}
+                        <i className="ml-2 text-[13px] line-through text-red-500">
+                          (- {i.isOnSales?.discount_rate}%)
+                        </i>
+                      </div>
+                    ) : (
+                      <div>{formatVietnameseCurrency(i?.discount_price)}</div>
+                    )}
                   </span>
-                  {discountInfo[i?.collection] > 0 ? (
-                    <div className="sm:w-8 sm:h-8 w-6 h-6 bg-red-500 rounded-full ml-2 flex justify-center items-center">
-                      <span className="absolute sm:text-[10px] text-[8px] text-white">
-                        - {discountInfo[i?.collection] || 0}%
-                      </span>
-                    </div>
-                  ) : null}
                 </div>
-                <h1 className="text-red-500 line-through text-[10px] sm:text-sm lg:text-lg md:text-md">
+
+                <h1 className="text-red-500 line-through text-[8px] sm:text-sm lg:text-lg md:text-md">
                   {formatVietnameseCurrency(i?.price)}
                 </h1>
               </div>

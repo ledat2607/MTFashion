@@ -27,7 +27,8 @@ const Login = () => {
         toast.success(`Đăng nhập thành công`);
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+          window.location.reload(true);
+        }, 1500);
       })
       .catch((err) => {
         toast.error(err.response.data.message);

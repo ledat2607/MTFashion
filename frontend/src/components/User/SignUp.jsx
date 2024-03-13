@@ -69,7 +69,6 @@ const SignUp = () => {
       reader.readAsDataURL(file);
     }
   };
-  console.log(avatar);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block">

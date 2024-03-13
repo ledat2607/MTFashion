@@ -1,22 +1,16 @@
 import React from "react";
-import { discountEventData } from "../../static/data";
 
-const DiscountEventCard = () => {
+const DiscountEventCard = ({ data }) => {
   const currentDate = new Date();
-  const filteredData = discountEventData
-    ?.filter((item) => {
-      const itemEndDate = new Date(item.end_date);
-      return itemEndDate - currentDate >= 0 * 60 * 60 * 1000;
-    })
-    .sort((a, b) => {
-      return new Date(b.end_date) - new Date(a.end_date);
-    });
+  const filteredData = data?.sort((a, b) => {
+    return new Date(b.end_date) - new Date(a.end_date);
+  });
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
       {filteredData?.map((i, index) => {
-        const itemStartDate = new Date(i.start_date);
-        const itemEndDate = new Date(i.end_date);
+        const itemStartDate = new Date(i.isOnSales.start_date);
+        const itemEndDate = new Date(i.isOnSales.end_date);
 
         const utcCurrentDate = new Date(currentDate.toISOString());
         const utcItemStartDate = new Date(itemStartDate.toISOString());
@@ -54,7 +48,7 @@ const DiscountEventCard = () => {
             )}
             <div className="flex justify-center items-center sm:h-[35vh] h-[18vh]">
               <img
-                src={i.img}
+                src={i.image_Url[0].url}
                 alt=""
                 className="sm:w-[80%] sm:h-[30vh] w-[50%] h-[10vh] sm:object-contain object-cover hover:scale-[1.1] transition-all duration-300 cursor-pointer"
               />
@@ -70,7 +64,7 @@ const DiscountEventCard = () => {
               </div>
 
               <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
-                -{i.discount_rate}%
+                -{i.isOnSales.discount_rate}%
               </h1>
             </div>
           </div>

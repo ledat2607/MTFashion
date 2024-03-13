@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DiscountEventCard from "../Event/DiscountEventCard.jsx";
+import { productData } from "../../static/data.js";
 
 const DiscountEvent = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const filteredProducts = productData.filter(
+      (item) => item?.isOnSales?.status === true
+    );
+    setData(filteredProducts);
+  }, []);
   return (
     <div className="w-full mt-8">
       <div className="w-[90%] sm:ml-8 mx-auto">
         <h1 className="uppercase md:text-[1.3rem] font-Paci font-[500]">
-          Sự kiện giảm giá
+          Giảm giá chấn động
         </h1>
         <div className="w-full pb-4 mt-4 sm:ml-12">
-          <DiscountEventCard />
+          <DiscountEventCard data={data} />
         </div>
       </div>
     </div>

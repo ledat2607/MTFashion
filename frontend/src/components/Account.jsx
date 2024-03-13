@@ -11,22 +11,37 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { server } from "../server";
 
 const Account = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user } = useSelector((state) => state.user);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const logoutHandled = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload(true);
+        }, 1500);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const logoutHandled = () => {
-    console.log(`logout`);
-  };
-  console.log(user);
+
   return (
     <React.Fragment>
       <Box
