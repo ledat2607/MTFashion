@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { IoMdPerson } from "react-icons/io";
+import { MdOutlineSecurity, MdAnalytics, MdEditLocation } from "react-icons/md";
 import {
-  MdAccountBalance,
-  MdOutlineSecurity,
-  MdAnalytics,
-  MdEditLocation,
-} from "react-icons/md";
-import { FaArrowRight, FaArrowDown, FaIdCard } from "react-icons/fa";
+  FaArrowRight,
+  FaArrowDown,
+  FaIdCard,
+  FaRocketchat,
+} from "react-icons/fa";
 import Loader from "../Layout/Loader";
 
 const ProfileSideBar = ({
@@ -61,13 +61,13 @@ const ProfileSideBar = ({
         onClick={() => handleSetActive(2)}
         className="hover:translate-y-2 transition-transform duration-300 p-3 hover:shadow-2xl flex items-center pl-4 cursor-pointer w-full mb-2"
       >
-        <MdAccountBalance size={35} color={`${active === 2 ? "red" : ""}`} />
+        <FaRocketchat size={35} color={`${active === 2 ? "red" : ""}`} />
         <p
           className={`sm:block hidden pl-4 ${
             active === 2 ? "text-red-500" : ""
           }`}
         >
-          Thông tin tài khoản
+          Trò chuyện
         </p>
       </div>
       <div

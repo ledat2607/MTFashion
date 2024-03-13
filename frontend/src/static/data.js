@@ -5,44 +5,61 @@ export const navItems = [
     url: "/",
   },
   {
-    title: "Thời trang nam",
-    url: "/man",
-    category: "man",
-    imgLink:
-      "https://www.chapsandco.com/ae/wp-content/uploads/sites/12/2022/05/MFT1.jpg",
-    submenu: [
+    title: "Sản phẩm",
+    subMenu: [
       {
-        title: "Áo thun",
-        img: "https://vn-live-01.slatic.net/p/fdfe48d67cbfb54bb14aaf22b7607e6f.jpg",
+        categoryName: "Sản phẩm nam",
+        subCategories: [
+          { title: "Áo thun" },
+          { title: "Áo sơ mi" },
+          { title: "Quần tây" },
+        ],
       },
+      {
+        categoryName: "Sản phẩm nữ",
+        subCategories: [{ title: "Váy-Đầm" }, { title: "Blazer" }],
+      },
+      {
+        categoryName: "Sản phẩm mẹ và bé",
+        subCategories: [{ title: "Áo thun" }, { title: "Áo sơ mi" }],
+      },
+      {
+        categoryName: "Phụ kiện",
+        subCategories: [{ title: "Đồng hồ" }, { title: "Mắt kính" }],
+      },
+    ],
+    url: "/product",
+  },
+  {
+    title: "Hot Deals",
+    url: "/hot-deals",
+  },
+];
+export const categories = [
+  {
+    id: 1,
+    name: "Sản phẩm nam",
+    value: "man",
+    type: [
+      { valueType: "Áo thun", nameType: "Áo thun", idType: 1 },
+      { valueType: "Áo sơ mi", nameType: "Áo sơ mi", idType: 2 },
+      { valueType: "Quần âu", nameType: "Quần âu", idType: 3 },
     ],
   },
   {
-    title: "Thời trang nữ",
-    url: "/woman",
-    category: "woman",
-    imgLink:
-      "https://img.freepik.com/free-photo/cute-woman-bright-hat-purple-blouse-is-leaning-stand-with-dresses-posing-with-package-isolated-background_197531-17610.jpg",
-    submenu: [
-      {
-        title: "Váy công sở",
-        img: "https://dongphuc3mien.vn/wp-content/uploads/2020/05/dam-lien-cong-so-dep1.jpg",
-      },
-      {
-        title: "Đầm dạ hội",
-        img: "https://shopcat.vn/images/product/product_s6308.jpg",
-      },
-    ],
+    id: 2,
+    name: "Sản phẩm nữ",
+    value: "woman",
   },
   {
-    title: "Mẹ & bé",
-    url: "/mom-son",
-    category: "mom&son",
+    id: 3,
+    name: "Sản phẩm mẹ và bé",
+    value: "mon-son",
   },
   {
-    title: "Phụ kiện",
-    url: "/pk",
-    category: "pk",
+    id: 4,
+    name: "Phụ kiện",
+    value: "accessories",
   },
 ];
 export const collection = [
@@ -63,6 +80,7 @@ export const productData = [
     id: 1,
     category: "man",
     name: "Áo thun nam Polo",
+    type: "Áo thun",
     size: [{ itemSize: "S" }, { itemSize: "Xl" }],
     image_Url: [
       {
@@ -131,6 +149,7 @@ export const productData = [
     id: 2,
     category: "woman",
     name: "Đầm dạ hội",
+    type: "Đầm",
     image_Url: [
       {
         code: "MK159",
@@ -146,14 +165,22 @@ export const productData = [
     rating: 4.9,
     total_sell: 35,
     stock: 10,
-    date: "2024-02-19",
+    date: "2024-03-12",
     material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
     size: [{ itemSize: "S" }, { itemSize: "Xl" }],
+    isOnSales: {
+      status: true,
+      discount_rate: 25,
+      price_sale: 1080000,
+      start_date: "2024-03-12 21:00:00", // Corrected datetime format
+      end_date: "2024-03-15 00:00:00",
+    },
   },
   {
     id: 3,
     category: "woman",
     name: "Váy công chúa",
+    type: "Váy",
     image_Url: [
       {
         code: "MK159",
@@ -230,6 +257,7 @@ export const productData = [
   {
     id: 4,
     category: "man",
+    type: "Áo sơ mi",
     name: "Áo thun nam Polo",
     size: [{ itemSize: "S" }, { itemSize: "Xl" }],
     image_Url: [
@@ -249,33 +277,13 @@ export const productData = [
     stock: 10,
     date: "2024-02-02",
     material: [{ itemMat: "Vải" }, { itemMat: "Coton" }],
-  },
-];
-
-export const discountEventData = [
-  {
-    name: "Giảm giá sự kiện mùa Xuân",
-    collection: "spring",
-    img: "https://previews.123rf.com/images/mash3r/mash3r1803/mash3r180300009/96829941-new-spring-collection-poster-template-with-floral-elements.jpg",
-    discount_rate: 12,
-    start_date: "2024-02-21",
-    end_date: "2024-02-26 00:00",
-  },
-  {
-    name: "Giảm giá sự kiện mùa Xuân - Hạ",
-    collection: "spring-summer",
-    img: "https://blog.patra.com/wp-content/uploads/2020/02/Spring-summer-collection-1-730x550.png",
-    discount_rate: 13,
-    start_date: "2024-02-23",
-    end_date: "2024-03-14",
-  },
-  {
-    name: "Giảm giá sự kiện mùa Hạ",
-    collection: "summer",
-    img: "https://boldoutline.in/wp-content/uploads/2021/05/Web-cover-101.jpg",
-    discount_rate: 8,
-    start_date: "2024-02-20",
-    end_date: "2024-03-12",
+    isOnSales: {
+      status: true,
+      discount_rate: 25,
+      price_sale: 330000,
+      start_date: "2024-03-12", // Corrected datetime format
+      end_date: "2024-03-16",
+    },
   },
 ];
 

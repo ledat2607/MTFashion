@@ -8,11 +8,11 @@ import {
   SignUpPage,
   HomePage,
   VerifyEmailPage,
-  ShopManPage,
-  ShopWomanPage,
+  Product,
   ProfilePage,
   ProductPage,
 } from "./Routes.js";
+import { SignUpAdminPage } from "./AdminRoutes.js";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/action/userAction.js";
 import ProtectedRoute from "./protectedRoutes/userProtected.js";
@@ -28,8 +28,7 @@ const App = () => {
         <Route path="/sign-in" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/man" element={<ShopManPage />} />
-        <Route path="/woman" element={<ShopWomanPage />} />
+        <Route path="/product" element={<Product />} />
         <Route path="/product/:name" element={<ProductPage />} />
         <Route
           path="/profile"
@@ -39,6 +38,8 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        {/*Admin page*/}
+        <Route path="/admin/sign-up" element={<SignUpAdminPage />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

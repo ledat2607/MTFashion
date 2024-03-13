@@ -14,5 +14,19 @@ const sendToken = (user, statusCode, res) => {
     token,
   });
 };
+const adminToken = (admin, statusCode, res) => {
+  const token = user.getJwtToken();
 
-module.exports = sendToken;
+  // Options for cookies
+  const options = {
+    expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+  };
+
+  res.status(statusCode).cookie("adminToken", token, options).json({
+    success: true,
+    admin,
+    token,
+  });
+};
+module.exports = { sendToken, adminToken };

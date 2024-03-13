@@ -24,7 +24,7 @@ const Order = () => {
         }}
       >
         <div className="w-[20%]  h-full flex flex-col justify-center items-center">
-          <h1 className="w-full bg-gray-300 rounded-tl-2xl text-xl text-center">
+          <h1 className="w-full bg-gray-300 rounded-tl-2xl text-lg text-center">
             Hình ảnh
           </h1>
           <div className="bg-transparent w-[80%] h-[80%] mt-[6px]">
@@ -36,7 +36,18 @@ const Order = () => {
           </div>
         </div>
         <div className="w-[20%] h-full flex flex-col justify-center items-center">
-          <h1 className="w-full bg-gray-300 text-xl text-center">Ngày đặt</h1>
+          <h1 className="w-full bg-gray-300 text-lg text-center">
+            Tên sản phẩm
+          </h1>
+          <div className="bg-transparent w-full h-full">
+            <span className="flex justify-center text-center items-center w-full h-full">
+              Áo thun Polo nam
+            </span>
+          </div>
+        </div>
+
+        <div className="w-[20%] h-full flex flex-col justify-center items-center">
+          <h1 className="w-full bg-gray-300 text-lg text-center">Ngày đặt</h1>
           <div className="bg-transparent w-full h-full">
             <span className="flex justify-center items-center w-full h-full">
               2024.03.10
@@ -44,17 +55,17 @@ const Order = () => {
           </div>
         </div>
         <div className="w-[20%] h-full flex flex-col justify-center items-center">
-          <h1 className="w-full bg-gray-300 text-xl text-center">
+          <h1 className="w-full bg-gray-300 text-lg text-center">
             Ngày giao hàng
           </h1>
           <div className="bg-transparent w-full h-full">
             <span className="flex justify-center items-center w-full h-full">
-              2024.03.10
+              Chờ giao hàng
             </span>
           </div>
         </div>
         <div className="w-[20%] h-full flex flex-col justify-center items-center">
-          <h1 className="w-full bg-gray-300 text-xl text-center">Giá tiền</h1>
+          <h1 className="w-full bg-gray-300 text-lg text-center">Giá tiền</h1>
           <div className="bg-transparent w-full h-full">
             <span className="flex justify-center items-center w-full h-full">
               {formatVietnameseCurrency(549000)}
@@ -62,7 +73,7 @@ const Order = () => {
           </div>
         </div>
         <div className="w-[20%] h-full flex flex-col justify-center items-center">
-          <h1 className="w-full bg-gray-300 rounded-tr-2xl text-xl text-center">
+          <h1 className="w-full bg-gray-300 rounded-tr-2xl text-lg text-center">
             Chức năng
           </h1>
           <div className="bg-transparent w-full h-full flex justify-center items-center">
