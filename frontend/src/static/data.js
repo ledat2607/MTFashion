@@ -34,6 +34,10 @@ export const navItems = [
     title: "Hot Deals",
     url: "/hot-deals",
   },
+  {
+    title: "Về chúng tôi",
+    url: "/about-us",
+  },
 ];
 export const categories = [
   {

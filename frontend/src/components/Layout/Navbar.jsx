@@ -6,7 +6,7 @@ const Navbar = ({ activeHeading }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <div className="w-[85%] mx-auto flex items-center justify-between relative">
+    <div className="w-[100%] mx-auto flex items-center justify-center relative">
       {navItems &&
         navItems.map((item, index) => (
           <div
@@ -21,7 +21,7 @@ const Navbar = ({ activeHeading }) => {
                 activeHeading === index + 1
                   ? "text-white underline"
                   : "text-gray-400 800px:text-[#fff]"
-              } pb-[30px] text-[13px] hover:text-white md:text-[1.2rem] lg:text-[1.3rem] sm:pb-0 px-6 cursor-pointer font-Protest relative`}
+              } pb-[30px] text-[13px] hover:text-white md:text-[1.2rem] font-[600] lg:text-[1.3rem] sm:pb-0 px-6 cursor-pointer font-DM relative`}
             >
               {item.title}
             </Link>

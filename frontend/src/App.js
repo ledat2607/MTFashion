@@ -12,13 +12,20 @@ import {
   ProfilePage,
   ProductPage,
 } from "./Routes.js";
-import { SignUpAdminPage } from "./AdminRoutes.js";
+import {
+  SignUpAdminPage,
+  LoginAdminPage,
+  AdminHomepage,
+} from "./AdminRoutes.js";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/action/userAction.js";
 import ProtectedRoute from "./protectedRoutes/userProtected.js";
+import AdminProtectedRoute from "./protectedRoutes/AdminProtected.js";
+import { loadAdmin } from "./redux/action/adminAction.js";
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
+    Store.dispatch(loadAdmin());
   }, []);
 
   return (
@@ -40,6 +47,15 @@ const App = () => {
         ></Route>
         {/*Admin page*/}
         <Route path="/admin/sign-up" element={<SignUpAdminPage />} />
+        <Route path="/admin/login" element={<LoginAdminPage />} />
+        <Route
+          path="/admin/"
+          element={
+            <AdminProtectedRoute>
+              <AdminHomepage />
+            </AdminProtectedRoute>
+          }
+        />
       </Routes>
       <ToastContainer
         position="bottom-center"

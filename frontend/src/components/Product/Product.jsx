@@ -19,7 +19,7 @@ const Product = () => {
   return (
     <div className="w-full mt-8 mx-auto">
       <div className="w-[90%] sm:ml-8 mx-auto">
-        <h1 className="uppercase md:text-[1.3rem] font-Paci font-[500]">
+        <h1 className="uppercase md:text-[1.5rem] font-Poppins font-[700]">
           Sản phẩm
         </h1>
         <div className="w-full pb-8 sm:ml-12 mt-6 min-h-screen">

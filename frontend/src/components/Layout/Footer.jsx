@@ -62,7 +62,7 @@ const Footer = () => {
       </div>
       <div className="sm:w-[50%] w-[90%] mx-auto sm:flex-row flex-col flex justify-center items-center">
         <div className="sm:w-[30%] w-full  flex flex-col">
-          <span className="mt-6 text-xl w-full font-[600] text-gray-900 font-DM">
+          <span className="text-xl w-full font-[600] text-gray-900 font-DM">
             Truy cập nhanh
           </span>
           {navItems?.map((i, index) => (
@@ -74,7 +74,7 @@ const Footer = () => {
             </span>
           ))}
         </div>
-        <div className="sm:w-[30%] w-full flex flex-col">
+        <div className="sm:mt-8 sm:w-[30%] w-full flex flex-col">
           <span className="text-xl font-[600] text-gray-900 font-DM">
             Hỗ trợ
           </span>
