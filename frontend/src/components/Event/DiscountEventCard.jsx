@@ -55,9 +55,9 @@ const DiscountEventCard = ({ data }) => {
             </div>
             <div className="w-full flex justify-between items-center">
               <div>
-                <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
+                <h1 className="mt-3 font-DM font-[600] text-[12px] sm:text-sm lg:text-lg md:text-md">
                   {i.name}
-                </h1>{" "}
+                </h1>
                 <h1 className="mt-3 font-Paci text-[12px] sm:text-sm lg:text-lg md:text-md">
                   {i.end_date}
                 </h1>

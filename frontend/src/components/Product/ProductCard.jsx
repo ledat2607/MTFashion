@@ -77,7 +77,7 @@ const ProductCard = ({ products }) => {
                 />
               </div>
               <Link to={`/product/${i?.name}`}>
-                <h1 className="mt-3 font-Paci">{i?.name}</h1>
+                <h1 className="mt-3 font-DM font-[600]">{i?.name}</h1>
               </Link>
               <div className="flex items-center mt-2">
                 <div className="w-40 h-1 bg-gray-300 rounded-md overflow-hidden">

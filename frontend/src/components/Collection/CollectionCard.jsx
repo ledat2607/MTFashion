@@ -38,7 +38,7 @@ const CollectionCard = () => {
                 className="w-full h-[25vh] object-contain hover:scale-[1.1] transition-all duration-300 cursor-pointer"
               />
             </div>
-            <h1 className="mt-3 font-Paci">{i.title}</h1>
+            <h1 className="mt-3 font-DM font-[600]">{i.title}</h1>
           </div>
         );
       })}

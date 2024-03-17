@@ -18,13 +18,13 @@ const Header = ({ activeHeading }) => {
   };
   return (
     <div className="relative">
-      <div className="w-full p-2 sm:h-[12vh] md:h-[12vh] lg:h-[10vh] bg-teal-800/90 mx-auto flex relative">
-        <div className="w-[10%]">
+      <div className="w-full p-2 h-full bg-teal-800/90 mx-auto flex relative">
+        <div className="w-[10%] p-1">
           <Link to="/">
             <img
               src={Logo}
               alt=""
-              className="sm:w-[200px] sm:h-[11vh] object-contain sm:ml-4 cursor-pointer"
+              className="sm:w-[85%] sm:h-[10vh] object-cover sm:ml-4 cursor-pointer"
             />
           </Link>
         </div>
