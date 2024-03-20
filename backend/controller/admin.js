@@ -1,7 +1,7 @@
 const express = require("express");
-const path = require("path");
 const router = express.Router();
 const Admin = require("../model/admin");
+const User = require("../model/user");
 const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -95,6 +95,22 @@ router.get(
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+//Get all user
+router.get(
+  "/get-user-admin",
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userData = await User.find();
+      res.status(200).json({
+        success: true,
+        userData,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
