@@ -25,9 +25,11 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 //import routes
 const user = require("./controller/user");
 const admin = require("./controller/admin");
+const type = require("./controller/type");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/admin", admin);
+app.use("/api/v2/type", type);
 
 //ErrorHandling
 app.use(ErrorHandler);

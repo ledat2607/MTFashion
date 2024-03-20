@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import AdminSidebar from "../../components/Admin/AdminSidebar.jsx";
-
+import AdminSidebar from "../../components/Admin/AdminSidebar";
+import ManageUser from "../../components/Admin/Manage/ManageUser";
+import ManageProduct from "../../components/Admin/Manage/ManageProduct";
 const AdminHomepage = () => {
   const { admin } = useSelector((state) => state.admin);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [activeItem, setActiveItem] = useState(1); // Default active item
+  const [activeItem, setActiveItem] = useState(1);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -91,16 +92,16 @@ const AdminHomepage = () => {
                   showSidebar ? "hidden" : "block"
                 } sm:block w-full p-2`}
               >
-                Quản lý người dùng
+                <ManageUser />
               </div>
             )}
             {activeItem === 3 && (
               <div
                 className={`${
                   showSidebar ? "hidden" : "block"
-                } sm:block w-full p-2`}
+                } sm:block w-full h-full p-2`}
               >
-                Quản lý sản phẩm
+                <ManageProduct />
               </div>
             )}
             {activeItem === 4 && (

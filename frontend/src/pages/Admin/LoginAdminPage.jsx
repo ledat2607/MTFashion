@@ -45,6 +45,7 @@ const LoginAdminPage = () => {
       .then((res) => {
         toast.success(res.data.message);
         setTimeout(() => {
+          window.location.reload();
           navigate("/admin");
         }, 1000);
       })
@@ -81,7 +82,9 @@ const LoginAdminPage = () => {
             />
           </div>
           <div className="sm:w-[80%] w-[95%] mx-auto mt-8 flex justify-between items-center relative">
-            <label className="sm:text-xl font-[500] font-Protest">Mật khẩu</label>
+            <label className="sm:text-xl font-[500] font-Protest">
+              Mật khẩu
+            </label>
             <input
               type={view ? "text" : "password"}
               value={password}
