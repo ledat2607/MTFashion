@@ -22,10 +22,12 @@ import { loadUser } from "./redux/action/userAction.js";
 import ProtectedRoute from "./protectedRoutes/userProtected.js";
 import AdminProtectedRoute from "./protectedRoutes/AdminProtected.js";
 import { loadAdmin } from "./redux/action/adminAction.js";
+import { getAllPRoduct } from "./redux/action/productAction.js";
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadAdmin());
+    Store.dispatch(getAllPRoduct());
   }, []);
 
   return (

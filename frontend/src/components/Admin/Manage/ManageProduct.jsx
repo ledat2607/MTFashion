@@ -5,6 +5,7 @@ import axios from "axios";
 import { server } from "../../../server";
 import { toast } from "react-toastify";
 import MyMarkdownEditor from "../../Admin/Manage/Layout/Markdown";
+import AllProduct from "../../Admin/Manage/AllProduct";
 const ManageProduct = () => {
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -17,7 +18,9 @@ const ManageProduct = () => {
   const [discountRate, setDiscountRate] = useState("");
   const [arrImg, setArrImg] = useState([]);
   const [arrCode, setArrCode] = useState([]);
-  const [objectArray, setObjectArray] = useState({ images: [], codes: [] });
+  const [mat, setMat] = useState("");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(
     "Chọn danh mục sản phẩm..."
   );
@@ -27,7 +30,8 @@ const ManageProduct = () => {
   const [selectedType, setSelectedType] = useState("");
   const [newType, setNewType] = useState("");
   const [newTypeTitle, setnewTypeTitle] = useState("");
-
+  const [markdownValue, setMarkdownValue] = useState("");
+  console.log(arrImg, arrCode);
   // Xử lý sự kiện thay đổi danh mục sản phẩm
   const handleCategoryNewChange = (event) => {
     setSelectedCategoryNewType(event.target.value);
@@ -62,10 +66,6 @@ const ManageProduct = () => {
     { title: "Phụ kiện", value: "accessories" },
     { title: "Khác", value: "other" },
   ];
-  //Cập nhật giá trị cho mảng
-  useEffect(() => {
-    setObjectArray({ images: arrImg, codes: arrCode });
-  }, [arrImg, arrCode]);
   //Mở Modal thêm mới sản phẩm
   const handleOpenAddNew = () => {
     setAddNew(!addNew);
@@ -164,6 +164,50 @@ const ManageProduct = () => {
     setSelectedCategory(e.target.value);
     setSelectedType(null);
   };
+  //Thêm mới sản phẩm
+  const handleAddNewProduct = async () => {
+    try {
+      await axios
+        .post(
+          `${server}/product/create-product`,
+          {
+            productName,
+            originalPrice,
+            discountPrice,
+            discountRate,
+            mat,
+            size,
+            color,
+            markdownValue,
+            selectedCategory,
+            selectedType,
+            images: arrImg,
+            codes: arrCode,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setTimeout(() => {
+            setAddNew(!addNew);
+          }, 1000);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  //markdown
+  // Hàm xử lý sự kiện thay đổi giá trị Markdown
+  const handleMarkdownChange = (value) => {
+    setMarkdownValue(value);
+    console.log(markdownValue);
+  };
   return (
     <div className="w-full h-full">
       <h1 className="text-center text-xl font-Poppins font-[600] uppercase sm:pb-6">
@@ -180,7 +224,7 @@ const ManageProduct = () => {
           </div>
           {addNew ? (
             <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
-              <div className="bg-white flex flex-col rounded-md sm:h-[80vh] h-fit sm:w-[85%] w-[90%]">
+              <div className="bg-white flex flex-col rounded-md sm:h-[85vh] h-fit sm:w-[90%] w-[90%]">
                 <div className="w-full flex pb-4 ">
                   <div className="w-[15%] pl-2">
                     <input
@@ -258,7 +302,7 @@ const ManageProduct = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full border-t-2  rounded-t-2xl border-blue-500">
+                <div className="w-full">
                   <form>
                     <div className="w-full flex">
                       <div className="w-[50%]">
@@ -299,23 +343,38 @@ const ManageProduct = () => {
                             />
                           </div>
                         </div>
-                        <div className="w-full flex flex-col p-2 h-[10vh]">
-                          <label className="text-xl font-Poppins font-[600]">
-                            Giá khuyến mãi sản phẩm
-                          </label>
-                          <input
-                            readOnly
-                            value={discountPrice}
-                            onChange={(e) =>
-                              setDiscountPrice(
-                                originalPrice - originalPrice * discountRate
-                              )
-                            }
-                            onBlur={handleBlurDiscountPrice}
-                            placeholder="Giá khuyến mãi..."
-                            className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
-                          />
+                        <div className="w-[100%] flex">
+                          <div className="w-[40%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Giá khuyến mãi sản phẩm
+                            </label>
+                            <input
+                              readOnly
+                              value={discountPrice}
+                              onChange={(e) =>
+                                setDiscountPrice(
+                                  originalPrice - originalPrice * discountRate
+                                )
+                              }
+                              onBlur={handleBlurDiscountPrice}
+                              placeholder="Giá khuyến mãi..."
+                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
+                          <div className="w-[40%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Size sản phẩm
+                            </label>
+                            <input
+                              type="text"
+                              value={size}
+                              onChange={(e) => setSize(e.target.value)}
+                              placeholder="Size sản phẩm..."
+                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[150px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
                         </div>
+
                         <div className="w-[80%] h-[10vh] flex justify-center items-center">
                           <div className="w-[50%] flex flex-col p-2 h-[10vh]">
                             <label className="text-xl font-Poppins font-[600]">
@@ -414,12 +473,53 @@ const ManageProduct = () => {
                             </div>
                           ) : null}
                         </div>
+                        <div className="w-[80%] h-[10vh] flex justify-center items-center">
+                          <div className="w-[50%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Chất liệu sản phẩm
+                            </label>
+                            <input
+                              value={mat}
+                              onChange={(e) => setMat(e.target.value)}
+                              placeholder="Chất liệu sản phẩm..."
+                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
+                          <div className="w-[50%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Màu sắc
+                            </label>
+                            <input
+                              value={color}
+                              onChange={(e) => setColor(e.target.value)}
+                              placeholder="Màu sắc sản phẩm..."
+                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <div className="w-[50%]">
-                        <MyMarkdownEditor />
+                      <div className="w-[50%] h-full">
+                        <label className="text-xl font-[600] font-Poppins uppercase">
+                          Mô tả sản phẩm
+                        </label>
+                        <MyMarkdownEditor onChange={handleMarkdownChange} />
                       </div>
                     </div>
                   </form>
+                </div>
+                <div className="w-full sm:mt-4 flex justify-center">
+                  <div
+                    onClick={handleOpenAddNew}
+                    className="sm:w-[80px] sm:mr-6 h-[40px] opacity-35 hover:bg-red-400 cursor-pointer hover:opacity-100 hover:translate-x-3 transition-all duration-300 bg-gray-300 flex justify-center items-center rounded-2xl"
+                  >
+                    Đóng
+                  </div>
+                  <div
+                    onClick={handleAddNewProduct}
+                    className="sm:w-[100px] duration-300 transition-all hover:translate-x-3 text-lg font-[500] text-white hover:text-black hover:bg-white hover:border-teal-500 border-2 cursor-pointer sm:h-[40px] rounded-2xl flex justify-center items-center bg-blue-500"
+                  >
+                    Thêm mới
+                  </div>
                 </div>
               </div>
             </div>
@@ -433,7 +533,7 @@ const ManageProduct = () => {
         </div>
         {/*Product*/}
         <div className="w-[100%] pt-2 h-[88%] border-2 border-black">
-          Product
+          <AllProduct />
         </div>
         {/*Panigation*/}
         <div></div>

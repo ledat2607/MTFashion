@@ -26,10 +26,12 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 const user = require("./controller/user");
 const admin = require("./controller/admin");
 const type = require("./controller/type");
+const product = require("./controller/product");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/admin", admin);
 app.use("/api/v2/type", type);
+app.use("/api/v2/product", product);
 
 //ErrorHandling
 app.use(ErrorHandler);
