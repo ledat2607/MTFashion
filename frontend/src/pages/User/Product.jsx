@@ -1,13 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Layout/Header";
 import Footer from "../../components/Layout/Footer";
-import { categories, productData } from "../../static/data";
 import ProductCard from "../../components/Product/ProductCard";
 import { FaFilter } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { server } from "../../server";
+import axios from "axios";
 const Product = () => {
+  const categoriesData = [
+    { title: "Sản phẩm Nam", value: "man" },
+    { title: "Sản phẩm Nữ", value: "woman" },
+    { title: "Mẹ và bé", value: "mom_son" },
+    { title: "Phụ kiện", value: "accessories" },
+    { title: "Khác", value: "other" },
+  ];
   const [selectedCatgory, setSelectedCategory] = useState("ALL");
+  const { products } = useSelector((state) => state.products);
   const [selectedType, setSelectedType] = useState("");
   const [data, setData] = useState([]);
+  const [categoriesType, setcategoriesType] = useState([]);
+  useEffect(() => {
+    if (selectedCatgory) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${server}/type/types-by-category?selectedCategory=${selectedCatgory}`,
+            { withCredentials: true }
+          );
+          setcategoriesType(response.data.types);
+        } catch (error) {
+          console.error("Error fetching types:", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [selectedCatgory]);
+  console.log(categoriesType);
   const handleCategoryChange = (event) => {
     const newCategory = event.target.value;
     setSelectedCategory(newCategory);
@@ -20,14 +49,14 @@ const Product = () => {
   useEffect(() => {
     const filteredData =
       selectedCatgory === "ALL"
-        ? productData
-        : productData?.filter((item) => item?.category === selectedCatgory);
+        ? products
+        : products?.filter((item) => item?.category === selectedCatgory);
     const finalData =
       selectedType === ""
         ? filteredData
         : filteredData?.filter((item) => item.type === selectedType);
     setData(finalData);
-  }, [selectedCatgory, selectedType]);
+  }, [selectedCatgory, selectedType, products]);
   return (
     <div className="w-full h-screen">
       <Header activeHeading={2} />
@@ -48,9 +77,9 @@ const Product = () => {
             onChange={handleCategoryChange}
           >
             <option value="ALL">Tất cả danh mục</option>
-            {categories.map((category) => (
+            {categoriesData.map((category) => (
               <option key={category.id} value={category.value}>
-                {category.name}
+                {category.title}
               </option>
             ))}
           </select>
@@ -68,13 +97,11 @@ const Product = () => {
               >
                 <option>Chọn loại sản phẩm</option>
 
-                {categories
-                  .find((category) => category.value === selectedCatgory)
-                  ?.type?.map((type) => (
-                    <option key={type.idType} value={type.valueType}>
-                      {type.nameType}
-                    </option>
-                  ))}
+                {categoriesType[0]?.types?.map((i) => (
+                  <option key={i._id} value={i.name}>
+                    {i.name}
+                  </option>
+                ))}
               </select>
             </div>
           )}

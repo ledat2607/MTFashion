@@ -53,7 +53,6 @@ router.post(
 //load type by category
 router.get(
   "/types-by-category",
-  isAdmin,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { selectedCategory } = req.query;

@@ -21,6 +21,7 @@ const ManageProduct = () => {
   const [mat, setMat] = useState("");
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [stock, setStock] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(
     "Chọn danh mục sản phẩm..."
   );
@@ -31,7 +32,6 @@ const ManageProduct = () => {
   const [newType, setNewType] = useState("");
   const [newTypeTitle, setnewTypeTitle] = useState("");
   const [markdownValue, setMarkdownValue] = useState("");
-  console.log(arrImg, arrCode);
   // Xử lý sự kiện thay đổi danh mục sản phẩm
   const handleCategoryNewChange = (event) => {
     setSelectedCategoryNewType(event.target.value);
@@ -176,6 +176,7 @@ const ManageProduct = () => {
             discountPrice,
             discountRate,
             mat,
+            stock,
             size,
             color,
             markdownValue,
@@ -192,6 +193,20 @@ const ManageProduct = () => {
           toast.success(res.data.message);
           setTimeout(() => {
             setAddNew(!addNew);
+            setArrCode([]);
+            setProductName("");
+            setColor("");
+            setArrImg([]);
+            setProductCode("");
+            setDiscountPrice("");
+            setDiscountRate("");
+            setOriginalPrice("");
+            setStock("");
+            setMat("");
+            setMarkdownValue("");
+            setSelectedCategory("Chọn danh mục sản phẩm");
+            setSelectedType("");
+            setSize("");
           }, 1000);
         })
         .catch((err) => {
@@ -206,7 +221,6 @@ const ManageProduct = () => {
   // Hàm xử lý sự kiện thay đổi giá trị Markdown
   const handleMarkdownChange = (value) => {
     setMarkdownValue(value);
-    console.log(markdownValue);
   };
   return (
     <div className="w-full h-full">
@@ -304,19 +318,33 @@ const ManageProduct = () => {
                 </div>
                 <div className="w-full">
                   <form>
-                    <div className="w-full flex">
+                    <div className="w-[100%] flex">
                       <div className="w-[50%]">
-                        <div className="w-full flex flex-col p-2 h-[10vh]">
-                          <label className="text-xl font-Poppins font-[600]">
-                            Tên sản phẩm
-                          </label>
-                          <input
-                            type="text"
-                            value={productName}
-                            onChange={(e) => setProductName(e.target.value)}
-                            placeholder="Tên sản phẩm..."
-                            className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[400px] h-[40px] rounded-lg p-2"
-                          />
+                        <div className="w-full flex">
+                          <div className="w-[40%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Tên sản phẩm
+                            </label>
+                            <input
+                              type="text"
+                              value={productName}
+                              onChange={(e) => setProductName(e.target.value)}
+                              placeholder="Tên sản phẩm..."
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
+                          <div className="w-[50%] flex flex-col p-2 h-[10vh]">
+                            <label className="text-xl font-Poppins font-[600]">
+                              Số lượng nhập kho
+                            </label>
+                            <input
+                              type="number"
+                              value={stock}
+                              onChange={(e) => setStock(e.target.value)}
+                              placeholder="Số lượng kho..."
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[150px] h-[40px] rounded-lg p-2"
+                            />
+                          </div>
                         </div>
                         <div className="w-[100%] h-[10vh] flex">
                           <div className="w-[40%] flex flex-col p-2 h-[10vh]">
@@ -328,7 +356,7 @@ const ManageProduct = () => {
                               onChange={(e) => setOriginalPrice(e.target.value)}
                               onBlur={handleBlurOriginalPrice}
                               placeholder="Giá gốc..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                           <div className="w-[60%] flex flex-col p-2 h-[10vh]">
@@ -339,7 +367,7 @@ const ManageProduct = () => {
                               value={discountRate}
                               onChange={(e) => setDiscountRate(e.target.value)}
                               placeholder="Phần trăm giảm..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                         </div>
@@ -358,7 +386,7 @@ const ManageProduct = () => {
                               }
                               onBlur={handleBlurDiscountPrice}
                               placeholder="Giá khuyến mãi..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                           <div className="w-[40%] flex flex-col p-2 h-[10vh]">
@@ -370,7 +398,7 @@ const ManageProduct = () => {
                               value={size}
                               onChange={(e) => setSize(e.target.value)}
                               placeholder="Size sản phẩm..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[150px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[150px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                         </div>
@@ -451,7 +479,7 @@ const ManageProduct = () => {
                                         setNewType(e.target.value)
                                       }
                                       placeholder="Tên loại sản phẩm..."
-                                      className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[400px] h-[40px] rounded-lg p-2"
+                                      className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[400px] h-[40px] rounded-lg p-2"
                                     />
                                   </div>
                                 </div>
@@ -482,7 +510,7 @@ const ManageProduct = () => {
                               value={mat}
                               onChange={(e) => setMat(e.target.value)}
                               placeholder="Chất liệu sản phẩm..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                           <div className="w-[50%] flex flex-col p-2 h-[10vh]">
@@ -493,7 +521,7 @@ const ManageProduct = () => {
                               value={color}
                               onChange={(e) => setColor(e.target.value)}
                               placeholder="Màu sắc sản phẩm..."
-                              className="border-2 placeholder:text-white placeholder:focus:text-black focus:outline-none bg-gray-300 focus:bg-gray-200 mt-2 w-[250px] h-[40px] rounded-lg p-2"
+                              className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[250px] h-[40px] rounded-lg p-2"
                             />
                           </div>
                         </div>
@@ -524,19 +552,11 @@ const ManageProduct = () => {
               </div>
             </div>
           ) : null}
-          <div className=" ml-4 text-black font-[600] font-Poppins hover:translate-x-2 transition-transform duration-200 cursor-pointer w-[120px] flex justify-center items-center h-full bg-yellow-500 shadow-2xl shadow-gray-800/40 rounded-3xl bg-opacity-35">
-            Chỉnh sửa
-          </div>
-          <div className="ml-4 text-black hover:opacity-100 font-[600] font-Poppins hover:translate-x-2 transition-transform duration-200 cursor-pointer w-[150px] flex justify-center items-center h-full bg-red-500 shadow-2xl shadow-gray-800/40 rounded-3xl opacity-25">
-            Xóa sản phẩm
-          </div>
         </div>
         {/*Product*/}
-        <div className="w-[100%] pt-2 h-[88%] border-2 border-black">
+        <div className="w-[100%] pt-2 h-[92%]">
           <AllProduct />
         </div>
-        {/*Panigation*/}
-        <div></div>
       </div>
     </div>
   );

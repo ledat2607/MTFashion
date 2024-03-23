@@ -17,16 +17,6 @@ const ProductCard = ({ products }) => {
     });
   };
 
-  //format định dạng tiền tệ
-  function formatVietnameseCurrency(number) {
-    const roundedNumber = Math.round(number / 1000) * 1000;
-    const formattedNumber = roundedNumber.toLocaleString("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    });
-
-    return formattedNumber;
-  }
   const currentDate = new Date();
   const handleImageClick = (index) => {
     setSelectedImage(index);
@@ -57,41 +47,45 @@ const ProductCard = ({ products }) => {
               )}
               <div
                 className={`${
-                  wishlist[i.id] ? "bg-white" : "bg-teal-500/80"
+                  wishlist[i?._id] ? "bg-white" : "bg-teal-500/80"
                 } absolute w-8 h-8 top-1 flex justify-center items-center rounded-full right-1`}
               >
                 <FaHeart
                   key={index}
-                  onClick={() => handleWishlist(i.id)}
+                  onClick={() => handleWishlist(i?._id)}
                   size={20}
                   className={`${
-                    wishlist[i.id] ? "text-teal-500" : "text-white"
+                    wishlist[i?._id] ? "text-teal-500" : "text-white"
                   } transition-all duration-300`}
                 />
               </div>
               <div className="mt-8 flex justify-center">
                 <img
-                  src={i?.image_Url[0]?.url}
+                  src={`data:image/jpeg;base64,${i?.imgProduct[0].url}`}
                   alt=""
-                  className="w-[90%] h-[25vh] rounded-xl object-cover hover:scale-[1.1] transition-all duration-300 cursor-pointer"
+                  className="w-[90%] h-[25vh] rounded-xl object-contain hover:scale-[1.1] transition-all duration-300 cursor-pointer"
                 />
               </div>
-              <Link to={`/product/${i?.name}`}>
-                <h1 className="mt-3 font-DM font-[600]">{i?.name}</h1>
+              <Link to={`/product/${i?.productName}`}>
+                <h1 className="mt-3 font-DM font-[600]">
+                  {i?.productName?.length > 25
+                    ? `${i?.productName?.slice(0, 25)}...`
+                    : i?.productName}
+                </h1>
               </Link>
               <div className="flex items-center mt-2">
                 <div className="w-40 h-1 bg-gray-300 rounded-md overflow-hidden">
                   <div
                     className="h-full bg-green-500"
-                    style={{ width: `${(i?.rating / 5) * 100}%` }}
+                    style={{ width: `${(i?.rating_avg / 5) * 100}%` }}
                   ></div>
                 </div>
-                <span className="ml-2">({i?.rating}/5)</span>
+                <span className="ml-2">({i?.rating_avg}/5)</span>
               </div>
               <div className="w-full flex items-center justify-between h-[30px] ">
                 <div className="relative flex justify-center items-center">
                   <span className="text-green-500 text-[10px] sm:text-sm lg:text-lg md:text-md">
-                    {i?.isOnSales?.status === true ? (
+                    {/* {i?.isOnSales?.status === true ? (
                       <div className="flex justify-center items-center">
                         {formatVietnameseCurrency(i.isOnSales?.price_sale)}
                         <i className="ml-2 text-[13px] line-through text-red-500">
@@ -99,13 +93,14 @@ const ProductCard = ({ products }) => {
                         </i>
                       </div>
                     ) : (
-                      <div>{formatVietnameseCurrency(i?.discount_price)}</div>
-                    )}
+                      <div>{i?.discountPrice}</div>
+                    )} */}
+                    {i?.discountPrice}
                   </span>
                 </div>
 
                 <h1 className="text-red-500 line-through text-[8px] sm:text-sm lg:text-lg md:text-md">
-                  {formatVietnameseCurrency(i?.price)}
+                  {i?.originalPrice}
                 </h1>
               </div>
               <div
@@ -113,7 +108,7 @@ const ProductCard = ({ products }) => {
                 className="w-full flex justify-between items-center relative"
               >
                 <span className="text-[10px] sm:text-sm lg:text-lg md:text-md">
-                  Đã bán: {i?.total_sell}
+                  Đã bán: {i?.sold_out}
                 </span>
                 <span>
                   <FaRegEye
@@ -131,41 +126,40 @@ const ProductCard = ({ products }) => {
                       <div className="w-full h-full flex flex-col items-center justify-between">
                         <div className="w-full h-[8%] rounded-t-lg bg-teal-500 flex justify-center items-center">
                           <h2 className="text-gray-800 uppercase text-[25px] font-DM">
-                            {products[selectedProductIndex]?.name}
+                            {products[selectedProductIndex]?.productName}
                           </h2>
                         </div>
                         <div className="w-full flex justify-between h-[77%]">
                           <div className="w-1/2">
                             <img
-                              src={
-                                products[selectedProductIndex]?.image_Url[
-                                  selectedImage
-                                ]?.url
-                              }
+                              src={`data:image/jpeg;base64,${products[selectedProductIndex]?.imgProduct[selectedImage]?.url}`}
                               alt=""
                               className="w-[1000%] h-[55%] ml-2 object-contain"
                             />
                             <div className="w-full flex mt-2 ml-2 overflow-x-scroll">
-                              {products[selectedProductIndex]?.image_Url?.map(
-                                (image, index) => (
-                                  <img
-                                    onClick={() => handleImageClick(index)}
-                                    key={index}
-                                    src={image?.url}
-                                    alt=""
-                                    className={`w-[45%] mr-4 object-cover cursor-pointer ${
-                                      selectedImage === index
-                                        ? "border-4 border-teal-500"
-                                        : ""
-                                    }`}
-                                  />
-                                )
-                              )}
+                              {Array.isArray(
+                                products[selectedProductIndex]?.imgProduct
+                              ) &&
+                                products[selectedProductIndex]?.imgProduct.map(
+                                  (image, index) => (
+                                    <img
+                                      onClick={() => handleImageClick(index)}
+                                      key={index}
+                                      src={`data:image/jpeg;base64,${image?.url}`}
+                                      alt=""
+                                      className={`w-[45%] mr-4 object-cover cursor-pointer ${
+                                        selectedImage === index
+                                          ? "border-4 border-teal-500"
+                                          : ""
+                                      }`}
+                                    />
+                                  )
+                                )}
                             </div>
                           </div>
                           <div className="w-[48%] mt-4 p-4 rounded-lg relative">
                             <ControlledAccordions
-                              des={products[selectedProductIndex]?.description}
+                              des={products[selectedProductIndex]?.descriptions}
                               mat={[products[selectedProductIndex]?.material]}
                               size={[products[selectedProductIndex]?.size]}
                             />

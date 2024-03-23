@@ -4,6 +4,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import AdminSidebar from "../../components/Admin/AdminSidebar";
 import ManageUser from "../../components/Admin/Manage/ManageUser";
 import ManageProduct from "../../components/Admin/Manage/ManageProduct";
+import EventProduct from "../../components/Admin/Manage/EventProduct/EventProduct";
 const AdminHomepage = () => {
   const { admin } = useSelector((state) => state.admin);
   const [showSidebar, setShowSidebar] = useState(true);
@@ -110,7 +111,7 @@ const AdminHomepage = () => {
                   showSidebar ? "hidden" : "block"
                 } sm:block w-full p-2`}
               >
-                Quản lý khuyến mãi
+                <EventProduct />
               </div>
             )}
             {activeItem === 5 && (
