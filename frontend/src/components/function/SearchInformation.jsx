@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { productData } from "../../static/data";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SearchInformation = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchData, setSearchData] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const { products } = useSelector((state) => state.products);
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -18,13 +18,15 @@ const SearchInformation = () => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    const filteredProducts = productData.filter((product) =>
-      product.name.toLocaleLowerCase().includes(term.toLocaleLowerCase())
+    const filteredProducts = products?.filter((product) =>
+      product?.productName
+        ?.toLocaleLowerCase()
+        .includes(term.toLocaleLowerCase())
     );
     setSearchData(filteredProducts);
   };
   const inputWidth = isFocused ? "60%" : "30%";
-
+  console.log(searchData);
   return (
     <div
       style={{ width: inputWidth }}
@@ -38,20 +40,18 @@ const SearchInformation = () => {
         onChange={handleSearchChange}
         onBlur={handleBlur}
       />
-      {searchTerm && searchData && searchData.length !== 0 ? (
+      {searchTerm && searchData && searchData?.length !== 0 ? (
         <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
           {searchData?.map((i, index) => {
-            const d = i.name;
-            const Product_name = d.replace(/\s+/g, "-");
             return (
-              <Link to={`/product/${Product_name}`}>
+              <Link to={`/product/${i?.productName}`}>
                 <div className="w-full flex items-start py-3">
                   <img
-                    src={i.image_Url[0].url}
+                    src={`data:image/jpeg;base64,${i?.imgProduct[0].url}`}
                     alt=""
                     className="w-[40px] h-[40px] mr-1"
                   />
-                  <h1>{i.name}</h1>
+                  <h1>{i.productName}</h1>
                 </div>
               </Link>
             );

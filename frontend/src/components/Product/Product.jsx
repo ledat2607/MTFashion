@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import ProductCard from "./ProductCard.jsx";
-import { productData } from "../../static/data.js";
+import { useSelector } from "react-redux";
 
 const Product = () => {
-  const sortedProduct = productData?.sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
+  const { products } = useSelector((state) => state.products);
+  const sortedProduct =
+    products &&
+    products
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(b?.createdAt?.slice(0, 10)) -
+          new Date(a?.createdAt?.slice(0, 10))
+      );
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentProducts = sortedProduct?.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(productData.length / itemsPerPage);
+  const totalPages = Math.ceil(products?.length / itemsPerPage);
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };

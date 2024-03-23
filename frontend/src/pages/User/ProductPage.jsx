@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Layout/Header";
 import Footer from "../../components/Layout/Footer.jsx";
-import { productData } from "../../static/data";
 import { useParams } from "react-router-dom";
 import ProductDetails from "../../components/Product/ProductDetails";
 import SuggessProduct from "../../components/Product/SuggessProduct";
+import { useSelector } from "react-redux";
 const ProductPage = () => {
+  const { products } = useSelector((state) => state.products);
   const [data, setData] = useState(null);
   const { name } = useParams();
-  const productName = name.replace(/-/g, "");
+  const proname = name.replace(/-/g, "");
   useEffect(() => {
-    const data = productData?.find((i) => i?.name === productName);
+    const data = products?.find((i) => i?.productName === proname);
     setData(data);
-  }, [productName]);
+  }, [proname, products]);
   return (
     <div className="max-w-[1900px] mx-auto overflow-x-scroll">
       <Header />

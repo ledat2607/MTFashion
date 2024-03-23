@@ -11,9 +11,7 @@ export default function ControlledAccordions({ des, mat, size }) {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const materialArray = Array.isArray(mat) ? mat : [mat];
-  const sizeArray = Array.isArray(size) ? size : [size];
-  console.log(sizeArray);
+
   return (
     <div>
       <Accordion
@@ -44,15 +42,7 @@ export default function ControlledAccordions({ des, mat, size }) {
             Chất liệu
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          {materialArray?.map((nestedArray, index) => (
-            <div key={index}>
-              {nestedArray?.map((material, innerIndex) => (
-                <Typography key={innerIndex}>* {material.itemMat}</Typography>
-              ))}
-            </div>
-          ))}
-        </AccordionDetails>
+        <AccordionDetails>{mat}</AccordionDetails>
       </Accordion>
       <Accordion
         expanded={expanded === "panel3"}
@@ -67,20 +57,7 @@ export default function ControlledAccordions({ des, mat, size }) {
             Kích thước
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          {sizeArray?.map((nestedArray, index) => (
-            <div key={index}>
-              {nestedArray?.map((sizeItem, innerIndex) => (
-                <Typography
-                  key={innerIndex}
-                  sx={{ width: "100%", border: "black", height: "20px" }}
-                >
-                  * {sizeItem.itemSize}
-                </Typography>
-              ))}
-            </div>
-          ))}
-        </AccordionDetails>
+        <AccordionDetails>{size}</AccordionDetails>
       </Accordion>
     </div>
   );
