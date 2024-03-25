@@ -99,4 +99,43 @@ router.get(
     }
   })
 );
+//create event product
+router.post(
+  "/create-event-product",
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { data } = req.body;
+      const isProduct = await Product.findById(data.id);
+      if (!isProduct) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+      const updatedProduct = await Product.findByIdAndUpdate(
+        data.id,
+        {
+          isOnSale: {
+            status: true,
+            discount_rate_on_sale: data.bonus,
+            price_sale: data.price_on_sale,
+            start_date: data.start_date,
+            finish_date: data.end_date,
+            start_time: data.start_time,
+            finish_time: data.end_time,
+          },
+        },
+        { new: true }
+      );
+
+      if (!updatedProduct) {
+        return next(new ErrorHandler("Không thể cập nhật sản phẩm", 400));
+      }
+      res.status(200).json({
+        success: true,
+        message: "Thêm mới sản phẩm khuyến mãi thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
 module.exports = router;

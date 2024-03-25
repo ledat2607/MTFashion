@@ -107,6 +107,12 @@ const productSchema = new mongoose.Schema({
     finish_date: {
       type: Date,
     },
+    start_time: {
+      type: String,
+    },
+    finish_time: {
+      type: String,
+    },
   },
   createdAt: {
     type: Date,
