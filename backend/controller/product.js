@@ -138,4 +138,38 @@ router.post(
     }
   })
 );
+router.post(
+  "/delete-event",
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      const isProduct = await Product.findById(id);
+      if (!isProduct) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+      const updatedProduct = await Product.findByIdAndUpdate(id, {
+        isOnSale: {
+          status: false,
+          discount_rate_on_sale: 0,
+          price_sale: "",
+          start_date: "",
+          finish_date: "",
+          start_time: "",
+          finish_time: "",
+        },
+      });
+
+      if (!updatedProduct) {
+        return next(new ErrorHandler("Không thể cập nhật sản phẩm", 400));
+      }
+      res.status(200).json({
+        success: true,
+        message: "Xóa sự kiện thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
 module.exports = router;

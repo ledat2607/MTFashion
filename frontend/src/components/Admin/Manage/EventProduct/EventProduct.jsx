@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { server } from "../../../../server";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { MdFilterList } from "react-icons/md";
+import { TiDeleteOutline } from "react-icons/ti";
 const EventProduct = () => {
   const { products } = useSelector((state) => state.products);
   const [productSale, setProductSale] = useState([]);
@@ -15,12 +17,34 @@ const EventProduct = () => {
   const [start_time, setStartTime] = useState("");
   const [end_time, setEndTime] = useState("");
   const [minEndDate, setMinEndDate] = useState(new Date());
+  const [data, setData] = useState([]);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  //phân trang
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const itemsPerPage = 4;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   const handleOpenNewEvent = () => {
     setOpenEvent(!openEvent);
   };
   const handleChangeProduct = (e) => {
     setSelectedProduct(e.target.value);
   };
+  //get product running sale
+  useEffect(() => {
+    const products_on_sale = products?.filter(
+      (product) => product?.isOnSale.status === true
+    );
+    setData(products_on_sale);
+  }, [products]);
   //get information product
   useEffect(() => {
     if (selectedProduct) {
@@ -94,6 +118,35 @@ const EventProduct = () => {
         toast.success(res.data.message);
         setTimeout(() => {
           setOpenEvent(false);
+          setBonus("");
+          setEndTime("");
+          setStartTime("");
+          setStart("");
+          setEnd("");
+          setSelectedProduct("");
+        }, 1500);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+  const openComfirmDeleteEvent = () => {
+    setOpenConfirm(!openConfirm);
+  };
+  const dateNow = new Date();
+  const day = dateNow.getDate();
+  const month = dateNow.getMonth() + 1;
+  const year = dateNow.getFullYear();
+  const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  }`;
+  const handleDeleteEvent = async (id) => {
+    await axios
+      .post(`${server}/product/delete-event`, { id }, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          setOpenConfirm(false);
         }, 1500);
       })
       .catch((err) => {
@@ -102,15 +155,31 @@ const EventProduct = () => {
   };
   return (
     <div className="w-full h-[100%]">
-      <div className="sm:w-[90%] w-full h-full mx-auto">
+      <div className="sm:w-[95%] w-full h-full mx-auto">
         <div className="sm:text-2xl font-Poppins font-[600] uppercase flex justify-center items-center w-full">
           Quản lý khuyến mãi
         </div>
-        <div
-          onClick={handleOpenNewEvent}
-          className="w-[200px] text-lg font-Poppins cursor-pointer hover:translate-x-2 hover:text-white transition-transform duration-300 h-[40px] bg-blue-500 flex justify-center items-center rounded-2xl"
-        >
-          Thêm mới
+
+        <div className="w-full sm:mt-4 flex">
+          <div
+            onClick={handleOpenNewEvent}
+            className="w-[200px] text-lg font-Poppins cursor-pointer hover:translate-x-2 hover:text-white transition-transform duration-300 h-[40px] bg-blue-500 flex justify-center items-center rounded-2xl"
+          >
+            Thêm mới
+          </div>
+          <div className="w-[80%] sm:ml-8 flex h-[40px]">
+            <div className="w-[15%] flex">
+              <MdFilterList size={30} />
+              <span className="text-lg font-[600] font-Poppins">Bộ lọc</span>
+            </div>
+            <div className="w-[75%]">
+              <select className="w-[200px] border-2 rounded-2xl h-[30px]">
+                <option value={""}>Chọn thuộc tính lọc...</option>
+                <option value={"Đang diễn ra"}>Đang diễn ra</option>
+                <option value={"Đã kết thúc"}>Đã kết thúc</option>
+              </select>
+            </div>
+          </div>
         </div>
         {openEvent ? (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
@@ -273,8 +342,126 @@ const EventProduct = () => {
             </div>
           </div>
         ) : null}
-        {productSale?.length !== 0 ? (
-          <></>
+        {data?.length !== 0 ? (
+          <>
+            <div className="w-full h-[65vh]">
+              {currentItems
+                ?.sort(
+                  (a, b) =>
+                    new Date(b?.isOnSale?.finish_date) -
+                    new Date(a?.isOnSale?.finish_date)
+                )
+                .map((i, index) => (
+                  <div
+                    key={index}
+                    className="w-full sm:mt-4 border-r-2 border-l-2 mb-4 shadow-xl rounded-xl border-teal-500 border-b-2 flex justify-center items-center "
+                  >
+                    <div className="w-[18%] h-[16vh] flex flex-col">
+                      <label className="text-center h-[35px] bg-teal-400 rounded-tl-xl">
+                        Hình ảnh
+                      </label>
+                      <img
+                        src={`data:image/jpeg;base64,${i?.imgProduct[0]?.url}`}
+                        alt=""
+                        className="w-[90px] pt-2 object-contain rounded-xl mx-auto"
+                      />
+                    </div>
+                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                      <label className="h-[35px] text-center bg-teal-400">
+                        Tên sản phẩm
+                      </label>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        {i?.productName}
+                      </span>
+                    </div>
+                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                      <label className="h-[35px] text-center bg-teal-400">
+                        Ngày bắt đầu
+                      </label>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        {i?.isOnSale?.start_date.slice(0, 10)}:{" "}
+                        {i?.isOnSale?.start_time}
+                      </span>
+                    </div>
+                    <div className="w-[18%] h-[16vh] flex flex-col">
+                      <label className="h-[35px] text-center bg-teal-400">
+                        Ngày kết thúc
+                      </label>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        {i?.isOnSale?.finish_date.slice(0, 10)}:{" "}
+                        {i?.isOnSale?.finish_time}
+                      </span>
+                    </div>
+                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                      <label className="h-[35px] text-center bg-teal-400">
+                        Giá khuyến mãi
+                      </label>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        {formatVietnameseCurrency(i?.isOnSale?.price_sale)}
+                      </span>
+                    </div>
+                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                      <label className="h-[35px] text-center bg-teal-400">
+                        Trạng thái
+                      </label>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        {i?.isOnSale?.start_date.slice(0, 10) === formattedDate
+                          ? "Đang diễn ra"
+                          : i?.isOnSale?.finish_date.slice(0, 10) <
+                            formattedDate
+                          ? "Đã kết thúc"
+                          : "Chưa diễn ra"}
+                      </span>
+                    </div>
+                    <div className="w-[10%]  h-[16vh] flex flex-col items-center">
+                      <div className="h-[35px] w-[100%] text-center bg-teal-400 rounded-tr-xl"></div>
+                      <span className="w-full flex justify-center items-center h-[10vh]">
+                        <TiDeleteOutline
+                          onClick={openComfirmDeleteEvent}
+                          size={25}
+                          className="cursor-pointer hover:text-red-500 hover:scale-[1.2] transition-transform duration-300"
+                        />
+                      </span>
+                    </div>
+                    {openConfirm ? (
+                      <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
+                        <div className="bg-white rounded-md sm:h-[20vh] flex justify-center items-center flex-col h-fit sm:w-[35%] w-[90%]">
+                          <h1 className="text-center font-[600] font-Poppins sm:text-xl uppercase">
+                            Bạn có chắc muốn xóa sự kiện này ?
+                          </h1>
+                          <div className="w-[45%] mx-auto sm:mt-8 flex justify-between items-center">
+                            <div className="cursor-pointer w-[100px] h-[40px] bg-red-400 bg-opacity-60 flex justify-center items-center rounded-2xl">
+                              Đóng
+                            </div>
+                            <div
+                              onClick={() => handleDeleteEvent(i?._id)}
+                              className="cursor-pointer w-[150px] h-[40px] bg-blue-400 flex justify-center items-center rounded-2xl"
+                            >
+                              Xác nhận
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              <ul className="flex justify-center mt-4">
+                {pageNumbers.map((number) => (
+                  <li
+                    key={number}
+                    className={`mr-2 px-3 py-1 cursor-pointer ${
+                      currentPage === number
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() => paginate(number)}
+                  >
+                    {number}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         ) : (
           <div className="w-full h-[70vh] justify-center items-center flex">
             <span className="text-lg font-Poppins text-[600]">

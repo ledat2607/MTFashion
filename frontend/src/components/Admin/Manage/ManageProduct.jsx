@@ -32,6 +32,7 @@ const ManageProduct = () => {
   const [newType, setNewType] = useState("");
   const [newTypeTitle, setnewTypeTitle] = useState("");
   const [markdownValue, setMarkdownValue] = useState("");
+
   // Xử lý sự kiện thay đổi danh mục sản phẩm
   const handleCategoryNewChange = (event) => {
     setSelectedCategoryNewType(event.target.value);
