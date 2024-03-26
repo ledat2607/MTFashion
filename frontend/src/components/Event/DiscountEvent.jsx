@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import DiscountEventCard from "../Event/DiscountEventCard.jsx";
-import { productData } from "../../static/data.js";
+import { useSelector } from "react-redux";
 
 const DiscountEvent = () => {
   const [data, setData] = useState([]);
-
+  const { products } = useSelector((state) => state.products);
   useEffect(() => {
-    const filteredProducts = productData.filter(
-      (item) => item?.isOnSales?.status === true
+    const filteredProducts = products?.filter(
+      (item) => item?.isOnSale?.status === true
     );
     setData(filteredProducts);
-  }, []);
+  }, [products]);
+  console.log(data);
   return (
     <div className="w-full mt-8">
       <div className="w-[90%] sm:ml-8 mx-auto">
