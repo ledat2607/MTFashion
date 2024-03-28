@@ -74,6 +74,16 @@ const userSchema = new mongoose.Schema({
       productId: { type: String },
       product: { type: Object },
       date: { type: Date, default: Date.now() },
+      quantity: { type: Number, default: 1 },
+      size: { type: String },
+      typeProduct: {
+        code: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
     },
   ],
   wishlist: [

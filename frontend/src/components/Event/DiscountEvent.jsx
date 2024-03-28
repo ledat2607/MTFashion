@@ -11,7 +11,6 @@ const DiscountEvent = () => {
     );
     setData(filteredProducts);
   }, [products]);
-  console.log(data);
   return (
     <div className="w-full mt-8">
       <div className="w-[90%] sm:ml-8 mx-auto">

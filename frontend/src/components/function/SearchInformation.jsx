@@ -26,7 +26,6 @@ const SearchInformation = () => {
     setSearchData(filteredProducts);
   };
   const inputWidth = isFocused ? "60%" : "30%";
-  console.log(searchData);
   return (
     <div
       style={{ width: inputWidth }}

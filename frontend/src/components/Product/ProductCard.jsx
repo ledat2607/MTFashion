@@ -1,69 +1,174 @@
-import React, { useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { TbDiscountCheckFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { FaRegEye } from "react-icons/fa";
-import ControlledAccordions from "../Layout/Accordation";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { server } from "../../server";
+import { useDispatch, useSelector } from "react-redux";
 const ProductCard = ({ products }) => {
   const [wishlist, setWishlist] = useState({});
-  const [selectedProductIndex, setSelectedProductIndex] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const handleEyeClick = (index) => {
-    setSelectedProductIndex(index);
-    setSelectedImage(0);
-  };
-  const handleWishlist = (productId) => {
-    setWishlist((prevWishlist) => {
-      return { ...prevWishlist, [productId]: !prevWishlist[productId] };
-    });
-  };
+  const { user } = useSelector((state) => state.user);
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const dispatch = useDispatch();
 
-  const currentDate = new Date();
-  const handleImageClick = (index) => {
-    setSelectedImage(index);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`${server}/user/get_wishlist/${user?._id}`)
+        .then((res) => {
+          setWishlistItems(res.data.wishlist);
+        });
+    };
+
+    if (user?._id) {
+      fetchData();
+    }
+  }, [dispatch, user?._id]);
+
+  //Cập nhật wishlist
+  useEffect(() => {
+    // Nếu có danh sách wishlist của người dùng, cập nhật state wishlist
+    if (wishlistItems) {
+      setWishlist(
+        wishlistItems?.reduce((acc, item) => {
+          acc[item.productId] = true;
+          return acc;
+        }, {})
+      );
+    }
+  }, [wishlistItems]);
+
+  const handleWishlist = async (productId) => {
+    if (wishlist[productId]) {
+      const updatedWishlist = { ...wishlist };
+      delete updatedWishlist[productId];
+      setWishlist(updatedWishlist);
+
+      try {
+        await axios.delete(`${server}/user/remove_from_wishlist/${productId}`, {
+          withCredentials: true,
+        });
+        toast.success("Đã xóa khỏi danh sách yêu thích");
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1500);
+      } catch (error) {
+        toast.error("Lỗi khi xóa khỏi danh sách yêu thích");
+        console.error(error);
+      }
+    } else {
+      const updatedWishlist = { ...wishlist, [productId]: true };
+      setWishlist(updatedWishlist);
+
+      try {
+        await axios
+          .post(
+            `${server}/user/add_to_wishlist`,
+            { id: productId },
+            { withCredentials: true }
+          )
+          .then((res) => {
+            toast.success(res.data.message);
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 1500);
+          })
+          .catch((err) => {
+            toast.warning(err.response.data.message);
+          });
+      } catch (error) {
+        toast.error("Lỗi khi xóa khỏi danh sách yêu thích");
+        console.error(error);
+      }
+    }
   };
+  const handleCart = async (productId) => {
+    await axios
+      .post(
+        `${server}/user/add_to_cart`,
+        { id: productId, quantity: 1, size: "M" },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+  const currentDate = new Date();
+  //Định dạng tiền tệ
+  function formatVietnameseCurrency(number) {
+    const roundedNumber = Math.round(number / 1000) * 1000;
+    const formattedNumber = roundedNumber.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+
+    return formattedNumber;
+  }
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
       {products?.map((i, index) => {
-        const itemDate = new Date(i.date);
+        const itemDate = new Date(i?.createdAt?.slice(0, 10));
         const daysDiff = Math.floor(
           (currentDate - itemDate) / (1000 * 60 * 60 * 24)
         );
         const isNew = daysDiff <= 15;
-        const isLeftProduct = index % 5 < 2;
 
         return (
           <div key={index}>
             <div
-              className={`border border-teal-500 shadow-lg shadow-teal-800/60 rounded-xl p-3 hover:shadow-lg transition-all duration-300 cursor-pointer relative ${
-                selectedProductIndex !== null && selectedProductIndex !== index
-                  ? "opacity-20"
-                  : ""
-              }`}
+              className={`border border-teal-500 shadow-lg shadow-teal-800/60 rounded-xl p-3 hover:shadow-lg transition-all duration-300 cursor-pointer relative`}
             >
-              {isNew && (
-                <span className="absolute top-0 z-4 left-0 bg-green-500 text-white py-1 px-2 rounded-tl-md rounded-br-md">
-                  Mới
-                </span>
-              )}
-              <div
-                className={`${
-                  wishlist[i?._id] ? "bg-white" : "bg-teal-500/80"
-                } absolute w-8 h-8 top-1 flex justify-center items-center rounded-full right-1`}
-              >
-                <FaHeart
-                  key={index}
-                  onClick={() => handleWishlist(i?._id)}
-                  size={20}
-                  className={`${
-                    wishlist[i?._id] ? "text-teal-500" : "text-white"
-                  } transition-all duration-300`}
-                />
+              <div className="w-full flex">
+                {isNew && (
+                  <span className="absolute top-0 z-4 left-0 bg-green-500 text-white py-1 px-2 rounded-tl-md rounded-br-md">
+                    Mới
+                  </span>
+                )}
+                <div
+                  className={`absolute w-8 h-8 top-1 flex justify-center items-center rounded-full left-[20%]`}
+                >
+                  <FaHeart
+                    key={index}
+                    onClick={() => handleWishlist(i?._id)}
+                    size={20}
+                    className={`${
+                      wishlist[i?._id] ? "text-red-500" : "text-gray-400"
+                    } transition-all duration-300 hover:text-red-500`}
+                  />
+                </div>
+                <div
+                  className={`absolute w-8 h-8 top-1 flex justify-center items-center rounded-full left-[35%]`}
+                >
+                  <FaShoppingCart
+                    key={index}
+                    onClick={() => handleCart(i?._id)}
+                    size={20}
+                    className="transition-all text-gray-400 duration-300 cursor-pointer hover:text-teal-500"
+                  />
+                </div>
+                <div
+                  className={`absolute w-8 h-8 top-1 flex justify-center items-center rounded-full left-[50%]`}
+                >
+                  <TbDiscountCheckFilled
+                    key={index}
+                    onClick={() => handleWishlist(i?._id)}
+                    size={20}
+                    className="transition-all text-gray-400 duration-300 cursor-pointer hover:text-teal-500"
+                  />
+                </div>
               </div>
-              <div className="mt-8 flex justify-center">
+
+              <div className="mt-8 w-[85%] h-[25vh] flex justify-center overflow-hidden mx-auto">
                 <img
                   src={`data:image/jpeg;base64,${i?.imgProduct[0].url}`}
                   alt=""
-                  className="w-[90%] h-[25vh] rounded-xl object-contain hover:scale-[1.1] transition-all duration-300 cursor-pointer"
+                  className="w-[100%] h-full rounded-xl object-contain hover:scale-[1.1] transition-all duration-300 cursor-pointer"
                 />
               </div>
               <Link to={`/product/${i?.productName}`}>
@@ -85,17 +190,16 @@ const ProductCard = ({ products }) => {
               <div className="w-full flex items-center justify-between h-[30px] ">
                 <div className="relative flex justify-center items-center">
                   <span className="text-green-500 text-[10px] sm:text-sm lg:text-lg md:text-md">
-                    {/* {i?.isOnSales?.status === true ? (
+                    {i?.isOnSale?.status === true ? (
                       <div className="flex justify-center items-center">
-                        {formatVietnameseCurrency(i.isOnSales?.price_sale)}
+                        {formatVietnameseCurrency(i?.isOnSale?.price_sale)}
                         <i className="ml-2 text-[13px] line-through text-red-500">
-                          (- {i.isOnSales?.discount_rate}%)
+                          (- {i.isOnSale?.discount_rate_on_sale}%)
                         </i>
                       </div>
                     ) : (
                       <div>{i?.discountPrice}</div>
-                    )} */}
-                    {i?.discountPrice}
+                    )}
                   </span>
                 </div>
 
@@ -110,79 +214,6 @@ const ProductCard = ({ products }) => {
                 <span className="text-[10px] sm:text-sm lg:text-lg md:text-md">
                   Đã bán: {i?.sold_out}
                 </span>
-                <span>
-                  <FaRegEye
-                    className="mt-3 cursor-pointer hover:scale-[1.3] hover:text-teal-500 transition-transform duration-300"
-                    onClick={() => handleEyeClick(index)}
-                  />
-                </span>
-                {selectedProductIndex !== null &&
-                  selectedProductIndex === index && (
-                    <div
-                      className={`rounded-lg absolute top-[-10] ${
-                        isLeftProduct ? "left-full ml-6" : "right-full mr-6"
-                      } w-[40vw] h-[80vh] bg-gray-200 z-10`}
-                    >
-                      <div className="w-full h-full flex flex-col items-center justify-between">
-                        <div className="w-full h-[8%] rounded-t-lg bg-teal-500 flex justify-center items-center">
-                          <h2 className="text-gray-800 uppercase text-[25px] font-DM">
-                            {products[selectedProductIndex]?.productName}
-                          </h2>
-                        </div>
-                        <div className="w-full flex justify-between h-[77%]">
-                          <div className="w-1/2">
-                            <img
-                              src={`data:image/jpeg;base64,${products[selectedProductIndex]?.imgProduct[selectedImage]?.url}`}
-                              alt=""
-                              className="w-[1000%] h-[55%] ml-2 object-contain"
-                            />
-                            <div className="w-full flex mt-2 ml-2 overflow-x-scroll">
-                              {Array.isArray(
-                                products[selectedProductIndex]?.imgProduct
-                              ) &&
-                                products[selectedProductIndex]?.imgProduct.map(
-                                  (image, index) => (
-                                    <img
-                                      onClick={() => handleImageClick(index)}
-                                      key={index}
-                                      src={`data:image/jpeg;base64,${image?.url}`}
-                                      alt=""
-                                      className={`w-[45%] mr-4 object-cover cursor-pointer ${
-                                        selectedImage === index
-                                          ? "border-4 border-teal-500"
-                                          : ""
-                                      }`}
-                                    />
-                                  )
-                                )}
-                            </div>
-                          </div>
-                          <div className="w-[48%] mt-4 p-4 rounded-lg relative">
-                            <ControlledAccordions
-                              des={products[selectedProductIndex]?.descriptions}
-                              mat={[products[selectedProductIndex]?.material]}
-                              size={[products[selectedProductIndex]?.size]}
-                            />
-                          </div>
-                        </div>
-                        <div className="pb-4 w-full h-[10%] flex p-2 items-center relative">
-                          <button
-                            className="text-[18px] hover:translate-x-2 hover:text-white bg-gradient-to-r from-teal-400 to-teal-500 hover:from-pink-500 hover:to-blue-500 shadow shadow-indigo-400 transition-transform duration-500  rounded-xl w-[200px] h-[40px] "
-                            onClick={() => setSelectedProductIndex(null)}
-                          >
-                            Thêm vào giỏ hàng
-                          </button>
-
-                          <button
-                            className="ml-4 hover:translate-x-3 bg-gradient-to-r from-red-300 to-red-500/20 hover:from-pink-500 hover:to-yellow-500 text-[18px] opacity-85 hover:text-white transition-transform duration-300 rounded-xl w-[150px] h-[40px] "
-                            onClick={() => setSelectedProductIndex(null)}
-                          >
-                            Đóng
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
               </div>
             </div>
           </div>
