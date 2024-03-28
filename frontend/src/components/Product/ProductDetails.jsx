@@ -5,6 +5,8 @@ import size_man from "../../assets/size-nam.png";
 import { toast } from "react-toastify";
 import { IoIosStar } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
+import axios from "axios";
+import { server } from "../../server";
 
 const ProductDetails = ({ data }) => {
   const [selectedStyle, setSelectedStyle] = useState(null);
@@ -26,12 +28,19 @@ const ProductDetails = ({ data }) => {
   };
 
   const handleSizeSelection = (index) => {
-    setSelectedSize(data.size[index]);
+    const newSize = sizeArray[index];
+
+    if (selectedSize === newSize) {
+      setSelectedSize(null);
+    } else {
+      setSelectedSize(newSize);
+    }
   };
 
   const openAddToCart = () => {
     setAddToCart(!addToCart);
   };
+
   const decrementCount = () => {
     setCount((prevCount) => Math.max(prevCount - 1, 1));
   };
@@ -48,19 +57,38 @@ const ProductDetails = ({ data }) => {
     setSelectedStyle(null);
     setCount(1);
   };
-  const handAddToCart = () => {
+  const handAddToCart = async (productId) => {
     if (selectedSize === null) {
       toast.error(`Vui lòng chọn size`);
     }
+    console.log(selectedSize, selectedStyle);
     if (selectedStyle === null) {
       toast.error(`Vui lòng chọn kiểu dáng`);
     }
-    setAddToCart(!addToCart);
-    setTimeout(() => {
-      setSelectedSize(null);
-      setSelectedStyle(null);
-      setCount(1);
-    }, 1000);
+    await axios
+      .post(
+        `${server}/user/add_to_cart`,
+        {
+          id: productId,
+          quantity: count,
+          size: selectedSize,
+          style: selectedStyle,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          setAddToCart(false);
+          setSelectedSize(null);
+          setSelectedStyle(null);
+          setCount(1);
+          window.location.reload(true);
+        }, 1500);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
   return (
     <div className="h-full w-full mx-auto pb-8">
@@ -287,13 +315,12 @@ const ProductDetails = ({ data }) => {
                           <div className="sm:w-[60%] flex w-full justify-center items-center h-full">
                             <button
                               className={`w-[100px] bg-gray-400 sm:mr-3 text-white hover:border-none hover:translate-y-[-7px] hover:shadow-teal-800/80 hover:text-white rounded-md hover:bg-teal-500  hover:shadow-md h-[40px] text-[15px]`}
-                              onClick={handAddToCart}
                             >
                               Mua ngay
                             </button>
                             <button
                               className={`w-[150px] opacity-60 hover:opacity-100 sm:mr-3 bg-white border border-teal-500 hover:border-none hover:translate-y-[-7px] hover:shadow-teal-800/80 hover:text-white rounded-md hover:bg-teal-500  hover:shadow-md h-[40px] text-[15px]`}
-                              onClick={() => setAddToCart(!addToCart)}
+                              onClick={() => handAddToCart(data?._id)}
                             >
                               Thêm vào giỏ hàng
                             </button>

@@ -13,7 +13,6 @@ const DiscountEventCard = ({ data }) => {
       {filteredData?.map((i, index) => {
         const itemStartDate = new Date(i?.isOnSale?.start_date);
         const itemEndDate = new Date(i?.isOnSale?.finish_date);
-        console.log(itemEndDate, itemStartDate);
         const utcCurrentDate = new Date(currentDate.toISOString());
         const utcItemStartDate = new Date(itemStartDate.toISOString());
         const utcItemEndDate = new Date(itemEndDate.toISOString());

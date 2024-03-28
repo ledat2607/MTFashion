@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const router = express.Router();
 const User = require("../model/user");
 const { upload } = require("../multer");
@@ -9,7 +8,7 @@ const sendCode = require("../utils/sendCode");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated } = require("../middleware/auth");
-const cloudinary = require("../config/cloudinaryConfig");
+const Product = require("../model/product");
 //Create user
 router.post(
   "/verify-user-email",
@@ -147,6 +146,198 @@ router.get(
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+//add to wishlist
+router.post(
+  "/add_to_wishlist",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      const productId = id;
+      const isProduct = await Product.findById(productId);
+      if (!isProduct) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+      const user = req.user;
+      const isAlreadyInWishlist = user.wishlist?.some(
+        (item) => item.productId.toString() === productId
+      );
+
+      if (isAlreadyInWishlist) {
+        return next(
+          new ErrorHandler("Sản phẩm đã có trong danh sách yêu thích", 400)
+        );
+      }
+
+      // Thêm sản phẩm vào danh sách wishlist của người dùng
+      user.wishlist?.push({
+        productId: productId,
+        product: isProduct,
+        date: Date.now(),
+      });
+
+      // Lưu cập nhật của người dùng
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Sản phẩm đã được thêm vào danh sách yêu thích",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+// Remove from wishlist
+router.delete(
+  "/remove_from_wishlist/:productId",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const user = req.user;
+
+      // Tìm kiếm sản phẩm trong danh sách mong muốn của người dùng
+      const index = user.wishlist.findIndex(
+        (item) => item.productId.toString() === productId
+      );
+
+      // Nếu sản phẩm tồn tại trong danh sách mong muốn, loại bỏ nó
+      if (index !== -1) {
+        user.wishlist.splice(index, 1);
+        await user.save();
+        return res.status(200).json({
+          success: true,
+          message: "Sản phẩm đã được xóa khỏi danh sách yêu thích",
+        });
+      } else {
+        return next(
+          new ErrorHandler("Sản phẩm không tồn tại trong wishlist", 400)
+        );
+      }
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//add to cart
+router.post(
+  "/add_to_cart",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { id, quantity, size, style } = req.body;
+      const productId = id;
+      const isProduct = await Product.findById(productId);
+
+      if (!isProduct) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+
+      const user = req.user;
+      let existingCartItem = user.cart.find(
+        (item) => item.productId.toString() === productId.toString()
+      );
+
+      if (existingCartItem) {
+        existingCartItem.quantity += parseInt(quantity);
+      } else {
+        user.cart.push({
+          productId: productId,
+          product: isProduct,
+          date: Date.now(),
+          quantity: parseInt(quantity),
+          size: size,
+          typeProduct: {
+            code: style?.code,
+            url: style?.url,
+          },
+        });
+      }
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Sản phẩm đã được thêm vào giỏ hàng",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+// Remove from c
+router.delete(
+  "/remove_from_cart/:productId",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const user = req.user;
+      // Tìm kiếm sản phẩm trong danh sách mong muốn của người dùng
+      const index = user.cart?.findIndex(
+        (item) => item.productId.toString() === productId
+      );
+
+      // Nếu sản phẩm tồn tại trong danh sách mong muốn, loại bỏ nó
+      if (index !== -1) {
+        user.cart.splice(index, 1);
+        await user.save();
+        return res.status(200).json({
+          success: true,
+          message: "Sản phẩm đã được xóa khỏi giỏ hàng",
+        });
+      } else {
+        return next(
+          new ErrorHandler("Sản phẩm không tồn tại trong giỏ hàng", 400)
+        );
+      }
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//get wishlist
+router.get(
+  "/get_wishlist/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userId = req.params?.id;
+      //Lấy thông tin người dùng và populate trường 'wishlist'
+      const user = await User.findById(userId).populate("wishlist");
+
+      // Trả về danh sách yêu thích từ thông tin người dùng
+      const wishlist = user?.wishlist;
+
+      // Trả về danh sách yêu thích
+      res.status(200).json({ success: true, wishlist });
+    } catch (error) {
+      // Bắt lỗi nếu có
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//get cart
+router.get(
+  "/get_cart/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userId = req.params?.id;
+      //Lấy thông tin người dùng và populate trường 'wishlist'
+      const user = await User.findById(userId).populate("cart");
+
+      // Trả về danh sách yêu thích từ thông tin người dùng
+      const cart = user?.cart;
+
+      // Trả về danh sách yêu thích
+      res.status(200).json({ success: true, cart });
+    } catch (error) {
+      // Bắt lỗi nếu có
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );

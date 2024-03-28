@@ -11,7 +11,7 @@ const ProductPage = () => {
   const { name } = useParams();
   const proname = name.replace(/-/g, "");
   useEffect(() => {
-    const data = products?.find((i) => i?.productName === proname);
+    const data = products?.find((i) => i?.productName.trim() === proname);
     setData(data);
   }, [proname, products]);
   return (
