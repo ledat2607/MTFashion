@@ -4,6 +4,7 @@ const Product = require("../model/product");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isAdmin } = require("../middleware/auth");
+const product = require("../model/product");
 //Create new product
 router.post("/create-product", isAdmin, async (req, res, next) => {
   try {
@@ -11,7 +12,7 @@ router.post("/create-product", isAdmin, async (req, res, next) => {
     const imgProducts = data.images.map((imageUrl, index) => {
       return {
         url: imageUrl,
-        code: data.codes[index], // Lấy code ứng với index tương ứng
+        code: data.codes[index],
       };
     });
     const productData = {
@@ -163,6 +164,7 @@ router.post(
       if (!updatedProduct) {
         return next(new ErrorHandler("Không thể cập nhật sản phẩm", 400));
       }
+
       res.status(200).json({
         success: true,
         message: "Xóa sự kiện thành công",
@@ -172,5 +174,67 @@ router.post(
     }
   })
 );
+//add new discount code
+router.post(
+  "/add_new_discount_code",
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { type, code, quantity, percent, dateExp, productId } = req.body;
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+      const newDiscountCode = {
+        type: type,
+        value: percent,
+        code: code,
+        dateExp: dateExp,
+        quantity: quantity,
+      };
 
+      // Thêm mã khuyến mãi mới vào mảng discountCode của sản phẩm
+      product.discountCode.push(newDiscountCode);
+      await product.save();
+      res.status(200).json({
+        success: true,
+        message: "Thêm mới thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//delete discountcode by code
+router.post(
+  "/delete_code",
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { code, productId } = req.body;
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 400));
+      }
+      const discountCodeIndex = product.discountCode.findIndex(
+        (discount) => discount.code === code
+      );
+
+      if (discountCodeIndex === -1) {
+        return next(new ErrorHandler("Mã khuyến mãi không tồn tại", 400));
+      }
+
+      product.discountCode.splice(discountCodeIndex, 1);
+
+      // Lưu lại thông tin sản phẩm sau khi xóa mã khuyến mãi
+      await product.save();
+      res.status(200).json({
+        success: true,
+        message: "Xóa thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
 module.exports = router;
