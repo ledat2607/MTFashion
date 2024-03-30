@@ -56,6 +56,7 @@ const Header = ({ activeHeading }) => {
       fetchDataCart();
     }
   }, [dispatch, user?._id]);
+  console.log(cartItems);
   //Định dạng tiền tệ
   function formatVietnameseCurrency(number) {
     const roundedNumber = Math.round(number / 1000) * 1000;
@@ -65,6 +66,13 @@ const Header = ({ activeHeading }) => {
     });
 
     return formattedNumber;
+  }
+  function calculateItemTotalPrice(item) {
+    if (item?.product?.isOnSale?.status === true) {
+      return parseInt(item?.product?.isOnSale?.price_sale) * item?.quantity;
+    } else {
+      return convertToNumber(item?.product?.discountPrice) * item?.quantity;
+    }
   }
   //Xóa khỏi danh sách yêu thích
   const handleWishlist = async (productId) => {
@@ -122,7 +130,9 @@ const Header = ({ activeHeading }) => {
     const number = parseFloat(numericString);
     return isNaN(number) ? 0 : number;
   }
-
+  const handlePay = async (productId, quantity, price) => {
+    console.log(productId, quantity, price);
+  };
   return (
     <div className="relative">
       <div className="w-full p-2 h-full bg-teal-800/90 mx-auto flex relative">
@@ -216,31 +226,29 @@ const Header = ({ activeHeading }) => {
                           <label className="h-[30px] text-center bg-teal-500">
                             Hình ảnh
                           </label>
-                          <img
-                            src={`data:image/jpeg;base64,${i?.product?.imgProduct[0].url}`}
-                            alt=""
-                            className="h-[12vh] rounded-3xl mt-2"
-                          />
+                          {i?.typeProduct ? (
+                            <img
+                              src={`data:image/jpeg;base64,${i?.typeProduct?.url}`}
+                              alt=""
+                              className="h-[12vh] rounded-3xl mt-2"
+                            />
+                          ) : (
+                            <img
+                              src={`data:image/jpeg;base64,${i?.product?.imgProduct[0].url}`}
+                              alt=""
+                              className="h-[12vh] rounded-3xl mt-2"
+                            />
+                          )}
                         </div>
                         <div className="w-[20%] flex flex-col">
                           <label className="h-[30px] text-center bg-teal-500">
                             Tổng tiền
                           </label>
-                          {i?.product?.isOnSale?.status === true ? (
-                            <span className="flex justify-center items-center h-[12vh]">
-                              {formatVietnameseCurrency(
-                                parseInt(i?.product?.isOnSale?.price_sale) *
-                                  i?.quantity
-                              )}
-                            </span>
-                          ) : (
-                            <span className="flex justify-center items-center h-[12vh]">
-                              {formatVietnameseCurrency(
-                                convertToNumber(i?.product?.discountPrice) *
-                                  i.quantity
-                              )}
-                            </span>
-                          )}
+                          <span className="h-[12vh] flex justify-center items-center">
+                            {formatVietnameseCurrency(
+                              calculateItemTotalPrice(i)
+                            )}
+                          </span>
                         </div>
                         <div className="w-[25%] flex flex-col ">
                           <label className="h-[30px] text-center rounded-tr-2xl bg-teal-500">
@@ -260,7 +268,13 @@ const Header = ({ activeHeading }) => {
                         </div>
                         <div
                           className="w-[120px] bg-blue-400 sm:ml-4 flex justify-center items-center rounded-3xl h-[30px] cursor-pointer hover:-translate-x-2 transition-transform duration-300"
-                          onClick={() => handleWishlist(i?.productId)}
+                          onClick={() =>
+                            handlePay(
+                              i?.productId,
+                              i?.quantity,
+                              calculateItemTotalPrice(i)
+                            )
+                          }
                         >
                           Thanh toán
                         </div>

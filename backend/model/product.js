@@ -37,19 +37,15 @@ const productSchema = new mongoose.Schema({
   ],
   material: {
     type: String,
-    required: true,
   },
   color: {
     type: String,
-    required: true,
   },
   size: {
     type: String,
-    required: true,
   },
   descriptions: {
     type: String,
-    required: true,
   },
   stock: {
     type: Number,
@@ -114,6 +110,25 @@ const productSchema = new mongoose.Schema({
       type: String,
     },
   },
+  discountCode: [
+    {
+      type: {
+        type: String,
+      },
+      value: {
+        type: Number,
+      },
+      code: {
+        type: String,
+      },
+      dateExp: {
+        type: Date,
+      },
+      quantity: {
+        type: Number,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
