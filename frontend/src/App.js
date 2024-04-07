@@ -11,11 +11,17 @@ import {
   Product,
   ProfilePage,
   ProductPage,
+  CheckOutPage,
+  PaymentPage,
+  OrderSuccessPage,
+  DetailOrderPage,
+  ChatPage,
 } from "./Routes.js";
 import {
   SignUpAdminPage,
   LoginAdminPage,
   AdminHomepage,
+  AdminChatPage,
 } from "./AdminRoutes.js";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/action/userAction.js";
@@ -47,6 +53,39 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/check_out"
+          element={
+            <ProtectedRoute>
+              <CheckOutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <PaymentPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/success"
+          element={
+            <ProtectedRoute>
+              <OrderSuccessPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/detail-order/:id" element={<DetailOrderPage />} />
         {/*Admin page*/}
         <Route path="/admin/sign-up" element={<SignUpAdminPage />} />
         <Route path="/admin/login" element={<LoginAdminPage />} />
@@ -55,6 +94,14 @@ const App = () => {
           element={
             <AdminProtectedRoute>
               <AdminHomepage />
+            </AdminProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/chat"
+          element={
+            <AdminProtectedRoute>
+              <AdminChatPage />
             </AdminProtectedRoute>
           }
         />

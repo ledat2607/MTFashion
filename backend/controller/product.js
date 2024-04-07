@@ -3,8 +3,8 @@ const router = express.Router();
 const Product = require("../model/product");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const { isAdmin } = require("../middleware/auth");
-const product = require("../model/product");
+const { isAdmin, isAuthenticated } = require("../middleware/auth");
+const Order = require("../model/order");
 //Create new product
 router.post("/create-product", isAdmin, async (req, res, next) => {
   try {
@@ -56,7 +56,6 @@ router.get(
     }
   })
 );
-
 //Delete product
 router.post(
   "/delete-product",
@@ -139,6 +138,7 @@ router.post(
     }
   })
 );
+//Delete event
 router.post(
   "/delete-event",
   isAdmin,
@@ -237,4 +237,43 @@ router.post(
     }
   })
 );
+//add comment
+router.post(
+  "/add-comment",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { orderId, productId, comment, rating, images, avatar, userName } =
+        req.body;
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(new ErrorHandler("Sản phẩm không tồn tại", 404));
+      }
+      const order = await Order.findById({ _id: orderId });
+      if (!order) {
+        return next(new ErrorHandler("Đơn hàng không tồn tại", 400));
+      }
+
+      order.isComment = true;
+      product.comment.push({
+        isCommented: true,
+        cmt_userName: userName,
+        avatarUser: avatar,
+        content: comment,
+        rating: rating,
+        imgCmt: images, // Sử dụng mảng `images` với trường `url` đã được frontend truyền
+      });
+
+      await product.save();
+      await order.save();
+      res.status(200).json({
+        success: true,
+        message: "Đánh giá thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
 module.exports = router;

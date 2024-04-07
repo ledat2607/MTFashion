@@ -279,16 +279,7 @@ const ManageDiscountCode = () => {
           </div>
         </div>
       ) : null}
-      <div className="w-[50%] sm:mt-8 flex items-center">
-        <span className="text-xl font-[600] ">Bộ lọc</span>
-        <select className="sm:ml-4 h-[40px] w-[200px] rounded-2xl p-2">
-          <option value="Chọn thuộc tính lọc....">
-            Chọn thuộc tính lọc...
-          </option>
-          <option value="ship">Giảm phí vận chuyển</option>
-          <option value="all">Giảm giá đơn hàng</option>
-        </select>
-      </div>
+
       {data.length !== 0 ? (
         <div className="w-full p-2 h-[66vh]">
           {data?.map((i, index) => (

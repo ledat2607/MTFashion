@@ -1,15 +1,27 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "../../components/Layout/Card";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import AllOrder from "../UserProduct/Order";
+import AllOrder from "../UserProduct/AllOrder.jsx";
 import Refund from "../UserProduct/Refund";
 import Chat from "../Chat/Chat";
-import AddressUser from "../AddressUser/AddressUser.jsx"
+import AddressUser from "../AddressUser/AddressUser.jsx";
 import { MdOutlinePhotoCameraFront } from "react-icons/md";
+import axios from "axios";
+import { server } from "../../server.js";
+import { toast } from "react-toastify";
 
 const ProfileContent = ({ active, activeMenu }) => {
   const { user } = useSelector((state) => state.user);
+  const [open, setOpen] = useState(false);
+  const [editSurname, setEditSurname] = useState(user && user.surName);
+  const [editName, setEditName] = useState(user && user.name);
+  const [editEmail, setEditEmail] = useState(user && user.email);
+  const [editPhoneNumber, setEditPhoneNumber] = useState(
+    user && user.phoneNumber
+  );
+  const [editUserName, setEditUserName] = useState(user && user.userName);
+  const [editBirthDay, setEditBirthDay] = useState(user && user?.birthDay);
   //Định dạng ngày sinh
   const formatBirthday = (timestamp) => {
     const dateObject = new Date(timestamp);
@@ -19,6 +31,61 @@ const ProfileContent = ({ active, activeMenu }) => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64Data = reader.result.split(",")[1];
+
+        // Construct the data object inside the onloadend callback
+        const data = {
+          avatar: base64Data, // Use the updated avatar value
+        };
+
+        // Send the request with the updated data object
+        axios
+          .put(
+            `${server}/user/update-avatar`,
+            { data },
+            { withCredentials: true }
+          )
+          .then((res) => {
+            window.location.reload();
+            toast.success("Cập nhật ảnh đại diện thành công !");
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleOpenEditInfo = () => {
+    setOpen(!open);
+  };
+  const handleUpdate = async () => {
+    const data = {
+      editBirthDay,
+      editEmail,
+      editName,
+      editPhoneNumber,
+      editUserName,
+      editSurname,
+    };
+    await axios
+      .put(`${server}/user/update-infor`, { data }, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        setOpen(false);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
   return (
     <div className="w-full h-full">
       {/*Profile Information*/}
@@ -29,13 +96,21 @@ const ProfileContent = ({ active, activeMenu }) => {
               <img
                 src={`data:image/jpeg;base64,${user?.avatar}`}
                 alt=""
-                className="sm:w-[50%] pt-2 object-contain rounded-full mx-auto"
+                className="sm:w-[250px] border-2 border-teal-500 h-[250px] bg-white mt-2 object-contain rounded-full mx-auto"
               />
-              <div className="absolute w-[40px] h-[40px] rounded-full bg-white left-[64%] bottom-[25%] flex justify-center items-center">
-                <MdOutlinePhotoCameraFront
-                  size={25}
-                  className="cursor-pointer hover:scale-[1.2] transition-all duration-200"
+              <div className="absolute w-[40px] h-[40px] rounded-full left-[60%] bottom-[30%] bg-teal-500 flex justify-center items-center">
+                <input
+                  type="file"
+                  id="image"
+                  className="hidden"
+                  onChange={handleImage}
                 />
+                <label htmlFor="image">
+                  <MdOutlinePhotoCameraFront
+                    size={25}
+                    className="cursor-pointer hover:scale-[1.2] text-black hover:text-white hover:transition-transform duration-300"
+                  />
+                </label>
               </div>
             </div>
             <div className="w-full mt-2 flex justify-between items-center">
@@ -101,10 +176,98 @@ const ProfileContent = ({ active, activeMenu }) => {
               />
             </div>
             <div className="w-full flex justify-center items-center">
-              <div className="w-[30%] hover:cursor-pointer text-lg font-[500] sm:mt-8 bg-teal-500 h-[40px] rounded-xl flex justify-center items-center">
+              <div
+                onClick={handleOpenEditInfo}
+                className="hover:translate-x-2 transition-transform duration-300 hover:bg-white hover:text-teal-500 w-[30%] hover:cursor-pointer text-lg font-[500] sm:mt-8 bg-teal-500 h-[40px] rounded-xl flex justify-center items-center"
+              >
                 Cập nhật
               </div>
             </div>
+            {open ? (
+              <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
+                <div className="bg-white rounded-md sm:h-[55vh] h-fit sm:w-[35%] w-[90%] p-4">
+                  <h1 className="text-lg text-center font-Poppins font-[600] uppercase">
+                    Cập nhật thông tin người dùng
+                  </h1>
+                  <div className="mt-4 w-full">
+                    <div className="w-full mt-2 flex flex-col sm:flex-row justify-between items-center">
+                      <div className="sm:w-[55%] w-[90%]">
+                        <label className="text-xl font-[600] font-DM">Họ</label>
+                        <input
+                          className="sm:ml-[33%] bg-slate-100 border-2 border-black sm:w-[50%] w-[90%] rounded-lg h-[40px] pl-2"
+                          value={editSurname}
+                          onChange={(e) => setEditSurname(e.target.value)}
+                        />
+                      </div>
+                      <div className="sm:w-[45%]">
+                        <label className="pr-2 text-xl font-[600] font-DM">
+                          Tên
+                        </label>
+                        <input
+                          className="sm:w-[72%] bg-slate-100 border-2 border-black rounded-lg h-[40px] pl-2"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full mt-6 flex items-center">
+                      <label className="text-xl font-[600] font-DM">
+                        Email
+                      </label>
+                      <input
+                        className="sm:w-[38%] w-[90%] bg-slate-100 border-2 p-2 border-black rounded-lg h-[40px] ml-[15%]"
+                        value={editEmail}
+                        onChange={(e) => setEditEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="w-full mt-6 flex items-center">
+                      <label className="text-xl font-[600] font-DM">
+                        Sinh nhật
+                      </label>
+                      <input
+                        type="date"
+                        className="sm:w-[32%] w-[90%] bg-slate-100 border-black border-2 rounded-lg h-[40px] p-2 ml-[10%]"
+                        onChange={(e) => setEditBirthDay(e.target.value)}
+                      />
+                    </div>
+                    <div className="w-full mt-6 flex items-center">
+                      <label className="pr-4 text-xl font-[600] font-DM">
+                        Số điện thoại
+                      </label>
+                      <input
+                        className="sm:w-[23%] w-[90%] bg-slate-100 border-black border-2 rounded-lg h-[40px] ml-[3%] p-2"
+                        value={"0" + editPhoneNumber}
+                        onChange={(e) => setEditPhoneNumber}
+                      />
+                    </div>
+                    <div className="w-full mt-6 flex items-center">
+                      <label className="pr-4 text-xl font-[600] font-DM">
+                        Tên người dùng
+                      </label>
+                      <input
+                        className="sm:w-[23%] w-[350px] bg-slate-100 border-black border-2 rounded-lg h-[40px] pl-2"
+                        value={editUserName}
+                        onChange={(e) => setEditUserName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-[70%] mt-8 mx-auto flex justify-center items-center">
+                    <div
+                      onClick={() => setOpen(false)}
+                      className="w-[100px] bg-red-500 text-white font-Poppins text-lg font-[600] hover:translate-x-3 transition-transform duration-300 cursor-pointer rounded-2xl h-[35px] flex justify-center items-center"
+                    >
+                      Đóng
+                    </div>
+                    <div
+                      onClick={handleUpdate}
+                      className="w-[150px] bg-blue-500 text-white font-Poppins text-lg font-[600] ml-4 hover:translate-x-3 transition-transform duration-300 cursor-pointer rounded-2xl h-[35px] flex justify-center items-center"
+                    >
+                      Xác nhận
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
           <div className="sm:w-[45%] h-[100%]">
             <div className="w-full h-[50%] flex items-center justify-center">
@@ -119,7 +282,7 @@ const ProfileContent = ({ active, activeMenu }) => {
       {/*Change Password*/}
       {active === 3 && <ChangePassword user={user} />}
       {active === 4 && (
-        <div>
+        <div className="w-full h-full">
           {activeMenu === 1 && (
             <AllOrder activeMenu={1} setActiveMenu={1} onActiveMenuChange={1} />
           )}
@@ -181,35 +344,25 @@ const ChangePassword = ({ user }) => {
   const [visibleNew, setVisibleNew] = useState(false);
   const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [newEmail, setNewEmail] = useState();
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const inputRefs = useRef([
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
-  ]);
-  const handleChange = (index, value) => {
-    const filteredValue = value.replace(/\D/g, "");
-    setCode((prevCode) => {
-      const newCode = [...prevCode];
-      newCode[index] = filteredValue.slice(0, 1);
-      return newCode;
-    });
 
-    if (filteredValue.length === 1 && index < inputRefs.current.length - 1) {
-      inputRefs.current[index + 1].current.focus();
-    }
-    if (filteredValue.length === 0 && index > 0) {
-      const prevInputRef = inputRefs.current[index - 1];
-      if (prevInputRef && prevInputRef.current) {
-        prevInputRef.current.focus();
-      }
-    }
-  };
   const passwordChangeHandler = async (e) => {
-    console.log(`Cập nhật thành công`);
+    e.preventDefault();
+    await axios
+      .put(
+        `${server}/user/update-user-password`,
+        {
+          oldPassword,
+          newPassword,
+          confirmPassword,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.message);
+        setNewPassword("");
+        setOldPassword("");
+        setConfirmPassword("");
+      });
   };
   return (
     <div className="w-full h-full px-5 bg-white bg-opacity-40">
@@ -328,34 +481,7 @@ const ChangePassword = ({ user }) => {
                 />
               </div>
             </div>
-            <div className="w-full">
-              <label className="p-2 mt-4">Nhập mã xác nhận email</label>
-              <div className="grid grid-cols-4 sm:grid-cols-8 sm:gap-1 mt-4 justify-items-center items-center">
-                {code.map((value, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    className="border border-black mt-4 sm:mt-0 w-[35px] h-[35px] text-center"
-                    value={value}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    ref={inputRefs.current[index]}
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && value === "") {
-                        const prevIndex = index - 1;
-                        const prevInputRef = inputRefs.current[prevIndex];
 
-                        if (prevInputRef && prevInputRef.current) {
-                          prevInputRef.current.focus();
-                        }
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-              <div className="pt-4 hover:translate-x-2 transition-transform duration-300 hover:text-green-500">
-                <i className="cursor-pointer">Gửi lại mã</i>
-              </div>
-            </div>
             <input
               type="submit"
               value="Xác nhận"

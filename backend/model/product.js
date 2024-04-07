@@ -57,13 +57,18 @@ const productSchema = new mongoose.Schema({
   },
   rating_avg: {
     type: Number,
-    default: 5.0,
+    default: 0,
   },
   comment: [
     {
+      isCommented: {
+        type: Boolean,
+        default: false,
+      },
       cmt_userName: {
         type: String,
       },
+
       avatarUser: {
         type: String,
       },
@@ -134,5 +139,12 @@ const productSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
-
+productSchema.pre("save", function (next) {
+  if (this.isModified("comment") || this.isNew) {
+    // Tính trung bình cộng của tất cả rating trong comment
+    const totalRating = this.comment.reduce((acc, cur) => acc + cur.rating, 0);
+    this.rating_avg = totalRating / this.comment.length;
+  }
+  next();
+});
 module.exports = mongoose.model("Product", productSchema);

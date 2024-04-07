@@ -7,14 +7,20 @@ import { IoIosStar } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { server } from "../../server";
+import { useSelector } from "react-redux";
+import { BsChatText } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetails = ({ data }) => {
+  const { user } = useSelector((state) => state.user);
+  const { admin } = useSelector((state) => state.admin);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [count, setCount] = useState(1);
   const [openViewSite, setOpenViewSite] = useState(false);
   const [addToCart, setAddToCart] = useState(false);
   const [selected_image_addToCart, setSelectedImageAddToCart] = useState(0);
+  const navigate = useNavigate();
   //expand description
   const [expandedDescription, setExpandedDescription] = useState(false);
   const sizes = data?.size;
@@ -90,6 +96,24 @@ const ProductDetails = ({ data }) => {
         toast.error(err.response.data.message);
       });
   };
+  const handleChat = async () => {
+    const groupId = data?._id + user?._id;
+    const senderId = user?._id;
+    const receivedId = admin?._id;
+    await axios
+      .post(`${server}/conversation/create-conversation`, {
+        groupId,
+        senderId,
+        receivedId,
+      })
+      .then((res) => {
+        if (res.data.success === true) {
+          navigate("/chat", {
+            state: { senderId, receivedId },
+          });
+        }
+      });
+  };
   return (
     <div className="h-full w-full mx-auto pb-8">
       <div className="bg-gradient-to-r from-gray-200 via-teal-200 to-gray-300/20 rounded-3xl w-[95%] sm:h-[100vh] h-full mx-auto mt-4">
@@ -152,7 +176,7 @@ const ProductDetails = ({ data }) => {
               </div>
               <div className="w-full flex flex-col mt-[8%]">
                 <span className="text-xl font-[600] font-Poppins uppercase">
-                  Đánh giá <i>(123)</i>
+                  Đánh giá <i>({data?.comment.length})</i>
                 </span>
                 <div className="sm:w-[80%] w-full flex justify-center items-center">
                   <div className="w-[70%]  h-1 bg-gray-300 rounded-md overflow-hidden">
@@ -172,12 +196,19 @@ const ProductDetails = ({ data }) => {
               </div>
               <div className="w-full flex">{data?.material}</div>
               <div className="sm:mt-2 mt-8 justify-between pr-3 sm:pb-0 pb-4">
-                <div>
+                <div className="w-full flex justify-center items-center">
                   <div
                     onClick={openAddToCart}
                     className="sm:w-[40%] w-[80%] cursor-pointer hover:translate-x-2 duration-300 hover:bg-gray-500 hover:text-white bg-white rounded-xl text-black sm:text-xl font-DM hover:shadow hover:shadow-teal-500/80  h-[40px] mt-8 flex justify-center items-center"
                   >
                     Thêm vào giỏ hàng
+                  </div>
+                  <div
+                    onClick={handleChat}
+                    className="sm:w-[120px] w-[80%] ml-4 cursor-pointer hover:translate-x-2 duration-300 hover:bg-gray-500 hover:text-white bg-white rounded-xl text-black sm:text-xl font-DM hover:shadow hover:shadow-teal-500/80  h-[40px] mt-8 flex justify-center items-center"
+                  >
+                    Chat
+                    <BsChatText className="ml-2" />
                   </div>
                   {addToCart ? (
                     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
@@ -342,7 +373,9 @@ const ProductDetails = ({ data }) => {
         ) : null}
       </div>
       <div className="w-[90%] mx-auto mt-4">
-        <span className="text-2xl font-[500] font-Roboto">Bình luận (123)</span>
+        <span className="text-2xl font-[500] font-Roboto">
+          Bình luận ({data?.comment.length})
+        </span>
         <div className="sm:w-[45%] w-full flex">
           <div className="w-[15%] border-r-4 border rounded-md flex justify-end pr-2 items-center border-r-black">
             <p className="text-3xl font-[800] text-center">
@@ -395,30 +428,30 @@ const ProductDetails = ({ data }) => {
             <>
               {data?.comment?.map((i, index) => (
                 <div
-                  className="w-full sm:h-[20vh] h-fit flex border-2 mt-2 sm:flex-row flex-col"
+                  className="w-full sm:h-[20vh] h-fit flex border-2 rounded-2xl border-teal-400 shadow-2xl mt-2 sm:flex-row flex-col"
                   key={index}
                 >
-                  <div className="sm:w-[15%] border-r-4 w-full bg-gradient-to-r from-indigo-500 flex sm:p-3 border-blue-500 sm:flex-col flex-row items-start justify-start">
+                  <div className="sm:w-[15%] h-full border-r-4 border-teal-500 w-full sm:flex-col flex-row flex items-center justify-center">
                     <img
-                      src={i?.avatar}
+                      src={`data:image/jpeg;base64,${i?.avatarUser}`}
                       alt=""
                       className="sm:h-[45%] sm:w-[35%] w-[20%] h-[5%] rounded-full"
                     />
-                    <div className="w-full pl-2">
-                      <p>{i?.userName}</p>
+                    <div className="w-full pl-2 flex justify-center items-center sm:flex-col">
+                      <p>{i?.cmt_userName}</p>
                       <div className="flex">
                         {Array.from({ length: i?.star }, (_, index) => (
                           <FaStar key={index} color="gold" size={20} />
                         ))}
                       </div>
-                      <p>{i?.date}</p>
+                      <p>{i?.cmt_createdAt.slice(0, 10)}</p>
                     </div>
                   </div>
-                  <div className="sm:w-[55%] border-r-4 border-blue-500 pl-2 flex flex-col justify-center pb-2 sm:pb-0">
-                    <p>{i.content}</p>
+                  <div className="sm:w-[55%] border-r-4 border-teal-500 pl-2 flex flex-col justify-center pb-2 sm:pb-0">
+                    <p className="text-center">{i.content}</p>
                   </div>
                   <div className="sm:w-[30%]">
-                    <p className="text-[15px] sm:h-[40px] text-center sm:pl-3 font-[500] font-DM bg-gradient-to-l from-indigo-500">
+                    <p className="text-[15px] sm:h-[40px] text-center sm:pl-3 font-[500] font-DM">
                       Hình ảnh từ khách hàng
                     </p>
                     <div className="sm:mt-3 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">

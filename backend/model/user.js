@@ -28,10 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   addresses: [
     {
-      country: {
-        type: String,
-      },
-      city: {
+      provine: {
         type: String,
       },
       town: {
@@ -96,10 +93,11 @@ const userSchema = new mongoose.Schema({
   discountCode: [
     {
       code: { type: String },
+      type: { type: String },
       value: { type: Number },
-      shopId: { type: String },
-      selectedProduct: { type: String },
-      couponName: { type: String },
+      productId: { type: String },
+      quantity: { type: Number },
+      dateExp: { type: Date },
     },
   ],
   resetPasswordToken: String,

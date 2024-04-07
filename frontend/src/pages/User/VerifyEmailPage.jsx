@@ -30,11 +30,11 @@ const VerifyEmailPage = () => {
     axios
       .post(`${server}/user/verify-user-email`, newForm, config)
       .then((res) => {
-        localStorage.setItem("code", JSON.stringify(res.data.verificationCode));
+        localStorage.setItem("code", JSON.stringify(res?.data?.verificationCode));
         toast.success("Đã gửi lại mã");
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err?.response?.data?.message);
       });
   };
   //create new user
@@ -50,7 +50,7 @@ const VerifyEmailPage = () => {
       await axios
         .post(`${server}/user/create-new-user`, requestData)
         .then((res) => {
-          toast.success(res.data.message);
+          toast.success(res.data?.message);
           localStorage.removeItem("userData");
           localStorage.removeItem("verificationCode");
           setTimeout(() => {
@@ -58,7 +58,7 @@ const VerifyEmailPage = () => {
           }, 1500);
         })
         .catch((error) => {
-          toast.error(error.response.data.message);
+          toast.error(error?.response?.data?.message);
         });
     }
   };
