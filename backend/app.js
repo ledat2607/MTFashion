@@ -14,7 +14,7 @@ app.use(
   })
 );
 app.use("/", express.static("uploads"));
-app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "200mb" }));
 
 //config
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -27,11 +27,17 @@ const user = require("./controller/user");
 const admin = require("./controller/admin");
 const type = require("./controller/type");
 const product = require("./controller/product");
+const order = require("./controller/order");
+const conversation = require("./controller/conversation");
+const message = require("./controller/message");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/admin", admin);
 app.use("/api/v2/type", type);
 app.use("/api/v2/product", product);
+app.use("/api/v2/order", order);
+app.use("/api/v2/conversation", conversation);
+app.use("/api/v2/message", message);
 
 //ErrorHandling
 app.use(ErrorHandler);

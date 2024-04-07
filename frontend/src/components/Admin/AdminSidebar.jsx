@@ -12,7 +12,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminSidebar = ({ setActiveItem, activeItem }) => {
   const navigate = useNavigate();
@@ -154,13 +154,15 @@ const AdminSidebar = ({ setActiveItem, activeItem }) => {
         </label>
       </div>
       <div className="w-full sm:mt-6 flex justify-center items-center">
-        <FaComment
-          onClick={() => setActiveItem(7)}
-          size={30}
-          className={`${
-            activeItem === 7 && "text-red-500"
-          } mr-4 hover:translate-x-3 transition-transform cursor-pointer duration-300`}
-        />
+        <Link to="/admin/chat">
+          <FaComment
+            onClick={() => setActiveItem(7)}
+            size={30}
+            className={`${
+              activeItem === 7 && "text-red-500"
+            } mr-4 hover:translate-x-3 transition-transform cursor-pointer duration-300`}
+          />
+        </Link>
         <AiOutlineLogout
           onClick={handleLogout}
           size={30}

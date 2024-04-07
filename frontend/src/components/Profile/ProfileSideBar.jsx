@@ -3,13 +3,8 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { IoMdPerson } from "react-icons/io";
 import { MdOutlineSecurity, MdAnalytics, MdEditLocation } from "react-icons/md";
-import {
-  FaArrowRight,
-  FaArrowDown,
-  FaIdCard,
-  FaRocketchat,
-} from "react-icons/fa";
-import Loader from "../Layout/Loader";
+import { FaArrowRight, FaArrowDown, FaRocketchat } from "react-icons/fa";
+import Loader from "../animations/Loader";
 
 const ProfileSideBar = ({
   active,
@@ -50,8 +45,8 @@ const ProfileSideBar = ({
       >
         <IoMdPerson size={35} color={`${active === 1 ? "red" : ""}`} />
         <p
-          className={`sm:block hidden pl-4 ${
-            active === 1 ? "text-red-500" : ""
+          className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
+            active === 1 ? "text-red-500" : "text-white"
           }`}
         >
           Thông tin cá nhân
@@ -63,8 +58,8 @@ const ProfileSideBar = ({
       >
         <FaRocketchat size={35} color={`${active === 2 ? "red" : ""}`} />
         <p
-          className={`sm:block hidden pl-4 ${
-            active === 2 ? "text-red-500" : ""
+          className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
+            active === 2 ? "text-red-500" : "text-white"
           }`}
         >
           Trò chuyện
@@ -76,8 +71,8 @@ const ProfileSideBar = ({
       >
         <MdOutlineSecurity size={35} color={`${active === 3 ? "red" : ""}`} />
         <p
-          className={`sm:block hidden pl-4 ${
-            active === 3 ? "text-red-500" : ""
+          className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
+            active === 3 ? "text-red-500" : "text-white"
           }`}
         >
           Bảo mật
@@ -93,8 +88,8 @@ const ProfileSideBar = ({
           <div className="w-[80%] flex items-center">
             <MdAnalytics size={35} color={`${active === 4 ? "red" : ""}`} />
             <p
-              className={`sm:block hidden pl-4 ${
-                active === 4 ? "text-red-500" : ""
+              className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
+                active === 4 ? "text-red-500" : "text-white"
               }`}
             >
               Quản lý mua hàng
@@ -112,26 +107,18 @@ const ProfileSideBar = ({
             <div
               onClick={() => setActiveMenuProps(1)}
               className={`${
-                activeMenu === 1 ? "text-red-500" : ""
-              } p-2 cursor-pointer hover:bg-gray-200`}
+                activeMenu === 1 ? "text-red-500" : "text-white"
+              } p-2 cursor-pointer hover:bg-gray-200 font-[600] font-Roboto text-md`}
             >
               Đơn hàng
             </div>
             <div
               onClick={() => setActiveMenuProps(2)}
               className={`${
-                activeMenu === 2 ? "text-red-500" : ""
-              } p-2 cursor-pointer hover:bg-gray-200`}
+                activeMenu === 2 ? "text-red-500" : "text-white"
+              } p-2 cursor-pointer hover:bg-gray-200 font-[600] font-Roboto text-md`}
             >
               Hoàn trả
-            </div>
-            <div
-              onClick={() => setActiveMenuProps(3)}
-              className={`${
-                activeMenu === 3 ? "text-red-500" : ""
-              } p-2 cursor-pointer hover:bg-gray-200`}
-            >
-              Thống kê
             </div>
           </div>
         )}
@@ -143,24 +130,11 @@ const ProfileSideBar = ({
       >
         <MdEditLocation size={35} color={`${active === 5 ? "red" : ""}`} />
         <p
-          className={`sm:block hidden pl-4 ${
-            active === 5 ? "text-red-500" : ""
+          className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
+            active === 5 ? "text-red-500" : "text-white"
           }`}
         >
           Địa chỉ
-        </p>
-      </div>
-      <div
-        onClick={() => handleSetActive(6)}
-        className="hover:translate-y-2 transition-transform duration-300 p-3 hover:shadow-2xl flex items-center pl-4 cursor-pointer w-full mb-2"
-      >
-        <FaIdCard size={35} color={`${active === 6 ? "red" : ""}`} />
-        <p
-          className={`sm:block hidden pl-4 ${
-            active === 6 ? "text-red-500" : ""
-          }`}
-        >
-          Nâng cấp tài khoản
         </p>
       </div>
 

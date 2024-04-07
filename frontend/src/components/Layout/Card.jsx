@@ -1,5 +1,5 @@
 import React from "react";
-import MemberCard from "../Layout/MemberCard";
+import MemberCard from "../animations/MemberCard";
 
 const Card = ({ user, type }) => {
   const getGradientColor = (type) => {

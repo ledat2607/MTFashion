@@ -56,7 +56,6 @@ const Header = ({ activeHeading }) => {
       fetchDataCart();
     }
   }, [dispatch, user?._id]);
-  console.log(cartItems);
   //Định dạng tiền tệ
   function formatVietnameseCurrency(number) {
     const roundedNumber = Math.round(number / 1000) * 1000;
@@ -130,8 +129,11 @@ const Header = ({ activeHeading }) => {
     const number = parseFloat(numericString);
     return isNaN(number) ? 0 : number;
   }
-  const handlePay = async (productId, quantity, price) => {
-    console.log(productId, quantity, price);
+  const handlePay = async (product, price, size, style, quantity) => {
+    navigate("/check_out", {
+      state: { product, price, size, style, quantity },
+    });
+    window.location.reload();
   };
   return (
     <div className="relative">
@@ -270,9 +272,11 @@ const Header = ({ activeHeading }) => {
                           className="w-[120px] bg-blue-400 sm:ml-4 flex justify-center items-center rounded-3xl h-[30px] cursor-pointer hover:-translate-x-2 transition-transform duration-300"
                           onClick={() =>
                             handlePay(
-                              i?.productId,
-                              i?.quantity,
-                              calculateItemTotalPrice(i)
+                              i,
+                              calculateItemTotalPrice(i),
+                              i?.size,
+                              i?.typeProduct,
+                              i?.quantity
                             )
                           }
                         >

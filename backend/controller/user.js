@@ -70,7 +70,7 @@ router.post(
       .toString()
       .replace(/,/g, "");
     const verificationCodeAsNumber = parseInt(verificationCodeAsString, 10);
-    if (verificationCodeAsNumber === data.verificationCode) {
+    if (verificationCodeAsNumber === data?.verificationCode) {
       const user = {
         name: data?.userData?.name,
         email: data?.userData?.email,
@@ -149,7 +149,6 @@ router.get(
     }
   })
 );
-
 //add to wishlist
 router.post(
   "/add_to_wishlist",
@@ -337,6 +336,187 @@ router.get(
       res.status(200).json({ success: true, cart });
     } catch (error) {
       // Bắt lỗi nếu có
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//add discountcode
+router.post(
+  "/add_discount_code",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { data, productId } = req.body;
+      const newDiscountCode = {
+        code: data.code,
+        type: data.type,
+        value: data.value,
+        productId: productId,
+        quantity: 1,
+        dateExp: data.dateExp,
+      };
+
+      // Lấy ID của người dùng từ đối tượng authenticated
+      const userId = req.user.id;
+
+      // Cập nhật trường discountCode của người dùng với dữ liệu mới
+      await User.findByIdAndUpdate(userId, {
+        $push: { discountCode: newDiscountCode },
+      });
+      res.status(200).json({
+        success: true,
+        message: "Thêm thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//update addresses
+router.post(
+  "/add_address",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { street, town, provine, selectedStyle } = req.body;
+      const userId = req.user.id;
+      // Tìm và cập nhật người dùng
+      const user = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            addresses: {
+              street: street,
+              town: town,
+              provine: provine,
+              addressType: selectedStyle,
+            },
+          },
+        },
+        { new: true } // Trả về người dùng sau khi cập nhật
+      );
+
+      // Kiểm tra nếu không tìm thấy người dùng
+      if (!user) {
+        return next(new ErrorHandler("Người dùng không tồn tại", 400));
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Thêm mới thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//delete address
+router.post(
+  "/delete_address",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      const userId = req.user.id;
+
+      // Xóa địa chỉ từ cơ sở dữ liệu
+      const deletedAddress = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { addresses: { _id: id } } },
+        { new: true }
+      );
+
+      // Kiểm tra xem địa chỉ đã được xóa thành công hay không
+      if (!deletedAddress) {
+        return next(new ErrorHandler("Địa chỉ không tồn tại", 400));
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Xóa địa chỉ thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//update avatar
+router.put(
+  "/update-avatar",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { data } = req.body;
+      const userId = req.user.id;
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { avatar: data?.avatar },
+        { new: true }
+      );
+      if (!user) {
+        return next(new ErrorHandler("Người dùng không tồn tại", 400));
+      }
+      res.status(200).json({
+        success: true,
+        message: "Cập nhật ảnh đại diện thành công",
+      });
+    } catch (error) {}
+  })
+);
+router.put(
+  "/update-infor",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { data } = req.body;
+      const userId = req.user.id;
+      const user = await User.findByIdAndUpdate(
+        userId,
+        {
+          birthDay: data.editBirthDay,
+          surName: data.editSurname,
+          email: data.editEmail,
+          name: data.editName,
+          phoneNumber: data?.editPhoneNumber,
+          userName: data?.editUserName,
+        },
+        { new: true }
+      );
+      if (!user) {
+        return next(new ErrorHandler("Người dùng không tồn tại", 400));
+      }
+      res.status(200).json({
+        success: true,
+        message: "Cập nhật thông tin thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//update password
+router.put(
+  "/update-user-password",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id).select("+password");
+      const isPasswordMatched = await user.comparePassword(
+        req.body.oldPassword
+      );
+      if (!isPasswordMatched) {
+        return next(new ErrorHandler("Mật khẩu cũ không chính xác!"));
+      }
+      if (req.body.newPassword !== req.body.confirmPassword) {
+        return next(new ErrorHandler("Mật khẩu xác nhận không chính xác !"));
+      }
+      user.password = req.body.newPassword;
+      await user.save();
+      res.status(201).json({
+        success: true,
+        message: "Cập nhật thành công",
+      });
+    } catch (error) {
       return next(new ErrorHandler(error.message, 400));
     }
   })

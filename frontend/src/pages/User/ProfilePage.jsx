@@ -16,9 +16,9 @@ const ProfilePage = () => {
       className="w-full h-[100vh] flex justify-center items-center relative"
       style={{
         background:
-          "linear-gradient(to top right, #FFD3E0, #B5EAD7, #B6C0C5, #CBE7E3 ,#353A5F)",
+          "linear-gradient(to top right, #112D60, #B6C0C5, #9EBAF3, #CBE7E3 ,#CBE7E3)",
       }}
-    >
+    > 
       <div
         className="sm:w-[80%] border-gray-700 sm:h-fit rounded-xl sm:flex shadow-xl relative"
         style={{
