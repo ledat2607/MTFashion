@@ -21,7 +21,7 @@ const Refund = () => {
 
   useEffect(() => {
     // Lọc ra các sản phẩm có trạng thái là "xác nhận hoàn trả" hoặc "hoàn trả"
-    const filteredData = orders.filter(
+    const filteredData = orders?.filter(
       (order) =>
         order.status === "Xác nhận hoàn trả" || order.status === "Hoàn trả"
     );

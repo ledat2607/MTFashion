@@ -36,7 +36,6 @@ const Product = () => {
       fetchData();
     }
   }, [selectedCatgory]);
-  console.log(categoriesType);
   const handleCategoryChange = (event) => {
     const newCategory = event.target.value;
     setSelectedCategory(newCategory);

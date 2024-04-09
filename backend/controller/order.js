@@ -5,6 +5,7 @@ const Product = require("../model/product");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const User = require("../model/user");
 //create order
 router.post(
   "/create-order",
@@ -181,8 +182,7 @@ router.put(
   isAdmin,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { status, id, productId } = req.body;
-
+      const { status, id, productId, userId, amount } = req.body;
       if (status === "Giao hàng thành công") {
         // Cập nhật trạng thái đơn hàng và thời gian thanh toán
         const order = await Order.findByIdAndUpdate(
@@ -214,13 +214,47 @@ router.put(
           { new: true }
         );
 
+        // Cập nhật amount của người dùng
+        const user = await User.findByIdAndUpdate(
+          userId,
+          { $inc: { amount: amount } }, // Tăng amount
+          { new: true }
+        );
+
+        return res.status(200).json({
+          success: true,
+          message: "Cập nhật trạng thái đơn hàng thành công",
+          data: order,
+        });
+      } else if (status === "Xác nhận hoàn trả") {
+        // Cập nhật trạng thái đơn hàng
+        const order = await Order.findByIdAndUpdate(
+          id,
+          { status: status },
+          { new: true }
+        );
+
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Không tìm thấy đơn hàng",
+          });
+        }
+
+        // Trừ amount của người dùng
+        const user = await User.findByIdAndUpdate(
+          userId,
+          { $inc: { amount: -amount } }, // Trừ amount
+          { new: true }
+        );
+
         return res.status(200).json({
           success: true,
           message: "Cập nhật trạng thái đơn hàng thành công",
           data: order,
         });
       } else {
-        // Nếu không phải là "Giao hàng thành công", chỉ cập nhật trạng thái đơn hàng
+        // Nếu không phải là "Giao hàng thành công" hoặc "Xác nhận hoàn trả", chỉ cập nhật trạng thái đơn hàng
         const order = await Order.findByIdAndUpdate(
           id,
           { status: status },

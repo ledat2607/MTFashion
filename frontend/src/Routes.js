@@ -10,6 +10,8 @@ import PaymentPage from "../src/pages/User/PaymentPage";
 import OrderSuccessPage from "../src/pages/User/OrderSuccessPage";
 import DetailOrderPage from "../src/pages/User/DetailOrderPage";
 import ChatPage from "../src/pages/User/ChatPage";
+import HotProductPage from "../src/pages/User/HotProductPage";
+import AboutUsPage from "../src/pages/User/AboutUsPage.jsx";
 export {
   ProductPage,
   LoginPage,
@@ -23,4 +25,6 @@ export {
   OrderSuccessPage,
   DetailOrderPage,
   ChatPage,
+  HotProductPage,
+  AboutUsPage,
 };

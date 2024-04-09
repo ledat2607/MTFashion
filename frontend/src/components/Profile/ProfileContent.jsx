@@ -10,6 +10,7 @@ import { MdOutlinePhotoCameraFront } from "react-icons/md";
 import axios from "axios";
 import { server } from "../../server.js";
 import { toast } from "react-toastify";
+import LoadUser from "../animations/loadUser.jsx";
 
 const ProfileContent = ({ active, activeMenu }) => {
   const { user } = useSelector((state) => state.user);
@@ -86,6 +87,16 @@ const ProfileContent = ({ active, activeMenu }) => {
         toast.error(err.response.data.message);
       });
   };
+  //Định dạng tiền tệ
+  function formatVietnameseCurrency(number) {
+    const roundedNumber = Math.round(number / 1000) * 1000;
+    const formattedNumber = roundedNumber.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+
+    return formattedNumber;
+  }
   return (
     <div className="w-full h-full">
       {/*Profile Information*/}
@@ -273,7 +284,27 @@ const ProfileContent = ({ active, activeMenu }) => {
             <div className="w-full h-[50%] flex items-center justify-center">
               <Card user={user} type={user?.customerType} />
             </div>
-            <div className="border w-full h-[50%] border-green-400"></div>
+            <div className="w-full h-[50%] justify-center items-center flex">
+              <div className="w-full mt-2 h-[15vh] rounded-2xl border-2 border-blue-500 p-2 flex items-center">
+                <div className="w-[30%]">
+                  <LoadUser />
+                </div>
+                <div className="w-[70%] ml-2">
+                  <p className="text-lg font-Poppins">
+                    Tổng chi tiêu:
+                    <i className="text-lg ml-4 font-[700] text-blue-500">
+                      {formatVietnameseCurrency(user?.amount)}
+                    </i>
+                  </p>
+                  <p className="text-lg font-Poppins">
+                    Ngày tạo tài khoản:
+                    <i className="text-lg ml-4 font-[700] text-blue-500">
+                      {user?.createdAt.slice(0, 10)}
+                    </i>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

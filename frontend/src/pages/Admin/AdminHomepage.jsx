@@ -7,7 +7,8 @@ import ManageProduct from "../../components/Admin/Manage/ManageProduct";
 import EventProduct from "../../components/Admin/Manage/EventProduct/EventProduct";
 import ManageDiscountCode from "../../components/Admin/Manage/ManageDiscountCode";
 import ManageOrder from "../../components/Admin/Manage/ManageOrder";
-import AdminChatPage from "../../../src/pages/Admin/AdminChatPage.jsx"
+import AdminChatPage from "../../../src/pages/Admin/AdminChatPage";
+import AdminHero from "../../components/Admin/AdminHero"
 const AdminHomepage = () => {
   const { admin } = useSelector((state) => state.admin);
   const [showSidebar, setShowSidebar] = useState(true);
@@ -85,9 +86,9 @@ const AdminHomepage = () => {
               <div
                 className={`${
                   showSidebar ? "hidden" : "block"
-                } sm:block w-full p-2`}
+                } sm:block w-full p-4`}
               >
-                Quản lý chung
+                <AdminHero />
               </div>
             )}
             {activeItem === 2 && (

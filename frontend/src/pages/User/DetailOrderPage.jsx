@@ -47,11 +47,18 @@ const DetailOrderPage = () => {
     "Giao hàng thành công",
   ];
   const optionRefund = ["Chờ duyệt", "Xác nhận hoàn trả"];
+  console.log(item);
   const handleUpdateStatus = async () => {
     await axios
       .put(
         `${server}/order/update-status-order`,
-        { id: item?._id, status, productId: item?.product.productId },
+        {
+          id: item?._id,
+          status,
+          productId: item?.product.productId,
+          amount: item?.totalPrice,
+          userId: item?.user?.id,
+        },
         { withCredentials: true }
       )
       .then((res) => {

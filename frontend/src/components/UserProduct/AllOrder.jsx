@@ -109,7 +109,10 @@ const AllOrder = () => {
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredData?.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredData?.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder
+  );
 
   return (
     <div className="w-full mx-auto h-[82vh]">
@@ -274,7 +277,7 @@ const AllOrder = () => {
                   ) : null}
                   {openRefund ? (
                     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-[100]">
-                      <div className="bg-white rounded-md sm:h-[60vh] h-fit sm:w-[25%] w-[90%]">
+                      <div className="bg-white rounded-md sm:h-[65vh] h-fit sm:w-[25%] w-[90%]">
                         <h1 className="text-lg font-[600] text-center sm:mt-6 uppercase font-Poppins">
                           Lý do trả hàng
                         </h1>
@@ -294,7 +297,7 @@ const AllOrder = () => {
                         ))}
                         <div className="w-[90%] justify-center items-center flex mt-8 mx-auto">
                           <div
-                            onClick={() => setOpen(false)}
+                            onClick={() => setOpenRefund(false)}
                             className="w-[80px] bg-red-500 flex justify-center items-center cursor-pointer rounded-2xl h-[40px]"
                           >
                             Đóng
