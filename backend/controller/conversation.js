@@ -4,7 +4,7 @@ const Conversation = require("../model/conversation");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const User = require("../model/user");
-const { isAdmin } = require("../middleware/auth");
+const { isAdmin, isAuthenticated } = require("../middleware/auth");
 
 //create new conversation
 router.post(
@@ -57,6 +57,47 @@ router.get(
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+//get all conversation
+router.get(
+  "/get-all-conversation/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const conversations = await Conversation.find({
+        members: {
+          $in: [req.params.id],
+        },
+      }).sort({ updatedAt: -1, createdAt: -1 });
+      res.status(200).json({
+        success: true,
+        conversations,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
+//update last conversation
+router.put(
+  "/update-last-message/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { lastMessage, lastMessageId } = req.body;
+      const conversation = await Conversation.findByIdAndUpdate(req.params.id, {
+        lastMessage,
+        lastMessageId,
+      });
+
+      res.status(201).json({
+        success: true,
+        conversation,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
     }
   })
 );

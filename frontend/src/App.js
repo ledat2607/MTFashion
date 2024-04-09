@@ -16,6 +16,8 @@ import {
   OrderSuccessPage,
   DetailOrderPage,
   ChatPage,
+  HotProductPage,
+  AboutUsPage,
 } from "./Routes.js";
 import {
   SignUpAdminPage,
@@ -44,6 +46,8 @@ const App = () => {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/hot-deals" element={<HotProductPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/product/:name" element={<ProductPage />} />
         <Route
           path="/profile"

@@ -57,13 +57,11 @@ const ProfileSideBar = ({
         className="hover:translate-y-2 transition-transform duration-300 p-3 hover:shadow-2xl flex items-center pl-4 cursor-pointer w-full mb-2"
       >
         <FaRocketchat size={35} color={`${active === 2 ? "red" : ""}`} />
-        <p
-          className={`sm:block hidden pl-4 font-[600] font-Roboto text-md ${
-            active === 2 ? "text-red-500" : "text-white"
-          }`}
-        >
-          Trò chuyện
-        </p>
+        <Link to="/chat">
+          <p className="sm:block hidden pl-4 font-[600] font-Roboto text-md">
+            Trò chuyện
+          </p>
+        </Link>
       </div>
       <div
         onClick={() => handleSetActive(3)}

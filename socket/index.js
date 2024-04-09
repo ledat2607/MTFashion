@@ -76,8 +76,7 @@ io.on("connection", (socket) => {
     // update the seen flag for the message
     if (messages[senderId]) {
       const message = messages[senderId].find(
-        (message) =>
-          message.receiveId === receiveId && message.id === messageId
+        (message) => message.receiveId === receiveId && message.id === messageId
       );
       if (message) {
         message.seen = true;

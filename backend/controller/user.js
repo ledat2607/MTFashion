@@ -521,4 +521,64 @@ router.put(
     }
   })
 );
+//get informattion by userId
+router.get(
+  "/user-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+//update customerType
+router.post(
+  "/update-customerType",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { id, amount } = req.body;
+      // Xác định customerType mới dựa trên amount
+      let newCustomerType;
+      if (amount < 500000) {
+        newCustomerType = "Bronze";
+      } else if (amount >= 500000 && amount < 1000000) {
+        newCustomerType = "Silver";
+      } else if (amount >= 1000000 && amount < 5000000) {
+        newCustomerType = "Gold";
+      } else if (amount >= 5000000 && amount < 10000000) {
+        newCustomerType = "Platinum";
+      } else {
+        newCustomerType = "Diamond";
+      }
+
+      // Cập nhật customerType mới vào người dùng
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { customerType: newCustomerType },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({
+          success: false,
+          message: "Không tìm thấy người dùng",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Cập nhật thành công",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 module.exports = router;
