@@ -18,6 +18,9 @@ import {
   ChatPage,
   HotProductPage,
   AboutUsPage,
+  ForgotPasswordPage,
+  ActiveCode,
+  ResetPassword,
 } from "./Routes.js";
 import {
   SignUpAdminPage,
@@ -49,6 +52,10 @@ const App = () => {
         <Route path="/hot-deals" element={<HotProductPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/product/:name" element={<ProductPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/active-code" element={<ActiveCode />} />
+        <Route path="/reset" element={<ResetPassword />} />
+
         <Route
           path="/profile"
           element={

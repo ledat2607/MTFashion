@@ -53,7 +53,7 @@ const Product = () => {
     const finalData =
       selectedType === ""
         ? filteredData
-        : filteredData?.filter((item) => item.type === selectedType);
+        : filteredData?.filter((item) => item?.type === selectedType);
     setData(finalData);
   }, [selectedCatgory, selectedType, products]);
   return (

@@ -116,7 +116,6 @@ const Payment = ({ data }) => {
       await axios.delete(`${server}/user/remove_from_cart/${productId}`, {
         withCredentials: true,
       });
-      toast.success("Đã xóa khỏi giỏ hàng");
     } catch (error) {
       toast.error("Lỗi khi xóa");
     }

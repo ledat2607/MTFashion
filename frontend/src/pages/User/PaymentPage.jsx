@@ -6,11 +6,12 @@ import { useLocation } from "react-router-dom";
 import Payment from "../../components/CheckOutComponent/Payment";
 const PaymentPage = () => {
   const location = useLocation();
-  const { dataUser, dataAddress, dataProduct } = location.state;
+  const { dataUser, dataAddress, dataProduct, appliedCodes } = location.state;
   const data = {
     dataUser,
     dataProduct,
     dataAddress,
+    appliedCodes,
   };
   return (
     <div className="w-full h-[100vh]">

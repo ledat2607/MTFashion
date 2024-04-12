@@ -45,8 +45,8 @@ const LoginAdminPage = () => {
       .then((res) => {
         toast.success(res.data.message);
         setTimeout(() => {
+          navigate("/admin");
           window.location.reload();
-          navigate("/admin/");
         }, 1000);
       })
       .catch((err) => {
