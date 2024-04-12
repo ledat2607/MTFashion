@@ -63,6 +63,9 @@ const AllOrder = () => {
     setSelectedReason(newReason);
   };
   const handleCancel = async () => {
+    if (selectedReason === "") {
+      toast.error("Vui lòng chọn lý do hủy đơn hàng");
+    }
     await axios
       .post(
         `${server}/order/cancel-order`,
@@ -72,6 +75,7 @@ const AllOrder = () => {
       .then((res) => {
         toast.success(res.data.message);
         setOpen(false);
+        setSelectedReason("");
       })
       .catch((err) => {
         toast.error(err.response.data.message);
@@ -83,6 +87,9 @@ const AllOrder = () => {
     });
   };
   const handleRefund = async () => {
+    if (selectedReason === "") {
+      toast.error("Vui lòng chọn lý do hủy đơn hàng");
+    }
     await axios
       .post(
         `${server}/order/refund-order`,
@@ -92,6 +99,7 @@ const AllOrder = () => {
       .then((res) => {
         toast.success(res.data.message);
         setOpenRefund(false);
+        setSelectedReason("");
       })
       .catch((err) => {
         toast.error(err.response.data.message);

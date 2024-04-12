@@ -28,7 +28,7 @@ const ManageProduct = () => {
   const [selectedCategoryNewType, setSelectedCategoryNewType] = useState(
     "Chọn danh mục sản phẩm..."
   );
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState(data && data?.type);
   const [newType, setNewType] = useState("");
   const [newTypeTitle, setnewTypeTitle] = useState("");
   const [markdownValue, setMarkdownValue] = useState("");
@@ -165,6 +165,7 @@ const ManageProduct = () => {
     setSelectedCategory(e.target.value);
     setSelectedType(null);
   };
+  console.log(selectedType);
   //Thêm mới sản phẩm
   const handleAddNewProduct = async () => {
     try {
@@ -431,11 +432,14 @@ const ManageProduct = () => {
                               value={selectedType}
                               onChange={handleChangeType}
                             >
+                              <option>Chọn loại sản phẩm...</option>
                               {data.length > 0 &&
                                 data[0].types.map((item, index) => (
-                                  <option key={index} value={item.name}>
-                                    {item.name}
-                                  </option>
+                                  <>
+                                    <option key={index} value={item.name}>
+                                      {item.name}
+                                    </option>
+                                  </>
                                 ))}
                             </select>
                           </div>
@@ -480,7 +484,7 @@ const ManageProduct = () => {
                                         setNewType(e.target.value)
                                       }
                                       placeholder="Tên loại sản phẩm..."
-                                      className="border-2  focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[400px] h-[40px] rounded-lg p-2"
+                                      className="border-2 focus:outline-none bg-gray-200 focus:bg-gray-100 mt-2 w-[200px] h-[40px] rounded-lg p-2"
                                     />
                                   </div>
                                 </div>

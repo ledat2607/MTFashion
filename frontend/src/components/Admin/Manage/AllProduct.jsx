@@ -31,7 +31,6 @@ const AllProduct = () => {
   };
 
   const handleConfirmDel = async () => {
-    console.log(id);
     if (!id) return;
     try {
       await axios

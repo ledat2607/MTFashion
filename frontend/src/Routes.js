@@ -11,7 +11,10 @@ import OrderSuccessPage from "../src/pages/User/OrderSuccessPage";
 import DetailOrderPage from "../src/pages/User/DetailOrderPage";
 import ChatPage from "../src/pages/User/ChatPage";
 import HotProductPage from "../src/pages/User/HotProductPage";
-import AboutUsPage from "../src/pages/User/AboutUsPage.jsx";
+import AboutUsPage from "../src/pages/User/AboutUsPage";
+import ForgotPasswordPage from "../src/pages/User/ForgotPasswordPage";
+import ActiveCode from "../src/pages/User/ActiveCode";
+import ResetPassword from "../src/pages/User/ResetPassword";
 export {
   ProductPage,
   LoginPage,
@@ -27,4 +30,7 @@ export {
   ChatPage,
   HotProductPage,
   AboutUsPage,
+  ForgotPasswordPage,
+  ActiveCode,
+  ResetPassword,
 };

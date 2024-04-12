@@ -155,7 +155,7 @@ const CheckOutComponent = ({ data }) => {
       toast.error("Vui lòng điền đầy đủ địa chỉ giao hàng !!");
     } else {
       navigate("/payment", {
-        state: { dataUser, dataAddress, dataProduct },
+        state: { dataUser, dataAddress, dataProduct, appliedCodes },
       });
     }
   };
