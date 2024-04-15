@@ -14,8 +14,14 @@ app.use(
   })
 );
 app.use("/", express.static("uploads"));
-app.use(bodyParser.json({ limit: "150mb" }));
-app.use(bodyParser.urlencoded({ limit: "150mb", extended: true }));
+app.use(bodyParser.json({ limit: "500mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "500mb",
+    parameterLimit: 1000000,
+    extended: true,
+  })
+);
 
 //config
 if (process.env.NODE_ENV !== "PRODUCTION") {
