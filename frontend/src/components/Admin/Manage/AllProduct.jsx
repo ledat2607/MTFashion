@@ -73,7 +73,7 @@ const AllProduct = () => {
                   className="h-[10vh] flex justify-center items-center"
                 >
                   <img
-                    src={`data:image/jpeg;base64,${i.imgProduct[0].url}`}
+                    src={`data:image/jpeg;base64,${i.imgProduct[0]?.url}`}
                     alt=""
                     className="h-full object-contain mt-1"
                   />

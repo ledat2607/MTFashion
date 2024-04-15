@@ -38,11 +38,11 @@ const Payment = ({ data }) => {
   const order = {
     product: data?.dataProduct.data.product,
     shippingAddress: data?.dataAddress,
-    user: data?.dataUser,
+    user: data?.dataUser.id,
     totalPrice: data?.dataProduct.total,
     style: data?.dataProduct?.data.style,
   };
-
+  console.log(data);
   const onApprove = async (data, actions) => {
     return actions.order?.capture().then(function (details) {
       const { payer } = details;
@@ -165,7 +165,7 @@ const Payment = ({ data }) => {
                 src={`data:image/jpeg;base64,${
                   data?.dataProduct.data.style
                     ? data?.dataProduct.data.style.url
-                    : data?.dataProduct.data.product.product.imgProduct[0].url
+                    : data?.dataProduct.data.product.product.imgProduct[0]?.url
                 }`}
                 alt=""
                 className="w-[150px] object-contain rounded-3xl"
@@ -173,7 +173,7 @@ const Payment = ({ data }) => {
               <p className="text-center">
                 {data?.dataProduct.data.style
                   ? data?.dataProduct.data.style.code
-                  : data?.dataProduct.data.product.product.imgProduct[0].code}
+                  : data?.dataProduct.data.product.product.imgProduct[0]?.code}
               </p>
             </div>
             <div className="w-[50%] pl-4 border-r-2 border-blue-500">

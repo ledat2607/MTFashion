@@ -233,7 +233,7 @@ const ProductCard = ({ products }) => {
                             <div className="w-full h-[55vh] overflow-y-scroll flex flex-col justify-center items-center">
                               {currentProducts?.map((item, ind) => {
                                 const isDiscountCodeUsed =
-                                  usedDiscountCodes?.includes(item.code);
+                                  usedDiscountCodes?.includes(item?.code);
                                 return (
                                   <div className="relative w-[95%]">
                                     <div
@@ -361,7 +361,7 @@ const ProductCard = ({ products }) => {
 
               <div className="mt-8 w-[85%] h-[25vh] flex justify-center overflow-hidden mx-auto">
                 <img
-                  src={`data:image/jpeg;base64,${i?.imgProduct[0].url}`}
+                  src={`data:image/jpeg;base64,${i?.imgProduct[0]?.url}`}
                   alt=""
                   className="w-[100%] h-full rounded-xl object-contain hover:scale-[1.1] transition-all duration-300 cursor-pointer"
                 />

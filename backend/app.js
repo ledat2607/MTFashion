@@ -13,16 +13,14 @@ app.use(
     credentials: true,
   })
 );
-app.use("/", express.static("uploads"));
-app.use(bodyParser.json({ limit: "500mb" }));
+// app.use("/", express.static("uploads"));
+// app.use(express.urlencoded({ limit: "50mb" }));
+// app.use(bodyParser.json({ limit: "10000kb", extended: true }));
+// app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
+app.use(express.json({ limit: "10mb", extended: true }));
 app.use(
-  bodyParser.urlencoded({
-    limit: "500mb",
-    parameterLimit: 1000000,
-    extended: true,
-  })
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
 );
-
 //config
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
