@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { server } from "../../server";
@@ -8,16 +8,27 @@ import Shipping from "../../components/animations/Shipping";
 import ShipSuccess from "../../components/animations/shipSuccess";
 import { FaStar } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
+import { useSelector } from "react-redux";
 const DetailOrderPage = () => {
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const { item, isAdmin } = location.state;
   const [status, setStatus] = useState(
     item && item?.status ? item.status : "Chờ duyệt"
   );
+
   const [openCmt, setOpenCmt] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [images, setImages] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null); // Thêm state để lưu thông tin user hiện tại
+
+  // Lọc thông tin user nếu id trùng khớp với user hiện tại
+  useEffect(() => {
+    if (user && item?.user?.id === user._id) {
+      setCurrentUser(user);
+    }
+  }, [user, item]);
   const handleClick = (value) => {
     setRating(value);
   };
@@ -47,7 +58,6 @@ const DetailOrderPage = () => {
     "Giao hàng thành công",
   ];
   const optionRefund = ["Chờ duyệt", "Xác nhận hoàn trả"];
-  console.log(item);
   const handleUpdateStatus = async () => {
     await axios
       .put(
@@ -68,7 +78,6 @@ const DetailOrderPage = () => {
         toast.error(err.response.data.message);
       });
   };
-  const userName = `${item?.user?.surName} ${item?.user?.name}`;
   const handleComment = async (productId) => {
     const imagesWithUrls = images.map((image) => {
       return { url: image };
@@ -78,13 +87,12 @@ const DetailOrderPage = () => {
       .post(
         `${server}/product/add-comment`,
         {
-          userName,
           productId,
           comment,
           rating,
-          images: imagesWithUrls, // Sử dụng mảng mới chứa trường `url`
-          avatar: item?.user.avatar,
+          images: imagesWithUrls,
           orderId: item?._id,
+          userId: item?.user.id,
         },
         { withCredentials: true }
       )
@@ -103,6 +111,7 @@ const DetailOrderPage = () => {
   const handleDeleteImg = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
+  console.log(item);
   return (
     <div
       className="w-full h-[100vh] flex justify-center items-center"
@@ -195,16 +204,16 @@ const DetailOrderPage = () => {
         </div>
         <div className="w-[90%] mx-auto sm:mt-4 flex justify-center items-center">
           <img
-            src={`data:image/jpeg;base64,${item?.user.avatar}`}
+            src={`data:image/jpeg;base64,${currentUser?.avatar}`}
             alt=""
             className="w-[100px] h-[100px] rounded-full"
           />
           <div className="flex flex-col ml-2">
             <p className="text-lg font-Poppins">
-              {item?.user?.surName} {item?.user?.name}
+              {currentUser?.surName} {currentUser?.name}
             </p>
-            <p className="text-lg font-Poppins">{item?.user?.email}</p>
-            <p className="text-lg font-Poppins">0{item?.user?.phoneNumber}</p>
+            <p className="text-lg font-Poppins">{currentUser?.email}</p>
+            <p className="text-lg font-Poppins">0{currentUser?.phoneNumber}</p>
           </div>
         </div>
         {isAdmin === true ? (

@@ -14,7 +14,6 @@ router.post(
     try {
       const { product, shippingAddress, user, totalPrice, style, paymentInfo } =
         req.body;
-
       const productId = product?.productId;
       const isProduct = await Product.findById(productId);
       if (!isProduct) {
@@ -46,12 +45,7 @@ router.post(
           provine: shippingAddress?.provine,
         },
         user: {
-          surName: user?.surName,
-          name: user?.name,
-          email: user?.email,
-          phoneNumber: user?.phoneNumber,
-          avatar: user?.avatar,
-          id: user?.id,
+          id: user,
         },
         totalPrice: totalPrice,
         paymentInfo: paymentInfo,

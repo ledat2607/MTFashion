@@ -463,6 +463,7 @@ router.put(
     } catch (error) {}
   })
 );
+//update infomation
 router.put(
   "/update-infor",
   isAuthenticated,
@@ -633,5 +634,19 @@ router.put(
     }
   })
 );
-
+//get all user
+router.get(
+  "/get-all-user",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userData = await User.find();
+      res.status(200).json({
+        success: true,
+        userData,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
 module.exports = router;

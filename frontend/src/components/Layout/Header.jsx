@@ -236,7 +236,7 @@ const Header = ({ activeHeading }) => {
                             />
                           ) : (
                             <img
-                              src={`data:image/jpeg;base64,${i?.product?.imgProduct[0].url}`}
+                              src={`data:image/jpeg;base64,${i?.product?.imgProduct[0]?.url}`}
                               alt=""
                               className="h-[12vh] rounded-3xl mt-2"
                             />

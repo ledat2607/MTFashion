@@ -261,12 +261,12 @@ const CheckOutComponent = ({ data }) => {
               ) : (
                 <>
                   <img
-                    src={`data:image/jpeg;base64,${data?.product.product.imgProduct[0].url}`}
+                    src={`data:image/jpeg;base64,${data?.product.product.imgProduct[0]?.url}`}
                     alt=""
                     className="w-[150px] object-contain mx-auto rounded-2xl"
                   />
                   <span className="font-[600] font-Poppins text-center">
-                    {data?.product.product.imgProduct[0].code}
+                    {data?.product.product.imgProduct[0]?.code}
                   </span>
                 </>
               )}

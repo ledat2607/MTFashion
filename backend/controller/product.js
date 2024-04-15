@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../multer");
 const Product = require("../model/product");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -243,8 +244,7 @@ router.post(
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { orderId, productId, comment, rating, images, avatar, userName } =
-        req.body;
+      const { orderId, productId, comment, rating, images, userId } = req.body;
       const product = await Product.findById(productId);
       if (!product) {
         return next(new ErrorHandler("Sản phẩm không tồn tại", 404));
@@ -257,8 +257,7 @@ router.post(
       order.isComment = true;
       product.comment.push({
         isCommented: true,
-        cmt_userName: userName,
-        avatarUser: avatar,
+        cmt_userId: userId,
         content: comment,
         rating: rating,
         imgCmt: images, // Sử dụng mảng `images` với trường `url` đã được frontend truyền
