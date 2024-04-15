@@ -73,16 +73,39 @@ const EventProduct = () => {
     return formattedNumber;
   }
   const changeTotalDiscount = () => {
-    if (bonus <= 100) {
-      const price = parseInt(productSale?.discountPrice.replace(/\D/g, ""));
-      const discount = (price * bonus) / 100;
-      setTotal(price - discount);
-    } else {
-      const price = parseInt(productSale?.discountPrice.replace(/\D/g, ""));
-      setTotal(price - bonus);
+    const updatedBonus = parseInt(bonus); // Cập nhật giá trị bonus
+    const price = parseInt(productSale?.discountPrice?.replace(/\D/g, ""));
+    let calculatedTotal = price;
+  
+    if (!isNaN(updatedBonus) && updatedBonus >= 0) {
+      if (updatedBonus <= 100) {
+        const bonusPercentage = parseFloat(updatedBonus) / 100;
+        const discount = price * bonusPercentage;
+        calculatedTotal = price - discount;
+      } else {
+        // Xử lý trường hợp bonus lớn hơn 100
+        calculatedTotal = price - updatedBonus;
+      }
     }
+  
+    setTotal(calculatedTotal);
   };
+  
+  useEffect(() => {
+    changeTotalDiscount();
+  }, [bonus]);
 
+  const handleClose = () => {
+    setOpenEvent(false);
+    setBonus(0);
+    setTotal("");
+    setStart("");
+    setStartTime("");
+    setEnd("");
+    setEndTime("");
+    setSelectedProduct("");
+    setProductSale("");
+  };
   const handleChangeStartDate = (e) => {
     const selectedStartDate = new Date(e.target.value);
     const minEndDate = new Date(selectedStartDate);
@@ -326,7 +349,7 @@ const EventProduct = () => {
                 </div>
                 <div className="w-full sm:mt-8 h-[40px] flex justify-center items-center">
                   <div
-                    onClick={() => setOpenEvent(false)}
+                    onClick={handleClose}
                     className="bg-opacity-55 hover:text-white text-lg font-Poppins font-[600] hover:bg-opacity-100 flex justify-center hover:bg-red-500 cursor-pointer transition-transform duration-300 hover:translate-x-2 items-center w-[100px] h-full rounded-xl bg-gray-200"
                   >
                     Hủy

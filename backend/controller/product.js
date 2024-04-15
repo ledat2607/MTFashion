@@ -15,23 +15,23 @@ router.post("/create-product", isAdmin, async (req, res, next) => {
         code: data.codes[index],
       };
     });
-    // const productData = {
-    //   productName: data.productName,
-    //   discountRate: data.discountRate,
-    //   originalPrice: data.originalPrice,
-    //   discountPrice: data.discountPrice,
-    //   category: data.selectedCategory,
-    //   type: data.selectedType,
-    //   mat: data.mat,
-    //   stock: data.stock,
-    //   color: data.color,
-    //   size: data.size,
-    //   sold_out: data.sold_out,
-    //   imgProduct: imgProducts,
-    //   descriptions: data.markdownValue,
-    //   material: data.mat,
-    // };
-    // await Product.create(productData);
+    const productData = {
+      productName: data.productName,
+      discountRate: data.discountRate,
+      originalPrice: data.originalPrice,
+      discountPrice: data.discountPrice,
+      category: data.selectedCategory,
+      type: data.selectedType,
+      mat: data.mat,
+      stock: data.stock,
+      color: data.color,
+      size: data.size,
+      sold_out: data.sold_out,
+      imgProduct: imgProducts,
+      descriptions: data.markdownValue,
+      material: data.mat,
+    };
+    await Product.create(productData);
     res.status(200).json({
       success: true,
       message: "Sản phẩm thêm thành công",
