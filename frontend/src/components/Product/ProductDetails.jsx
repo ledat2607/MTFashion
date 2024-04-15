@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import size from "../../assets/theo kg.jpg";
 import size_man from "../../assets/size-nam.png";
@@ -21,6 +21,8 @@ const ProductDetails = ({ data }) => {
   const [addToCart, setAddToCart] = useState(false);
   const [selected_image_addToCart, setSelectedImageAddToCart] = useState(0);
   const navigate = useNavigate();
+  const [userComments, setUserComments] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
   //expand description
   const [expandedDescription, setExpandedDescription] = useState(false);
   const sizes = data?.size;
@@ -32,6 +34,32 @@ const ProductDetails = ({ data }) => {
   const handleStyleSelection = (index) => {
     setSelectedStyle(data.imgProduct[index]);
   };
+  useEffect(() => {
+    axios
+      .get(`${server}/user/get-all-user`)
+      .then((res) => {
+        setDataUser(res.data.userData);
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
+  }, []);
+  useEffect(() => {
+    if (data && dataUser && data.comment) {
+      const userComments = dataUser
+        .map((user) => {
+          const comment = data.comment.find(
+            (cmt) => cmt.cmt_userId === user?._id
+          );
+          return comment ? { ...user, comment } : null;
+        })
+        .filter(Boolean); // Loại bỏ các phần tử null
+      setUserComments(userComments);
+    }
+  }, [data, dataUser]);
+  
+
+  console.log(userComments, dataUser);
 
   const handleSizeSelection = (index) => {
     const newSize = sizeArray[index];
@@ -432,20 +460,30 @@ const ProductDetails = ({ data }) => {
                   key={index}
                 >
                   <div className="sm:w-[15%] h-full border-r-4 border-teal-500 w-full sm:flex-col flex-row flex items-center justify-center">
-                    <img
-                      src={`data:image/jpeg;base64,${i?.avatarUser}`}
-                      alt=""
-                      className="sm:h-[45%] sm:w-[35%] w-[20%] h-[5%] rounded-full"
-                    />
-                    <div className="w-full pl-2 flex justify-center items-center sm:flex-col">
-                      <p>{i?.cmt_userName}</p>
-                      <div className="flex">
-                        {Array.from({ length: i?.star }, (_, index) => (
-                          <FaStar key={index} color="gold" size={20} />
-                        ))}
+                    {userComments?.map((item, ind) => (
+                      <div
+                        className="w-full flex flex-col justify-center items-center"
+                        key={ind}
+                      >
+                        <img
+                          src={`data:image/jpeg;base64,${item?.avatar}`}
+                          alt=""
+                          className="w-[70px] h-[70px] rounded-full"
+                        />
+                        <div>
+                          <p>
+                            {item?.surName} {item?.name}
+                          </p>
+                          <div className="flex">
+                            {Array.from({ length: i?.star }, (_, index) => (
+                              <FaStar key={index} color="gold" size={20} />
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <p>{i?.cmt_createdAt.slice(0, 10)}</p>
-                    </div>
+                    ))}
+                  <p>{new Date(i?.cmt_createdAt).toLocaleString()}</p>
+
                   </div>
                   <div className="sm:w-[55%] border-r-4 border-teal-500 pl-2 flex flex-col justify-center pb-2 sm:pb-0">
                     <p className="text-center">{i.content}</p>

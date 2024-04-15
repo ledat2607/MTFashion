@@ -65,11 +65,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
       },
-      cmt_userName: {
-        type: String,
-      },
-
-      avatarUser: {
+      cmt_userId: {
         type: String,
       },
       content: {

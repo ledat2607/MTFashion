@@ -78,7 +78,6 @@ const DetailOrderPage = () => {
         toast.error(err.response.data.message);
       });
   };
-  const userName = `${item?.user?.surName} ${item?.user?.name}`;
   const handleComment = async (productId) => {
     const imagesWithUrls = images.map((image) => {
       return { url: image };
@@ -88,13 +87,12 @@ const DetailOrderPage = () => {
       .post(
         `${server}/product/add-comment`,
         {
-          userName,
           productId,
           comment,
           rating,
-          images: imagesWithUrls, // Sử dụng mảng mới chứa trường `url`
-          avatar: item?.user.avatar,
+          images: imagesWithUrls,
           orderId: item?._id,
+          userId: item?.user.id,
         },
         { withCredentials: true }
       )
@@ -113,7 +111,7 @@ const DetailOrderPage = () => {
   const handleDeleteImg = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-  console.log(currentUser);
+  console.log(item);
   return (
     <div
       className="w-full h-[100vh] flex justify-center items-center"
