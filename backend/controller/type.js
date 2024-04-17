@@ -56,7 +56,6 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { selectedCategory } = req.query;
-      // Thực hiện truy vấn để lấy danh sách các loại sản phẩm (types) tương ứng với category
       const types = await Type.find({ category: selectedCategory });
 
       res.status(200).json({
