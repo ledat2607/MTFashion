@@ -13,11 +13,11 @@ const DiscountEvent = () => {
   }, [products]);
   return (
     <div className="w-full mt-8">
-      <div className="w-[90%] sm:ml-8 mx-auto">
-        <h1 className="uppercase md:text-[1.5rem] font-Poppins font-[700]">
+      <div className="w-[90%] mx-auto flex flex-col items-center">
+        <h1 className="uppercase md:text-[2rem] text-center font-Poppins font-[700]">
           Giảm giá chấn động
         </h1>
-        <div className="w-full pb-4 mt-4 sm:ml-12">
+        <div className="w-[80%] pb-4 mt-4 sm:ml-12">
           <DiscountEventCard data={data} />
         </div>
       </div>
