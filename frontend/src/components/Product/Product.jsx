@@ -8,6 +8,7 @@ const Product = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
+  const [bestDeal, setBestDeal] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { products } = useSelector((state) => state.products);
   const sortedProduct =
@@ -100,8 +101,22 @@ const Product = () => {
     }
     setFilteredProducts(sortedProducts);
   };
-
-  console.log(products);
+  const handleBestDeal = (value) => {
+    if (value === bestDeal) {
+      setFilteredProducts([]);
+      setBestDeal("");
+    } else {
+      const sortedProducts = [...products]; 
+      sortedProducts.sort((a, b) => {
+        return a.sold_out - b.sold_out;
+      });
+      // Đảo ngược mảng nếu muốn sản phẩm bán hết lên đầu
+      sortedProducts.reverse(); 
+      setFilteredProducts(sortedProducts);
+      setBestDeal(value);
+    }
+  };
+  
   return (
     <div className="w-full mt-8 mx-auto">
       <div className="w-[100%]">
@@ -166,6 +181,14 @@ const Product = () => {
                   </div>
                 ))}
               </div>
+            </div>
+            <div className="w-full flex items-center mt-4">
+              <input
+                type="checkbox"
+                value={bestDeal}
+                onClick={() => handleBestDeal("best_selling")}
+              />
+              <p className="ml-2">Bán chạy</p>
             </div>
           </div>
           <div className="w-[80%]">

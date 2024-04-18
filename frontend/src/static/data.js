@@ -77,6 +77,21 @@ export const collection = [
     img: "https://previews.123rf.com/images/bombaytattoo/bombaytattoo1902/bombaytattoo190200029/125041746-new-collection-spring-banner-with-yellow-wild-flowers-on-a-eucalyptus-background.jpg",
     date: "2024-02-15",
   },
+  {
+    title: "Bộ sưu tập mùa hè",
+    img: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/new-arrivals-summer-collection-facebook-shop-design-template-675021b8223ac942ae1d3254a51589e4_screen.jpg?ts=1591073149",
+    data: "2024-04-18",
+  },
+  {
+    title: "Bộ sưu tập Váy - Đầm cao cấp",
+    img: "https://hstatic.net/729/1000112729/1000156229/slide_image_2.jpg?v=3551",
+    data: "2024-04-18",
+  },
+  {
+    title: "Bộ sưu tập Nam",
+    img: "https://www.bonsoir.co.in/cdn/shop/articles/4_1_1024x1024.jpg?v=1687944095",
+    data: "2024-04-18",
+  },
 ];
 // product Data
 export const productData = [

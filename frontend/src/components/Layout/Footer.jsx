@@ -61,8 +61,8 @@ const Footer = () => {
         </div>
       </div>
       <div className="sm:w-[50%] w-[90%] mx-auto sm:flex-row flex-col flex justify-center items-center">
-        <div className="sm:w-[30%] w-full  flex flex-col">
-          <span className="text-xl w-full font-[600] text-gray-900 font-DM">
+        <div className="sm:w-[30%] w-full mt-6 flex flex-col">
+          <span className="text-xl w-full font-[600] mt-6 text-gray-900 font-DM">
             Truy cập nhanh
           </span>
           {navItems?.map((i, index) => (

@@ -22,7 +22,7 @@ const EventProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   //phân trang
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -178,7 +178,7 @@ const EventProduct = () => {
   };
   return (
     <div className="w-full h-[100%]">
-      <div className="sm:w-[95%] w-full h-full mx-auto">
+      <div className="sm:w-[95%] w-full h-[85vh] mx-auto">
         <div className="sm:text-2xl font-Poppins font-[600] uppercase flex justify-center items-center w-full">
           Quản lý khuyến mãi
         </div>
@@ -367,7 +367,7 @@ const EventProduct = () => {
         ) : null}
         {data?.length !== 0 ? (
           <>
-            <div className="w-full h-[65vh]">
+            <div className="w-full h-[76vh] flex flex-col">
               {currentItems
                 ?.sort(
                   (a, b) =>
@@ -379,55 +379,55 @@ const EventProduct = () => {
                     key={index}
                     className="w-full sm:mt-4 border-r-2 border-l-2 mb-4 shadow-xl rounded-xl border-teal-500 border-b-2 flex justify-center items-center "
                   >
-                    <div className="w-[18%] h-[16vh] flex flex-col">
+                    <div className="w-[18%] h-[18vh] flex flex-col">
                       <label className="text-center h-[35px] bg-teal-400 rounded-tl-xl">
                         Hình ảnh
                       </label>
                       <img
                         src={`data:image/jpeg;base64,${i?.imgProduct[0]?.url}`}
                         alt=""
-                        className="w-[90px] pt-2 object-contain rounded-xl mx-auto"
+                        className="w-[90px] h-[12vh] pt-2 object-contain mx-auto"
                       />
                     </div>
-                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                    <div className="w-[18%]  h-[18vh] flex flex-col">
                       <label className="h-[35px] text-center bg-teal-400">
                         Tên sản phẩm
                       </label>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         {i?.productName}
                       </span>
                     </div>
-                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                    <div className="w-[18%]  h-[18vh] flex flex-col">
                       <label className="h-[35px] text-center bg-teal-400">
                         Ngày bắt đầu
                       </label>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         {i?.isOnSale?.start_date.slice(0, 10)}:{" "}
                         {i?.isOnSale?.start_time}
                       </span>
                     </div>
-                    <div className="w-[18%] h-[16vh] flex flex-col">
+                    <div className="w-[18%] h-[18vh] flex flex-col">
                       <label className="h-[35px] text-center bg-teal-400">
                         Ngày kết thúc
                       </label>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         {i?.isOnSale?.finish_date.slice(0, 10)}:{" "}
                         {i?.isOnSale?.finish_time}
                       </span>
                     </div>
-                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                    <div className="w-[18%]  h-[18vh] flex flex-col">
                       <label className="h-[35px] text-center bg-teal-400">
                         Giá khuyến mãi
                       </label>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         {formatVietnameseCurrency(i?.isOnSale?.price_sale)}
                       </span>
                     </div>
-                    <div className="w-[18%]  h-[16vh] flex flex-col">
+                    <div className="w-[18%]  h-[18vh] flex flex-col">
                       <label className="h-[35px] text-center bg-teal-400">
                         Trạng thái
                       </label>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         {i?.isOnSale?.start_date.slice(0, 10) === formattedDate
                           ? "Đang diễn ra"
                           : i?.isOnSale?.finish_date.slice(0, 10) <
@@ -436,9 +436,9 @@ const EventProduct = () => {
                           : "Chưa diễn ra"}
                       </span>
                     </div>
-                    <div className="w-[10%]  h-[16vh] flex flex-col items-center">
+                    <div className="w-[10%]  h-[18vh] flex flex-col items-center">
                       <div className="h-[35px] w-[100%] text-center bg-teal-400 rounded-tr-xl"></div>
-                      <span className="w-full flex justify-center items-center h-[10vh]">
+                      <span className="w-full flex justify-center items-center h-[12vh]">
                         <TiDeleteOutline
                           onClick={openComfirmDeleteEvent}
                           size={25}
